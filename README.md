@@ -1,4 +1,4 @@
-# arch-carto
+# arch-carto : Application de cartographie
 
 # server
 
