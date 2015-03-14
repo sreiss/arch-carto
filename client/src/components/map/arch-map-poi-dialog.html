@@ -1,0 +1,14 @@
+<md-dialog style="width: 800px;">
+  <md-content>
+    <md-subheader class="md-sticky-no-effect">{{'ADD_A_POINT_OF_INTEREST' | translate}}</md-subheader>
+    <arch-poi-form poi="poi" form-valid="formValid"></arch-poi-form>
+    <div class="md-actions" layout="row">
+      <md-button ng-click="cancel()">
+        {{'CANCEL' | translate}}
+      </md-button>
+      <md-button ng-click="savePoi(poi)" class="md-primary" ng-disabled="!formValid">
+        {{'ADD' | translate}}
+      </md-button>
+    </div>
+  </md-content>
+</md-dialog>

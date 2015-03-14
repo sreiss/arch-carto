@@ -1,0 +1,33 @@
+<md-dialog>
+  <md-content>
+    <md-subheader class="md-sticky-no-effect">{{'REPORT_A_BUG' | translate}}</md-subheader>
+    <div layout layout-sm="column">
+      <md-input-container flex>
+        <label>{{'LATITUDE' | translate}}</label>
+        <input type="text" ng-model="bug.coordinates.latitude" ng-disabled="true" />
+      </md-input-container>
+      <md-input-container flex>
+        <label>{{'LONGITUDE' | translate}}</label>
+        <input type="text" ng-model="bug.coordinates.longitude" ng-disabled="true" />
+      </md-input-container>
+    </div>
+    <ng-form name="bugForm">
+      <p>{{'PLEASE_DESCRIBE_THE_BUG_YOU_ENCOUNTERED' | translate}}</p>
+      <md-input-container>
+        <label>{{'DESCRIPTION' | translate}}</label>
+        <textarea ng-model="bug.description" name="description" required></textarea>
+        <div ng-messages="bugForm.description.$error" ng-if="bugForm.description.$dirty">
+          <span ng-message="required">{{'YOU_MUST_DESCRIBE_THE_BUG' | translate}}</span>
+        </div>
+      </md-input-container>
+    </ng-form>
+  </md-content>
+  <div class="md-actions" layout="row">
+    <md-button ng-click="cancel()">
+      {{'CANCEL' | translate}}
+    </md-button>
+    <md-button ng-click="reportBug(bug)" class="md-primary" ng-disabled="bugForm.$invalid">
+      {{'REPORT' | translate}}
+    </md-button>
+  </div>
+</md-dialog>

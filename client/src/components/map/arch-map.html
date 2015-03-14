@@ -1,0 +1,71 @@
+<div>
+  <md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>
+    <div class="md-toolbar-tools">
+      <div layout="row" flex class="fill-height">
+        <div class="md-toolbar-tools">
+          <span flex="60" layout="row" layout-align="begin center">
+            <div class="md-toolbar-item" ng-if="pathDrawer.enabled">
+              <md-button ng-click="disablePathDrawer()">
+                {{'QUIT_PATH_DRAWER' | translate}}
+              </md-button>
+            </div>
+            <div class="md-toolbar-item" ng-if="pathDrawn()">
+              <md-button ng-click="deletePath()">
+                {{'DELETE_PATH' | translate}}
+              </md-button>
+            </div>
+          </span>
+          <span flex="40" layout="row" layout-align="end center">
+            <div class="smaller">
+              <span class="padded">{{'LATITUDE' | translate}}: {{cursor.lat | number: 6}}</span>
+              <span class="padded">{{'LONGITUDE' | translate}}: {{cursor.lng | number: 6}}</span>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </md-toolbar>
+
+  <!--<arch-tip message="{{'CLICK_ON_THE_MAP_TO_START_AN_ACTIVITY' | translate}}"></arch-tip>-->
+
+  <div leaflet id="arch-map" center="center" markers="markers" layers="layers" paths="paths" ng-class="{'is-drawing-path': pathDrawer.enabled}"></div>
+
+
+  <lx-dialog class="dialog dialog--l" id="gpxDialog">
+    <div class="dialog__header">
+      <div class="toolbar bgc-light-blue-500 pl++">
+        <span class="toolbar__label tc-white fs-title">
+          {{'UPLOAD_A_GPX_TRACE' | translate}}
+        </span>
+      </div>
+    </div>
+    <div class="dialog__content">
+      <form name="gpxForm">
+        <div class="p++">
+          <div flex-container="row" flex-gutter="24">
+            <div flex-item>
+              <label>
+                {{'GPX_FILE' | translate}}
+              </label>
+              <div ng-if="gpxUploader" nv-file-drop uploader="gpxUploader">
+                <div class="upload-zone" nv-file-over uploader="gpxUploader" style="float: left;">
+                  Base drop zone indication
+                </div>
+              </div>
+              <div ng-repeat="item in gpxUploader.queue">
+                {{item.file.name}}
+              </div>
+              <div class="tc-red-600" ng-messages="gpxForm.gpxFile.$error" ng-if="gpxForm.gpxFile.$dirty">
+                <span ng-message="required">{{'YOU_MUST_CHOOSE_A_FILE_TO_UPLOAD' | translate}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="dialog__actions">
+      <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close>{{'CANCEL' | translate}}</button>
+      <button class="btn btn--m btn--blue btn--raised" lx-ripple ng-click="gpxUploader.uploadAll()" ng-disabled="!gpxUploader.getNotUploadedItems().length">{{'UPLOAD' | translate}}</button>
+    </div>
+  </lx-dialog>
+</div>

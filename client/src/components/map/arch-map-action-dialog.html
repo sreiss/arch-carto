@@ -1,0 +1,35 @@
+<md-dialog>
+  <md-content>
+    <md-subheader class="md-sticky-no-effect">{{'WHAT_DO_YOU_WANT_TO_DO' | translate}}</md-subheader>
+    <div>
+      <md-button class="md-primary" ng-click="selectAction('poi')">
+        {{'ADD_A_POINT_OF_INTEREST' | translate}}
+      </md-button>
+    </div>
+    <div>
+      <md-button class="md-primary" ng-click="selectAction('bug')">
+        {{'REPORT_A_BUG' | translate}}
+      </md-button>
+    </div>
+    <div>
+      <md-button class="md-primary" ng-click="selectAction('gpx')">
+        {{'UPLOAD_A_GPX_TRACE' | translate}}
+      </md-button>
+    </div>
+    <div>
+      <md-button class="md-primary" ng-click="selectAction('center')">
+        {{'SET_MAP_CENTER' | translate}}
+      </md-button>
+    </div>
+    <div>
+      <md-button class="md-primary" ng-click="selectAction('path')">
+        {{'DRAW_A_PATH' | translate}}
+      </md-button>
+    </div>
+  </md-content>
+  <div class="md-actions" layout="row">
+    <md-button ng-click="cancel()">
+      {{'CANCEL' | translate}}
+    </md-button>
+  </div>
+</md-dialog>
