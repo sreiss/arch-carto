@@ -64,6 +64,12 @@ angular.module('archCarto')
               //var url = 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg',
               //  attr ='Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
               //  service = new L.TileLayer(url, {subdomains:"1234",attribution: attr});
+
+              var tiles = L.tileLayer('//{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png', {
+                maxZoom: 18
+              });
+              tiles.addTo(map);
+
               var el = L.control.elevation({
                 position: "topleft",
                 theme: "steelblue-theme",
