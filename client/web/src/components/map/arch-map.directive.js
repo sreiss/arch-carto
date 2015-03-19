@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function (archMapService, archPathService, archBugService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window) {
+  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window) {
     return {
       restrict: 'A',
       templateUrl: 'components/map/arch-map.html',
@@ -197,7 +197,7 @@ angular.module('archCarto')
                   .then(function(action) {
                     if (action == 'poi') {
                       archMapDialogService.showPoiDialog(selectedCoordinates)
-                        .then(archMapService.savePoi)
+                        .then(archPoiService.savePoi)
                         .then(function() {
                           refreshMarkers();
                           $translate(['POINT_OF_INTEREST_ADDED']).then(function(translations) {

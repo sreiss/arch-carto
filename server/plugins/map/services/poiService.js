@@ -26,9 +26,6 @@ module.exports = function(Poi, poiTypeService) {
                     if (err) {
                         deferred.reject(err);
                     }
-                    if (pois.length == 0) {
-                        deferred.reject(new Error('No pois found'));
-                    }
                     deferred.resolve(pois);
                 });
             return deferred.promise;
