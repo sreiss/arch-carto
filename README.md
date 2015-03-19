@@ -2,7 +2,7 @@
 
 # server
 
-Les mêmes étapes que sur (https://github.com/sreiss/arch-core)[arch-core] sont nécessaire pour lancer le projet.
+Les mêmes étapes que sur https://github.com/sreiss/arch-core sont nécessaire pour lancer le projet.
 
 # client
 
