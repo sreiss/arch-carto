@@ -1,5 +1,5 @@
 'use strict';
-angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngRoute', 'ngMaterial', 'pascalprecht.translate', 'leaflet-directive', 'angularFileUpload'])
+angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngRoute', 'ngMaterial', 'pascalprecht.translate', 'leaflet-directive', 'angularFileUpload', 'base64'])
   .config(function ($translateProvider, $routeProvider, i18nfrFRConstant, i18nenUSConstant, $mdThemingProvider) {
     L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
 
@@ -14,6 +14,9 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
     $routeProvider
       .when('/', {
         templateUrl: 'app/main/main.html'
+      })
+      .when('/map', {
+        templateUrl: 'app/map/map.html'
       })
       .otherwise({
         redirectTo: '/'

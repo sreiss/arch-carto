@@ -1,6 +1,14 @@
 'use strict'
 angular.module('archCarto')
   .constant('i18nfrFRConstant', {
+    MAIN_TITLE_PAGE: "ArchTailors - Carto",
+    MAIN_PAGE_HOME: "Accueil",
+    MAIN_PAGE_ABOUTUS: "A propos",
+    MAIN_PAGE_SERVICES: "Services",
+    MAIN_PAGE_LOGIN: "Connexion",
+    MAIN_PAGE_SIGNIN: "Inscription",
+    MAIN_PAGE_MAP: "Carte",
+
     ADD_A_POINT_OF_INTEREST: "Ajouter un point d'intérêt",
     LATITUDE: "Latitude",
     LONGITUDE: "Longitude",

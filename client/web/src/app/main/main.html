@@ -1,1 +1,601 @@
-<div arch-map></div>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content=" ">
+  <meta name="author" content="ArchTailors">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <script src="assets/js/modernizr.js"></script>
+  <script src="assets/js/device.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/green.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+
+  <!--[if lt IE 9]>
+  <script src="assets/js/html5shiv.js"></script>
+  <script src="assets/js/respond.min.js"></script>
+  <![endif]-->
+
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+</head>
+<body class="initAnimate">
+
+<div class="container"></div>
+
+<header id="MainHeader" class="chapter small-menu">
+  <div class="rev-slider-container">
+    <div id="rev1" class="rev-slider" >
+      <ul>
+        <li data-transition="fade" data-slotamount="5" data-masterspeed="1000" >
+          <img src="assets/images/rev-slider1.jpg"   alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
+
+          <div class="tp-caption lfb"
+               data-x="right"
+               data-hoffset="310"
+               data-y="0"
+               data-speed="800"
+               data-start="1000"
+               data-easing="Power4.easeOut"
+               data-endspeed="300"
+               data-endeasing="Power1.easeIn"
+               data-captionhidden="off"
+               style="z-index: 6"><img src="assets/images/rev-slider7.png"   alt="Iphone" >
+          </div>
+
+          <div class="tp-caption sfb"
+               data-x="right"
+               data-hoffset="60"
+               data-y="-100"
+               data-speed="800"
+               data-start="800"
+               data-easing="Power4.easeOut"
+               data-endspeed="300"
+               data-endeasing="Power1.easeIn"
+               data-captionhidden="off"
+               style="z-index: 6"><img src="assets/images/rev-slider7.png"   alt="Iphone" >
+          </div>
+
+          <div class="tp-caption customin customout rev-title"
+               data-x="15"
+               data-y="170"
+
+               data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+               data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+               data-speed="1000"
+               data-start="800"
+               data-easing="Back.easeInOut"
+               data-endspeed="300"
+               style="z-index: 7">
+            Creativity packed up</br>
+            with <strong>latest</strong> technologies
+          </div>
+
+          <div class="tp-caption customin customout hidden-xs"
+               data-x="15"
+               data-y="290"
+
+               data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+               data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+               data-speed="1000"
+               data-start="800"
+               data-easing="Back.easeInOut"
+               data-endspeed="300"
+               style="z-index: 7">
+            <p>Phasellus congue lacus eget neque. Phasellus ornare, ante vitae</br> consectetuer consequat, purus sapien ultricies dolor, et mollis pede.</p>
+          </div>
+
+          <div class="tp-caption sfb"
+               data-x="15"
+               data-y="355"
+               data-speed="500"
+               data-start="1500"
+               data-easing="Power4.easeOut"
+               data-endspeed="300"
+               data-endeasing="Power1.easeIn"
+               data-captionhidden="off"
+               style="z-index: 7">
+            <a href="#about-us" class="btn btn-white btn-lg btn-scroll">Read More</a>
+          </div>
+        </li>
+
+        <li data-transition="fade" data-slotamount="5" data-masterspeed="700" >
+          <img src="assets/images/rev-slider2.jpg"   alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
+          <div class="tp-caption sfl"
+               data-x="-200"
+               data-y="180"
+               data-speed="500"
+               data-start="1200"
+               data-easing="Back.easeOut"
+               data-endspeed="400"
+               data-endeasing="Back.easeOut"
+               data-captionhidden="off"
+               style="z-index: 6"><img src="assets/images/rev-slider5.png"   alt="Iphone" >
+          </div>
+
+          <div class="tp-caption sfl"
+               data-x="-250"
+               data-y="100"
+               data-speed="500"
+               data-start="1400"
+               data-easing="Back.easeOut"
+               data-endspeed="500"
+               data-endeasing="Back.easeOut"
+               data-captionhidden="off"
+               style="z-index: 6"><img src="assets/images/rev-slider5.png"   alt="Iphone" >
+          </div>
+
+          <div class="tp-caption sfl"
+               data-x="-300"
+               data-y="20"
+               data-speed="500"
+               data-start="1500"
+               data-easing="Back.easeOut"
+               data-endspeed="600"
+               data-endeasing="Back.easeOut"
+               data-captionhidden="off"
+               style="z-index: 6"><img src="assets/images/rev-slider5.png"   alt="Iphone" >
+          </div>
+
+          <div class="tp-caption sfl"
+               data-x="-200"
+               data-y="40"
+               data-speed="500"
+               data-start="1700"
+               data-easing="Back.easeOut"
+               data-endspeed="300"
+               data-endeasing="Back.easeOut"
+               data-captionhidden="off"
+               style="z-index: 6"><img src="assets/images/rev-slider6.png"   alt="Iphone" >
+          </div>
+
+          <div class="tp-caption text-right customin customout rev-title"
+               data-x="right"
+               data-hoffset="-15"
+               data-y="170"
+
+               data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+               data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+               data-speed="1000"
+               data-start="500"
+               data-easing="Back.easeInOut"
+               data-endspeed="300"
+               style="z-index: 7">
+            Modern design meets</br>
+            <span class="color-font"><strong>excellent</strong></span> usability
+          </div>
+
+          <div class="tp-caption text-right customin customout hidden-xs"
+               data-x="right"
+               data-hoffset="-15"
+               data-y="290"
+
+               data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+               data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+               data-speed="1000"
+               data-start="500"
+               data-easing="Back.easeInOut"
+               data-endspeed="300"
+               style="z-index: 7">
+            <p>Phasellus congue lacus eget neque. Phasellus ornare, ante vitae</br> consectetuer consequat, purus sapien ultricies dolor, et mollis pede.</p>
+          </div>
+
+          <div class="tp-caption sfb"
+               data-x="right"
+               data-hoffset="-15"
+               data-y="355"
+
+               data-speed="500"
+               data-start="800"
+               data-easing="Power4.easeOut"
+               data-endspeed="300"
+               data-endeasing="Power1.easeIn"
+               data-captionhidden="off"
+               style="z-index: 7">
+            <a href="#about-us" class="btn btn-white btn-lg btn-scroll">Read More</a>
+          </div>
+        </li>
+
+        <li data-transition="fade" data-slotamount="5" data-masterspeed="700" >
+          <img src="assets/images/rev-slider3.jpg"  alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
+          <div class="tp-caption sfb"
+               data-x="center"
+               data-y="bottom"
+               data-voffset="10"
+
+               data-speed="1000"
+               data-start="500"
+               data-easing="Back.easeInOut"
+               data-endspeed="300"
+               style="z-index: 6"><img src="assets/images/rev-slider4.png"   alt="Professionals" >
+          </div>
+
+          <div class="tp-caption customin customout start rev-title"
+               data-x="center"
+               data-y="360"
+
+               data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+               data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+               data-speed="1000"
+               data-start="700"
+               data-easing="Back.easeInOut"
+               data-endspeed="300"
+               style="z-index: 7">
+            Boston - your <strong>professional</strong> business partner
+          </div>
+
+          <div class="tp-caption sfb"
+               data-x="center"
+               data-y="440"
+
+               data-speed="1000"
+               data-start="900"
+               data-easing="Back.easeInOut"
+               data-endspeed="300"
+               style="z-index: 7"><a href="#about-us" class="btn btn-white btn-scroll">Read More</a>
+          </div>
+        </li>
+      </ul>
+      <div class="tp-bannertimer"></div>
+    </div>
+  </div>
+</header>
+
+<nav id="navigation" class="navbar navbar-inverse navbar-fixed-top remove-left-red" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#"><strong>Arch</strong>Tailors - Carto</a>
+  </div>
+  <div class="triangle visible-md visible-lg"></div>
+
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-right">
+      <li class="onepage"><a href="#MainHeader">{{'MAIN_PAGE_HOME' | translate}}</a></li>
+      <li class="onepage"><a href="#about-us">{{'MAIN_PAGE_ABOUTUS' | translate}}</a></li>
+      <li class="onepage"><a href="#services">{{'MAIN_PAGE_SERVICES' | translate}}</a></li>
+      <li class="onepage"><a href="#signin">{{'MAIN_PAGE_SIGNIN' | translate}}</a></li>
+      <li arch-login></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container"></div>
+
+<div id="about-us" class="container padding-medium text-center chapter">
+  <h2>Who are <span class="color-font light">we</span></h2>
+  <h5>
+    We are <span class="color-font">the king of the pop</span>. Proin nibh augue, suscipit a,
+    scelerisque sed, lacinia in, mi. <span class="color-font">Cras vel lorem.</span>
+    Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. <span class="color-font">Cras vel lorem.</span>
+  </h5>
+</div>
+
+<div class="container"></div>
+
+<div class="light-gray-row">
+  <div class="container padding-small text-center">
+    <h4>What do <span class="color-font">we</span> <span class="light">actually do?</span></h4>
+
+    <h3>The <span class="color-font">best</span> websites in the World</h3>
+
+    <div class="row padding-top-small animated" data-fx="fadeInUp">
+      <div class="col-md-4 col-sm-4">
+        <div class="circleBox">
+          <div class="circle-border-outside">
+            <div class="circle-border-inside">
+              <div class="circle">
+                <div class="circle-content">
+                  <span><embed src="assets/images/diamond.svg" type="image/svg+xml"></span>
+                </div>
+              </div>
+            </div>
+            <div class="circle-triangle"></div>
+          </div>
+        </div>
+        <h5>Priceless UX</h5>
+
+        <p>Phasellus congue lacus eget neque. Phasellus ornare, ante vitae consectetuer consequat, purus sapien
+          ultricies dolor, et mollis pede.</p>
+      </div>
+      <div class="col-md-4 col-sm-4">
+        <div class="circleBox">
+          <div class="circle-border-outside">
+            <div class="circle-border-inside">
+              <div class="circle">
+                <div class="circle-content">
+                  <span><embed src="assets/images/paperplane.svg" type="image/svg+xml"></embed></span>
+                </div>
+              </div>
+            </div>
+            <div class="circle-triangle"></div>
+          </div>
+        </div>
+        <h5>Ultra-Light Code</h5>
+
+        <p>Phasellus congue lacus eget neque. Phasellus ornare, ante vitae consectetuer consequat, purus sapien
+          ultricies dolor, et mollis pede.</p>
+      </div>
+      <div class="col-md-4 col-sm-4">
+        <div class="circleBox">
+          <div class="circle-border-outside">
+            <div class="circle-border-inside">
+              <div class="circle">
+                <div class="circle-content">
+                  <span><embed src="assets/images/pencil.svg" type="image/svg+xml"></embed></span>
+                </div>
+              </div>
+            </div>
+            <div class="circle-triangle"></div>
+          </div>
+        </div>
+        <h5>Top-Norch Design</h5>
+
+        <p>Phasellus congue lacus eget neque. Phasellus ornare, ante vitae consectetuer consequat, purus sapien
+          ultricies dolor, et mollis pede.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container"></div>
+
+<div id="Parallax1" class="parallax padding-big" style="background-image: url('assets/images/parallax1.jpg')">
+  <div class="container text-center animated" data-fx="bounceIn">
+    <p class="h3 quote">
+      <i class="fa fa-quote-left quote-mark-left"></i>
+      Never seen this before ! An amazing tool, so much better than OpenRunner.
+      <i class="fa fa-quote-right quote-mark-right"></i>
+    </p>
+
+    <p class="citation"><i>- Cédric Wemmert -</i></p>
+  </div>
+</div>
+
+<div class="container"></div>
+
+<div id="services" class="container text-center padding-medium chapter">
+  <h2>Our <span class="color-font light">Services</span></h2>
+  <h5>At Boston we want to offer widest and the <span class="color-font">most efficient services</span> to your
+    company. Join us and get to a <span class="color-font">new level</span>!</h5>
+</div>
+
+<div class="container"></div>
+
+<div class="light-gray-row">
+  <div class="container">
+    <div class="padding-medium row animated activate fadeInUp" data-fx="fadeInUp">
+      <div class="col-sm-4 text-center col-md-4">
+        <div class="services">
+          <div class="services-box">
+            <div class="circleBox">
+              <div class="circle-border-outside">
+                <div class="circle-border-inside">
+                  <div class="circle">
+                    <div class="circle-content">
+                      <span><embed src="http://boston.wp.themeforest.createit.pl/wp-content/themes/boston/theme/assets/images/content/bubble.svg" type="image/svg+xml"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="circle-triangle"></div>
+              </div>
+            </div>
+            <div class="text-center">
+              <h5>
+                Consulting
+              </h5>
+              <p>Phasellus congue lacus eget neque. Phasellus ornare, ante vitae consectetuer consequat.</p>
+              <h6>
+                Our Offer
+              </h6>
+              <ul class="list-group-services">
+                <li><span><strong>Detailed Research</strong></span></li>
+                <li><span><strong>Best Strategy</strong></span></li>
+                <li><span><strong>Design &amp; Development</strong></span></li>
+                <li><span><strong>Success</strong></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 text-center col-md-4">
+        <div class="services">
+          <div class="services-box">
+            <div class="circleBox">
+              <div class="circle-border-outside">
+                <div class="circle-border-inside">
+                  <div class="circle">
+                    <div class="circle-content">
+                      <span><embed src="http://boston.wp.themeforest.createit.pl/wp-content/themes/boston/theme/assets/images/content/pencil.svg" type="image/svg+xml"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="circle-triangle"></div>
+              </div>
+            </div>
+            <div class="text-center">
+              <h5>
+                Design
+              </h5>
+              <p>Phasellus congue lacus eget neque. Phasellus ornare, ante vitae consectetuer consequat.</p>
+              <h6>
+                Our Offer
+              </h6>
+              <ul class="list-group-services">
+                <li><span><strong>Detailed Research</strong></span></li>
+                <li><span><strong>Best Strategy</strong></span></li>
+                <li><span><strong>Design &amp; Development</strong></span></li>
+                <li><span><strong>Success</strong></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 text-center col-md-4">
+        <div class="services">
+          <div class="services-box">
+            <div class="circleBox">
+              <div class="circle-border-outside">
+                <div class="circle-border-inside">
+                  <div class="circle">
+                    <div class="circle-content">
+                      <span><embed src="http://boston.wp.themeforest.createit.pl/wp-content/themes/boston/theme/assets/images/content/settings.svg" type="image/svg+xml"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="circle-triangle"></div>
+              </div>
+            </div>
+            <div class="text-center">
+              <h5>
+                Development
+              </h5>
+              <p>Phasellus congue lacus eget neque. Phasellus ornare, ante vitae consectetuer consequat.</p>
+              <h6>
+                Our Offer
+              </h6>
+              <ul class="list-group-services">
+                <li><span><strong>Detailed Research</strong></span></li>
+                <li><span><strong>Best Strategy</strong></span></li>
+                <li><span><strong>Design &amp; Development</strong></span></li>
+                <li><span><strong>Success</strong></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container"></div>
+
+<div id="signin" class="container padding-top-medium padding-bottom-small text-center chapter">
+  <h2>Inscription</span></h2>
+  <h5>Don't be shy! <span class="color-font">Drop us a line</span> and our team will get to you ASAP.</h5>
+</div>
+
+<div class="container"></div>
+
+<div class="container padding-small">
+  <div class="subscribeForm">
+    <arch-subscribe></arch-subscribe>
+  </div>
+</div>
+
+<div class="container"></div>
+
+<footer class="color-row">
+  <div class="container text-center padding-small">
+    <p class="h4">Arch<span class="light">Tailors</span> - Carto</p>
+
+    <div class="social-unit">
+      <div class="container text-center">
+        <div class="social">
+          <ul>
+            <li>
+              <a href="#">
+                <div class="circle-btn" data-toggle="tooltip" data-placement="bottom"
+                     title="Facebook">
+                  <p><i class="fa fa-facebook"></i></p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <div class="circle-btn" data-toggle="tooltip" data-placement="bottom"
+                     title="Twitter">
+                  <p><i class="fa fa-twitter"></i></p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <div class="circle-btn" data-toggle="tooltip" data-placement="bottom"
+                     title="LinkedIn">
+                  <p><i class="fa fa-linkedin-square"></i></p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <div class="circle-btn" data-toggle="tooltip" data-placement="bottom" title="Google+">
+                  <p><i class="fa fa-google-plus"></i></p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <div class="circle-btn" data-toggle="tooltip" data-placement="bottom" title="Pinterest">
+                  <p><i class="fa fa-pinterest"></i></p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <div class="circle-btn" data-toggle="tooltip" data-placement="bottom" title="Flickr">
+                  <p><i class="fa fa-flickr"></i></p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <div class="circle-btn" data-toggle="tooltip" data-placement="bottom" title="Dribbble">
+                  <p><i class="fa fa-dribbble"></i></p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <div class="circle-btn" data-toggle="tooltip" data-placement="bottom" title="Youtube">
+                  <p><i class="fa fa-youtube"></i></p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <div class="circle-btn" data-toggle="tooltip" data-placement="bottom" title="Vimeo">
+                  <p><i class="fa fa-vimeo-square"></i></p>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p class="copy">Copyright © 2015 ArchTailors</p>
+  </div>
+</footer>
+
+<div class="container"></div>
+
+<a href="#MainHeader" id="toTop" class="btn-scroll"><i class="fa fa-chevron-up"></i> Back to top</a>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/jquery.parallax.js"></script>
+<script src="assets/js/jquery.pagescroller.lite.js"></script>
+<script src="assets/js/jquery.easy-pie-chart.js"></script>
+<script src="assets/js/jquery.isotope.min.js"></script>
+<script src="assets/js/jquery.ba-bbq.min.js"></script>
+<script src="assets/js/gmap3.min.js"></script>
+<script src="assets/js/d3.v3.min.js"></script>
+<script src="assets/js/topojson.v1.min.js"></script>
+<script src="assets/js/jquery.sticky.js"></script>
+<script src="assets/js/jquery.colorbox-min.js"></script>
+<script src="assets/js/jquery.flexslider.js"></script>
+<script src="assets/js/jquery.fitvids.js"></script>
+<script src="assets/js/jquery.themepunch.revolution.min.js"></script>
+<script src="assets/js/jquery.themepunch.plugins.min.js"></script>
+<script src="assets/js/jquery.tweet.js"></script>
+<script src="assets/js/jquery.appear.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/less.min.js"></script>
+</body>
+</html>
