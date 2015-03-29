@@ -1,7 +1,9 @@
 'use strict'
 angular.module('archCarto')
   .constant('i18nfrFRConstant', {
-    MAIN_TITLE_PAGE: "ArchTailors - Carto",
+    CUSTOMER_NAME: "ArchCarto",
+    CUSTOMER_DESC: "Planificateur de Parcours de Randonnées",
+
     MAIN_PAGE_HOME: "Accueil",
     MAIN_PAGE_ABOUTUS: "A propos",
     MAIN_PAGE_SERVICES: "Services",

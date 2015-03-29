@@ -35,13 +35,13 @@ angular.module('archCarto')
                 $cookieStore.put('clientRedirectUri', result.data.clientRedirectUri);
                 $cookieStore.put('clientHash', clientHash);
 
-                $scope.loginUrl = httpConstant.loginUrl + '/#/?clientHash=' + clientHash + '&clientRedirectUri=' + $base64.encode(result.data.clientRedirectUri);
+                $scope.loginUrl = httpConstant.loginUrl + '/#/?client=' + clientHash + '&return=' + $base64.encode(result.data.clientRedirectUri);
               });
             }
             else
             {
               console.log('INIT : Params found in cookies.');
-              $scope.loginUrl = httpConstant.loginUrl + '/#/?clientHash=' + cookieClientHash + '&clientRedirectUri=' + $base64.encode(cookieClientRedirectUri);
+              $scope.loginUrl = httpConstant.loginUrl + '/#/?client=' + cookieClientHash + '&return=' + $base64.encode(cookieClientRedirectUri);
             }
           }
           else
