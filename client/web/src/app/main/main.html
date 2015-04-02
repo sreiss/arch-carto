@@ -1,20 +1,19 @@
-<md-toolbar>
+<md-toolbar class="md-default-theme" id="toolbar" style="position:fixed;top:0;">
   <div class="md-toolbar-tools">
-    <md-button class="md-icon-button" aria-label="{{'MAIN_PAGE_HOME' | translate}}">
-      <md-icon md-font-icon="fa fa-map-marker"></md-icon>
-      <label>{{'CUSTOMER_DESC' | translate}}</label>
-    </md-button>
+    <a href="/"><b>{{'CUSTOMER_NAME' | translate}}</b> - {{'CUSTOMER_DESC' | translate}}</a>
 
     <span flex></span>
-    <a href="#">{{'MAIN_PAGE_HOME' | translate}}</a>
-    <a href="#">{{'MAIN_PAGE_ABOUTUS' | translate}}</a>
-    <a href="#">{{'MAIN_PAGE_SERVICES' | translate}}</a>
-    <a href="#">{{'MAIN_PAGE_SIGNIN' | translate}}</a>
-    <arch-login></arch-login>
+    <ul class="main-menu">
+      <li><a href="/#/#toolbar">{{'MAIN_PAGE_HOME' | translate}}</a></li>
+      <li><a href="/#/#aboutus">{{'MAIN_PAGE_ABOUTUS' | translate}}</a></li>
+      <li><a href="/#/#services">{{'MAIN_PAGE_SERVICES' | translate}}</a></li>
+      <li><a href="/#/#signin">{{'MAIN_PAGE_SIGNIN' | translate}}</a></li>
+      <li><arch-login></arch-login></li>
+    </ul>
   </div>
 </md-toolbar>
 
-<section class="arch-section arch-section-full-width" style="background:url(../../assets/images/rev-slider1.jpg);">
+<section id="aboutus" class="arch-section arch-section-full-width" style="background:url(../../assets/images/rev-slider1.jpg);">
   <md-content>
   </md-content>
 </section>
@@ -23,7 +22,7 @@
   <md-content>
   </md-content>
 </section>
-<section class="arch-section arch-section-full-width" style="background:url(../../assets/images/rev-slider3.jpg);">
+<section id="services" class="arch-section arch-section-full-width" style="background:url(../../assets/images/rev-slider3.jpg);">
   <md-content>
   </md-content>
 </section>
@@ -31,7 +30,7 @@
   <md-content>
   </md-content>
 </section>
-<section class="arch-section arch-section-full-width" style="background:url(../../assets/images/rev-slider5.png);">
+<section id="signin" class="arch-section arch-section-full-width" style="background:url(../../assets/images/rev-slider5.png);">
   <md-content>
   </md-content>
 </section>
@@ -39,3 +38,5 @@
   <md-content>
   </md-content>
 </section>
+
+<a class="btn-scroll" id="toTop" href="#toolbar"><i class="fa fa-chevron-up"></i> {{'MAIN_PAGE_BACKTOTOP' | translate}}</a>

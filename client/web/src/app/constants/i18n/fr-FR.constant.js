@@ -10,6 +10,7 @@ angular.module('archCarto')
     MAIN_PAGE_LOGIN: "Connexion",
     MAIN_PAGE_SIGNIN: "Inscription",
     MAIN_PAGE_MAP: "Carte",
+    MAIN_PAGE_BACKTOTOP: "Revenir en haut",
 
     ADD_A_POINT_OF_INTEREST: "Ajouter un point d'intérêt",
     LATITUDE: "Latitude",
