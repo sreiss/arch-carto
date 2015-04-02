@@ -1,3 +1,12 @@
-/**
- * Created by sreiss on 02/04/15.
- */
+'use strict'
+angular.module('archCarto')
+  .directive('archParallax', [
+    function() {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attributes) {
+          debugger;
+        }
+      };
+    }
+  ]);
