@@ -2,7 +2,7 @@
 angular.module('archCarto')
   .directive('archLogin', function (archLoginService, $translate, $window, httpConstant) {
     return {
-      restrict: 'A',
+      restrict: 'E',
       templateUrl: 'components/login/arch-login.html',
       controller: function($scope, $cookieStore, $base64) {
         var init = function()
