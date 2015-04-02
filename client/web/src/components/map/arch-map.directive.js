@@ -1,8 +1,8 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window) {
+  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav) {
     return {
-      restrict: 'A',
+      restrict: 'E',
       templateUrl: 'components/map/arch-map.html',
       controller: function($scope) {
         $scope.center = {
@@ -193,7 +193,9 @@ angular.module('archCarto')
                 longitude: args.leafletEvent.latlng.lng
               };
 
-              if (scope.pathDrawer.enabled) {
+              $mdSidenav('sideNavLeft').toggle();
+
+              /*if (scope.pathDrawer.enabled) {
                 archPathService.addPoint(selectedCoordinates)
                   .then(function(marker) {
                     scope.markers[marker._id] = marker;
@@ -241,7 +243,7 @@ angular.module('archCarto')
                       });
                     }
                   });
-              }
+                }*/
             });
 
             scope.$on('leafletDirectiveMap.load', function(event, args) {

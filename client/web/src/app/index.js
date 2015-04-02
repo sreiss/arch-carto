@@ -1,6 +1,6 @@
 'use strict';
-angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngRoute', 'ngMaterial', 'pascalprecht.translate', 'leaflet-directive', 'angularFileUpload', 'base64'])
-  .config(function ($translateProvider, $routeProvider, i18nfrFRConstant, i18nenUSConstant, $mdThemingProvider) {
+angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ui.router', 'ngMaterial', 'pascalprecht.translate', 'leaflet-directive', 'angularFileUpload', 'base64'])
+  .config(function ($translateProvider, $stateProvider, $urlRouterProvider, i18nfrFRConstant, i18nenUSConstant, $mdThemingProvider) {
     L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
 
     $mdThemingProvider.theme('default')
@@ -11,16 +11,45 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
       .primaryPalette('teal')
       .accentPalette('blue-grey');
 
-    $routeProvider
-      .when('/', {
-        templateUrl: 'app/main/main.html'
+    $stateProvider
+      .state('main', {
+        url: '/',
+        views: {
+          main: {
+            templateUrl: 'app/main/main.html'
+          }
+        }
       })
-      .when('/map', {
-        templateUrl: 'app/map/map.html'
+      .state('map', {
+        url: '/map',
+        views: {
+          main: {
+            template: '<arch-map></arch-map>'
+          },
+          'sideNav@': {
+            template: '<arch-side-nav-default></arch-side-nav-default>'
+          }
+        }
       })
-      .otherwise({
-        redirectTo: '/'
+      .state('map.poi', {
+        url: '/poi',
+        views: {
+          'sideNav@': {
+            template: '<arch-side-nav-poi></arch-side-nav-poi>'
+          }
+        }
+      })
+      .state('map.bug', {
+        url: '/bug',
+        views: {
+          'sideNav@': {
+            template: '<arch-side-nav-bug></arch-side-nav-bug>'
+          }
+        }
       });
+
+
+    $urlRouterProvider.otherwise('/');
 
     $translateProvider
       .translations('fr', i18nfrFRConstant)
