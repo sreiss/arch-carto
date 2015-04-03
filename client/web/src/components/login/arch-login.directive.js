@@ -10,7 +10,7 @@ angular.module('archCarto')
           // Check token in coockies.
           var token = $cookieStore.get('token');
 
-          if(!token)
+          if(!token || isExpired(token))
           {
             $scope.alreadyLogged = false;
             console.log('INIT : Not connected');
@@ -52,6 +52,20 @@ angular.module('archCarto')
             $scope.mapUrl = '/#/map';
           }
         }();
+
+        function isExpired(token)
+        {
+          var now = new Date();
+
+          if(now.getTime() > token.expired_at)
+          {
+            return true;
+          }
+          else
+          {
+            return false;
+          }
+        };
       }
     };
   });
