@@ -5,11 +5,13 @@ angular.module('archCarto')
       return {
         restrict: 'E',
         scope: {
-          backState: '='
+          backState: '@',
+          backText: '@'
         },
-        templateUrl: 'app/side-nav/arch-back-button.html',
-        link: function(scope, element, attributes) {
-          scope.backState = scope.backState || 'map';
+        templateUrl: 'app/utils/arch-back-button.html',
+        controller: function($scope) {
+          $scope.backState = $scope.backState || '';
+          $scope.backText = $scope.backText || 'BACK';
         }
       }
     }

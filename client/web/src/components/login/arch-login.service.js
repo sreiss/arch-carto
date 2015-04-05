@@ -1,6 +1,6 @@
 'use strict'
-angular.module('archCarto').factory('archLoginService', function(archHttpService, $q, httpConstant)
-{
+angular.module('archCarto')
+  .factory('archLoginService', function(archHttpService, $q, httpConstant) {
     var casUrl = httpConstant.casUrl + '/oauth/oauth';
 
     return {

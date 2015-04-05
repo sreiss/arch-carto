@@ -1,6 +1,10 @@
-html{
+// DO NOT REMOVE THE "//injector" AND "//endinjector" COMMENTS!
+// injector
+// endinjector
+
+/*html{
   font-family: "Titillium Web,​sans-serif";
-}
+}*/
 
 body {
   position: absolute;
@@ -8,16 +12,6 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
-}
-
-.dialog--m {
-  width: 600px;
-  margin-left: -300px;
-}
-
-.dialog--s {
-  width: 400px;
-  margin-left: -200px;
 }
 
 .upload-zone {
@@ -40,7 +34,8 @@ body {
 }
 
 .arch-section {
-  height: 600px;
+  background-size: cover;
+  height: 100%;
 }
 
 .arch-section.arch-section-full-width {
@@ -58,4 +53,19 @@ body {
   margin-left:5px;
 }
 
+.main-content {
+  position: relative;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
 
+.md-button {
+  text-transform: none;
+}
+
+.arch-side-nav .md-button {
+  text-align: left;
+  line-height: 40px;
+  padding: 0 16px 0 32px;
+}

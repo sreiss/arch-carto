@@ -1,8 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archParallax', [
-    '$window',
-    function($window) {
+  .directive('archParallax', function($window) {
       return {
         restrict: 'A',
         link: function(scope, element, attributes) {
@@ -23,5 +21,4 @@ angular.module('archCarto')
           windowElement.on('scroll', parallax);
         }
       };
-    }
-  ]);
+  });

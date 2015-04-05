@@ -43,6 +43,7 @@ angular.module('archCarto')
     PLEASE_DESCRIBE_THE_BUG_YOU_ENCOUNTERED: "Veuillez décrire le problème que vous avez rencontré.",
     YOU_MUST_DESCRIBE_THE_BUG: "Vous devez décrire votre bug pour le soumettre",
     BUG_REPORTED: "Bug reporté",
+    POINTS_OF_INTEREST: "Points d'intérêt",
     POINT_OF_INTEREST_ADDED: "Point d'intérêt ajouté",
     UPLOAD_A_GPX_TRACE: "Uploader une trace GPX",
     UPLOAD: "Upload",
@@ -52,5 +53,11 @@ angular.module('archCarto')
     LOCATION: "Lieu",
     PLEASE_PROVIDE_A_LOCATION: "Veuillez renseigner un lieu",
     PLEASE_START_TYPING_THE_NAME_OF_A_LOCATION_THEN_SELECT_IT: "Veuillez commencer à taper le nom d'un lieu puis le sélectionner.",
-    SET_MAP_CENTER: "Définir le centre de la carte"
+    SET_MAP_CENTER: "Définir le centre de la carte",
+    BACK: "Retour",
+    BUGS: "Bugs",
+    PATHS: "Chemins",
+    WELCOME: "Bienvenu",
+    ACCESS_MAP: "Accéder à la carte",
+    HOME: "Accueil"
   });

@@ -1,7 +1,8 @@
-<md-toolbar class="md-theme-indigo">
-  <h1 class="md-toolbar-tools">Sidenav Left</h1>
-</md-toolbar>
-<md-content class="md-padding">
-  <arch-back-to-map-button></arch-back-to-map-button>
-</md-content>
-
+<md-sidenav class="md-sidenav-left arch-side-nav" md-component-id="leftSideNav" md-is-locked-open="true" layout="column">
+  <md-toolbar class="md-theme-indigo">
+    <h1 class="md-toolbar-tools">{{'BUGS' | translate}}</h1>
+  </md-toolbar>
+  <md-content>
+    <arch-back-button back-state="map.home"></arch-back-button>
+  </md-content>
+</md-sidenav>

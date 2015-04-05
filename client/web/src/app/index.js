@@ -22,28 +22,42 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
       })
       .state('map', {
         url: '/map',
+        abstract: true,
         views: {
           main: {
-            template: '<arch-map></arch-map>'
-          },
-          'sideNav@': {
-            template: '<arch-side-nav-default></arch-side-nav-default>'
+            template: '<arch-map layout="column" layout-fill></arch-map>'
+          }
+        }
+      })
+      .state('map.home', {
+        url: '',
+        views: {
+          sideNavLeft: {
+            template: '<arch-map-side-nav-left></arch-map-side-nav-left>'
           }
         }
       })
       .state('map.poi', {
         url: '/poi',
         views: {
-          'sideNav@': {
-            template: '<arch-side-nav-poi></arch-side-nav-poi>'
+          sideNavLeft: {
+            template: '<arch-map-side-nav-poi-left></arch-map-side-nav-poi-left>'
           }
         }
       })
       .state('map.bug', {
         url: '/bug',
         views: {
-          'sideNav@': {
-            template: '<arch-side-nav-bug></arch-side-nav-bug>'
+          sideNavLeft: {
+            template: '<arch-map-side-nav-bug-left></arch-map-side-nav-bug-left>'
+          }
+        }
+      })
+      .state('map.path', {
+        url: '/path',
+        views: {
+          sideNavLeft: {
+            template: '<arch-map-side-nav-path-left></arch-map-side-nav-path-left>'
           }
         }
       });

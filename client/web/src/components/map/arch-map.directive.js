@@ -246,11 +246,13 @@ angular.module('archCarto')
                 }*/
             });
 
+            /*
             scope.$on('leafletDirectiveMap.load', function(event, args) {
               archMapDialogService.showCenterDialog()
                 .then(setCenter);
               //LxDialogService.open('chooseCenterDialog');
             });
+            */
 
             // endregion
 

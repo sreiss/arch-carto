@@ -1,14 +1,22 @@
-<md-toolbar class="md-theme-indigo">
-  <h1 class="md-toolbar-tools">Sidenav Left</h1>
-</md-toolbar>
-<md-content class="md-padding" layout="column">
-  <md-button ng-click="showPoiActions()">
-    {{'POINTS_OF_INTEREST' | translate}}
-  </md-button>
-  <md-button ui-sref="map.bug">
-    {{'BUGS' | translate}}
-  </md-button>
-  <md-button ui-sref="map.path">
-    {{'PATHS' | translate}}
-  </md-button>
-</md-content>
+<md-sidenav class="md-sidenav-left arch-side-nav" md-component-id="leftSideNav" md-is-locked-open="true" layout="column">
+  <md-toolbar class="md-theme-indigo">
+    <h1 class="md-toolbar-tools">{{'WELCOME' | translate}}</h1>
+  </md-toolbar>
+  <md-content layout="column">
+    <arch-back-button back-state="main" back-text="HOME"></arch-back-button>
+    <md-button class="md-primary" ui-sref="map.poi">
+      <span class="fa fa-heart"></span>
+      <span>
+        {{'POINTS_OF_INTEREST' | translate}}
+      </span>
+    </md-button>
+    <md-button class="md-primary" ui-sref="map.bug">
+      <span class="fa fa-bug"></span>
+      {{'BUGS' | translate}}
+    </md-button>
+    <md-button class="md-primary" ui-sref="map.path">
+      <span class="fa fa-location-arrow"></span>
+      {{'PATHS' | translate}}
+    </md-button>
+  </md-content>
+</md-sidenav>

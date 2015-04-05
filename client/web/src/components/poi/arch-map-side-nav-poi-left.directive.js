@@ -1,10 +1,10 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archSideNavPoiLeft', [
+  .directive('archMapSideNavPoiLeft', [
     function() {
       return {
         restrict: 'E',
-        templateUrl: 'components/poi/arch-side-nav-poi-left.html',
+        templateUrl: 'components/poi/arch-map-side-nav-poi-left.html',
         link: function(scope, element, attributes) {
 
         }
