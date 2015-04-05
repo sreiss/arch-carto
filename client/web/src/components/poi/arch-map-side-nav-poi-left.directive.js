@@ -1,13 +1,13 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archBackToMapButton', [
+  .directive('archSideNavPoiLeft', [
     function() {
       return {
         restrict: 'E',
-        templateUrl: 'app/side-nav/arch-back-to-map-button.html',
+        templateUrl: 'components/poi/arch-side-nav-poi-left.html',
         link: function(scope, element, attributes) {
 
         }
-      }
+      };
     }
   ]);
