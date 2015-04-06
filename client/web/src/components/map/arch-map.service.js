@@ -7,6 +7,7 @@ angular.module('archCarto')
           archLayerService.addLayer('poi'),
           archLayerService.addLayer('bug'),
           archLayerService.addLayer('pathDrawer'),
+          archLayerService.addLayer('selectedCoordinates'),
         ]).then(function (layers) {
           archMarkerService.addMarkerType('poi', {
             icon: {
@@ -28,6 +29,12 @@ angular.module('archCarto')
               markerColor: 'red'
             }
           });
+          archMarkerService.addMarkerType('selectedCoordinates', {
+            icon: {
+              type: 'awesomeMarker',
+              markerColor: 'yellow'
+            }
+          });
           return archLayerService.getLayers()
         });
       },
@@ -38,8 +45,9 @@ angular.module('archCarto')
         $q.all([
           archPoiService.getPoiList(),
           archBugService.getBugList(),
+
         ]).then(function(entitiesArray) {
-          var types = ['poi', 'bug']
+          var types = ['poi', 'bug', 'selectedCoordinates'];
           for (var i = 0; i < entitiesArray.length; i += 1) {
             archMarkerService.addEntities(types[i], entitiesArray[i])
               .then(function(markers) {

@@ -138,6 +138,31 @@ angular.module('archCarto')
         deferred.resolve(_markers[markerType]);
 
         return deferred.promise;
+      },
+      removeMarkers: function(markerType) {
+        var deferred = $q.defer();
+
+        if (!angular.isDefined(_markers[markerType])) {
+          deferred.reject(new Error("The given marker type " + markerType + " doesn't exist."));
+        } else {
+          delete _markers[markerType];
+          deferred.resolve(angular.isDefined(_markers[markerType]));
+        }
+
+        return deferred.promise;
+      },
+      popMarker: function(markerType) {
+        var deferred = $q.defer();
+
+        if (!angular.isDefined(_markers[markerType])) {
+          deferred.reject(new Error("The given marker type " + markerType + " doesn't exist."));
+        } if (_markers[markerType].length == 0) {
+          deferred.reject(new Error("The given marker type exists, but no markers where found."));
+        } else {
+          deferred.resolve(_markers[markerType].pop());
+        }
+
+        return deferred.promise;
       }
     }
   });

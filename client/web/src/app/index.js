@@ -37,6 +37,17 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
           }
         }
       })
+      .state('map.center', {
+        url: '/center',
+        views: {
+          sideNavLeft: {
+            template: '<arch-map-side-nav-center-left></arch-map-side-nav-center-left>'
+          },
+          sideNavRight: {
+            template: '<arch-map-side-nav-center-right></arch-map-side-nav-center-right>'
+          }
+        }
+      })
       .state('map.poi', {
         url: '/poi',
         views: {

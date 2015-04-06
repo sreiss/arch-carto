@@ -112,10 +112,10 @@ angular.module('archCarto')
           return leafletData.getMap('arch-map');
         };
 
-        this.refreshMarkers = function() {
+        var refreshMarkers = this.refreshMarkers = function() {
           archMapService.refreshMarkers()
             .then(function(markers) {
-              angular.extend(scope.markers, markers);
+              angular.extend($scope.markers, markers);
             });
           /*  archMapService.refreshMarkers(markerTypes[i])
            .then(function(markers) {
@@ -125,6 +125,29 @@ angular.module('archCarto')
            .then(function (map) {
            console.log(map.getBounds());
            });*/
+        };
+
+        $scope.$on('leafletDirectiveMap.load', function(event, args) {
+          refreshMarkers();
+          /*archMapDialogService.showCenterDialog()
+           .then(setCenter);*/
+          //LxDialogService.open('chooseCenterDialog');
+        });
+
+        $scope.openLeft = function() {
+          $mdSidenav('leftSideNav').open();
+        };
+
+        $scope.openRight = function() {
+          $mdSidenav('rightSideNav').open();
+        };
+
+        $scope.closeLeft = function() {
+          $mdSidenav('leftSideNav').close();
+        };
+
+        $scope.closeRight = function () {
+          $mdSidenav('rightSideNav').close();
         };
       },
       link: function(scope, element, attributes) {
@@ -208,7 +231,10 @@ angular.module('archCarto')
 
               scope.mapStatus.clicked = true;
 
-
+              archMarkerService.addEntity('selectedCoordinates', {
+                _id: '-1',
+                coordinates: scope.mapStatus.selectedCoordinates
+              });
 
 
 
@@ -266,13 +292,6 @@ angular.module('archCarto')
                 }*/
             });
 
-            /*
-            scope.$on('leafletDirectiveMap.load', function(event, args) {
-              archMapDialogService.showCenterDialog()
-                .then(setCenter);
-              //LxDialogService.open('chooseCenterDialog');
-            });
-            */
 
             // endregion
 

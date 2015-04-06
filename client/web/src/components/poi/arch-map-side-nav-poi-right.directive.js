@@ -9,16 +9,6 @@ angular.module('archCarto')
         scope.close = function() {
           $mdSidenav('rightSideNav').close();
         };
-
-        scope.savePoi = function() {
-          archPoiService.savePoi(scope.poi)
-            .then(function() {
-              archMap.refreshMarkers();
-              $translate(['POINT_OF_INTEREST_ADDED']).then(function(translations) {
-                $mdToast.show($mdToast.simple().content(translations.POINT_OF_INTEREST_ADDED));
-              });
-            });
-        };
       }
     }
   });
