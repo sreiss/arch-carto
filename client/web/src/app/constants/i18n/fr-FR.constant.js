@@ -59,5 +59,6 @@ angular.module('archCarto')
     PATHS: "Chemins",
     WELCOME: "Bienvenu",
     ACCESS_MAP: "Accéder à la carte",
-    HOME: "Accueil"
+    HOME: "Accueil",
+    CLICK_ON_THE_MAP_TO_START: "Cliquez sur la carte pour commencer."
   });

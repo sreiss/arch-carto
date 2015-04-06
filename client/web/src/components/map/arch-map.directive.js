@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav) {
+  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav) {
     return {
       restrict: 'E',
       templateUrl: 'components/map/arch-map.html',
@@ -22,6 +22,13 @@ angular.module('archCarto')
         $scope.cursor = {
           lat: 49.08655299999999,
           lng: 7.483997999999929
+        };
+        $scope.mapStatus = {
+          selectedCoordinates: null,
+          clicked: false
+        };
+        $scope.actions = {
+          addPoi: false
         };
 
         leafletData.getMap('arch-map')
@@ -100,6 +107,25 @@ angular.module('archCarto')
               //map.addLayer(service);
             });
           });
+
+        this.getMap = function() {
+          return leafletData.getMap('arch-map');
+        };
+
+        this.refreshMarkers = function() {
+          archMapService.refreshMarkers()
+            .then(function(markers) {
+              angular.extend(scope.markers, markers);
+            });
+          /*  archMapService.refreshMarkers(markerTypes[i])
+           .then(function(markers) {
+           angular.extend($scope.markers, markers);
+           });
+           leafletData.getMap('arch-map')
+           .then(function (map) {
+           console.log(map.getBounds());
+           });*/
+        };
       },
       link: function(scope, element, attributes) {
         archMapService.init()
@@ -108,20 +134,7 @@ angular.module('archCarto')
 
             var pathDrawer = scope.pathDrawer = archPathService.getPathDrawer();
 
-            var refreshMarkers = function() {
-              archMapService.refreshMarkers()
-                .then(function(markers) {
-                  angular.extend(scope.markers, markers);
-                });
-              /*  archMapService.refreshMarkers(markerTypes[i])
-               .then(function(markers) {
-               angular.extend($scope.markers, markers);
-               });
-               leafletData.getMap('arch-map')
-               .then(function (map) {
-               console.log(map.getBounds());
-               });*/
-            };
+            var refreshMarkers = scope.refreshMarkers;
 
             //archGpxService.getGpxUploader()
             //  .then(function(gpxUploader) {
@@ -188,12 +201,19 @@ angular.module('archCarto')
             });
 
             scope.$on('leafletDirectiveMap.click', function(event, args) {
-              var selectedCoordinates = {
+              scope.mapStatus.selectedCoordinates = {
                 latitude: args.leafletEvent.latlng.lat,
                 longitude: args.leafletEvent.latlng.lng
               };
 
-              $mdSidenav('sideNavLeft').toggle();
+              scope.mapStatus.clicked = true;
+
+
+
+
+
+
+              //$mdSidenav('sideNavLeft').toggle();
 
               /*if (scope.pathDrawer.enabled) {
                 archPathService.addPoint(selectedCoordinates)

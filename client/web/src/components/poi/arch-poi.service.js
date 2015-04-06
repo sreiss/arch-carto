@@ -7,7 +7,7 @@ angular.module('archCarto')
       getPoiList: function() {
         return archHttpService.get(poiUrl);
       },
-      savePoi: function(poi, success) {
+      savePoi: function(poi) {
         return archHttpService.post(poiUrl, poi);
       }
     };

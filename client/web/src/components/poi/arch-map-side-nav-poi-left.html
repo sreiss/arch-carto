@@ -1,8 +1,15 @@
-<md-sidenav class="md-sidenav-left arch-side-nav" md-component-id="leftSideNav" md-is-locked-open="true">
-  <md-toolbar class="md-theme-indigo">
-      <h1 class="md-toolbar-tools">{{'POINTS_OF_INTEREST' | translate}}</h1>
-  </md-toolbar>
-  <md-content class="md-theme-default">
-    <arch-back-button back-state="map.home" layout-fill></arch-back-button>
+<md-toolbar class="md-theme-indigo">
+    <h1 class="md-toolbar-tools">{{'POINTS_OF_INTEREST' | translate}}</h1>
+</md-toolbar>
+<md-content class="md-theme-default" layout="column">
+  <arch-back-button back-state="map.home" layout-fill></arch-back-button>
+  <md-content class="md-theme-default md-padding">
+    {{'CLICK_ON_THE_MAP_TO_START' | translate}}
   </md-content>
-</md-sidenav>
+  <md-content class="md-theme-default" ng-show="mapStatus.clicked">
+    <md-button class="md-primary" ng-click="doAction('addPoi')" layout-fill>
+      <span class="fa fa-plus-circle"></span>
+      {{'ADD_A_POINT_OF_INTEREST' | translate}}
+    </md-button>
+  </md-content>
+</md-content>

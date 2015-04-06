@@ -1,6 +1,6 @@
   <!--<arch-tip message="{{'CLICK_ON_THE_MAP_TO_START_AN_ACTIVITY' | translate}}"></arch-tip>-->
   <section layout="row" flex>
-    <ui-view name="sideNavLeft"></ui-view>
+    <md-sidenav class="md-sidenav-left arch-side-nav md-whiteframe-z2" md-component-id="leftSideNav" md-is-locked-open="true" layout="column" ui-view="sideNavLeft"></md-sidenav>
     <div layout="column" flex>
       <md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>
         <div class="md-toolbar-tools">
@@ -30,7 +30,7 @@
       </md-toolbar>
       <div leaflet id="arch-map" center="center" markers="markers" layers="layers" paths="paths" ng-class="{'is-drawing-path': pathDrawer.enabled}" layout="column" flex></div>
     </div>
-    <ui-view name="sideNavRight"></ui-view>
+    <md-sidenav class="md-sidenav-right arch-side-nav-right arch-side-nav-large" md-component-id="rightSideNav" ui-view="sideNavRight"></md-sidenav>
   </section>
 
 
