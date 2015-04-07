@@ -5,7 +5,7 @@ angular.module('archCarto')
       overlays: {}
     };
 
-    var toggleLayer = function(layers, action) {
+    var toggleLayers = function(layers, action) {
       for (var layerType in _layers) {
         var layersForType = _layers[layerType];
         for (var layerIndex in layers) {
@@ -45,10 +45,13 @@ angular.module('archCarto')
         return _layers;
       },
       hideLayers: function(layers) {
-        toggleLayer(layers, 'hide');
+        toggleLayers(layers, 'hide');
       },
       showLayers: function(layers) {
-        toggleLayer(layers);
+        toggleLayers(layers);
+      },
+      setActiveLayers: function(layers) {
+        toggleLayers([]);
       }
     }
   });

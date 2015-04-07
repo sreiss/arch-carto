@@ -4,5 +4,13 @@
   </md-toolbar>
   <md-content>
     <arch-back-button back-state="map.home"></arch-back-button>
+    <md-content class="md-padding" ng-if="!mapStatus.selectedCoordinates">
+      {{'CLICK_ON_THE_MAP_TO_REVEAL_COORDINATE_ACTIONS' | translate}}
+    </md-content>
+    <div ng-if="mapStatus.selectedCoordinates">
+      <md-button class="md-primary" ng-click="setAction('report')" layout-fill>
+        {{'REPORT_A_BUG' | translate}}
+      </md-button>
+    </div>
   </md-content>
 </md-sidenav>

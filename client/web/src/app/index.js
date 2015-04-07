@@ -33,7 +33,7 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
         url: '',
         views: {
           sideNavLeft: {
-            template: '<arch-map-side-nav-left map-status="mapStatus"></arch-map-side-nav-left>'
+            template: '<arch-map-side-nav-left></arch-map-side-nav-left>'
           }
         }
       })
@@ -52,10 +52,10 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
         url: '/poi',
         views: {
           sideNavLeft: {
-            template: '<arch-map-side-nav-poi-left map-status="mapStatus"></arch-map-side-nav-poi-left>'
+            template: '<arch-map-side-nav-poi-left></arch-map-side-nav-poi-left>'
           },
           sideNavRight: {
-            template: '<arch-map-side-nav-poi-right map-status="mapStatus"></arch-map-side-nav-poi-right>'
+            template: '<arch-map-side-nav-poi-right></arch-map-side-nav-poi-right>'
           }
         }
       })
@@ -63,7 +63,10 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
         url: '/bug',
         views: {
           sideNavLeft: {
-            template: '<arch-map-side-nav-bug-left map-status="mapStatus"></arch-map-side-nav-bug-left>'
+            template: '<arch-map-side-nav-bug-left></arch-map-side-nav-bug-left>'
+          },
+          sideNavRight: {
+            template: '<arch-map-side-nav-bug-right></arch-map-side-nav-bug-right>'
           }
         }
       })
@@ -71,7 +74,7 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
         url: '/path',
         views: {
           sideNavLeft: {
-            template: '<arch-map-side-nav-path-left map-status="mapStatus"></arch-map-side-nav-path-left>'
+            template: '<arch-map-side-nav-path-left></arch-map-side-nav-path-left>'
           }
         }
       });

@@ -27,9 +27,7 @@ angular.module('archCarto')
           selectedCoordinates: null,
           clicked: false
         };
-        $scope.actions = {
-          addPoi: false
-        };
+        $scope.actions = {};
 
         leafletData.getMap('arch-map')
           .then(function(map) {
@@ -112,6 +110,49 @@ angular.module('archCarto')
           return leafletData.getMap('arch-map');
         };
 
+        this.setCenter = function(coordinates) {
+          $scope.center.lat = coordinates.latitude;
+          $scope.center.lng = coordinates.longitude;
+        };
+
+        // region action api
+
+        var hasAction = false;
+
+        $scope.addActions = function(actions) {
+          for(var i = 0; i < actions.length; i += 1) {
+            $scope.actions[actions[i]] = false;
+          }
+        };
+
+        $scope.setAction = function(actionName) {
+          for (var action in $scope.actions) {
+            $scope.actions[action] = false
+          }
+          if (angular.isDefined($scope.actions[actionName])) {
+            if ($scope.actions[actionName]) {
+              $scope.toggleRight();
+            } else {
+              if (!hasAction) {
+                $scope.openRight();
+              } else {
+                $scope.closeRight();
+              }
+            }
+            $scope.actions[actionName] = true;
+            var hasAction = true;
+          } else {
+            $scope.closeRight();
+            var hasAction = false;
+          }
+        };
+
+        $scope.hasAction = function() {
+          return hasAction;
+        };
+
+        // endregion
+
         var refreshMarkers = this.refreshMarkers = function() {
           archMapService.refreshMarkers()
             .then(function(markers) {
@@ -149,6 +190,14 @@ angular.module('archCarto')
         $scope.closeRight = function () {
           $mdSidenav('rightSideNav').close();
         };
+
+        $scope.toggleRight = function() {
+          $mdSidenav('rightSideNav').toggle();
+        };
+
+        $scope.toggleLeft = function() {
+          $mdSidenav('leftSideNav').toggle();
+        };
       },
       link: function(scope, element, attributes) {
         archMapService.init()
@@ -179,11 +228,6 @@ angular.module('archCarto')
             //      ).addTo(map);
             //      });
             //  });
-
-            var setCenter = function(coordinates) {
-              scope.center.lat = coordinates.latitude;
-              scope.center.lng = coordinates.longitude;
-            };
 
             scope.pathDrawn = function() {
               return archPathService.pathDrawn();

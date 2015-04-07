@@ -15,8 +15,11 @@ angular.module('archCarto')
             .then(function(map) {
               debugger;
             });*/
+          scope.addActions([
+            'addPoi'
+          ]);
 
-          scope.doAction = function(name) {
+          /*scope.doAction = function(name) {
             for (var action in scope.actions) {
               scope.actions[action] = false
             }
@@ -26,7 +29,7 @@ angular.module('archCarto')
               scope.actions[name] = true;
               $mdSidenav('rightSideNav').toggle();
             }
-          };
+          };*/
         }
       };
     }

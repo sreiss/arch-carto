@@ -6,7 +6,9 @@ angular.module('archCarto')
         restrict: 'E',
         templateUrl: 'components/bug/arch-map-side-nav-bug-left.html',
         link: function(scope, element, attributes) {
-
+          scope.addActions([
+            'report'
+          ]);
         }
       };
     }

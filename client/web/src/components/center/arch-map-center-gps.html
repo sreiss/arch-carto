@@ -7,7 +7,7 @@
     <div layout="column">
       <md-input-container flex>
         <label>{{'LATITUDE' | translate}}</label>
-        <input type="number" ng-model="center.latitude" name="latitude" min="-90" max="90" required />
+        <input type="number" ng-model="center.lat" name="latitude" min="-90" max="90" required />
         <div ng-messages="chooseCenterForm.latitude.$error" ng-if="chooseCenterForm.latitude.$dirty">
           <div ng-message="number">{{'MUST_BE_A_NUMBER' | translate}}</div>
           <div ng-message="required">{{'PLEASE_PROVIDE_A_LATITUDE' | translate}}</div>
@@ -17,7 +17,7 @@
       </md-input-container>
       <md-input-container flex>
         <label>{{'LONGITUDE' | translate}}</label>
-        <input type="number" ng-model="center.longitude" name="longitude" min="-180" max="180" required />
+        <input type="number" ng-model="center.lng" name="longitude" min="-180" max="180" required />
         <div ng-messages="chooseCenterForm.longitude.$error" ng-if="chooseCenterForm.longitude.$dirty">
           <div ng-message="number">{{'MUST_BE_A_NUMBER' | translate}}</div>
           <div ng-message="required">{{'PLEASE_PROVIDE_A_LONGITUDE' | translate}}</div>
@@ -30,7 +30,7 @@
   <md-button ng-click="closeRight()">
     {{'CANCEL' | translate}}
   </md-button>
-  <md-button ng-click="chooseCenter(center)" class="md-primary" ng-disabled="chooseCenterForm.$invalid || !hasCenter()">
+  <md-button ng-click="chooseCenter(center)" class="md-primary" ng-disabled="chooseCenterForm.$invalid">
     {{'CHOOSE' | translate}}
   </md-button>
 </md-content>

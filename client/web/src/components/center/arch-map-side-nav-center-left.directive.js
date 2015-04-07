@@ -5,7 +5,10 @@ angular.module('archCarto')
       restrict: 'E',
       templateUrl: 'components/center/arch-map-side-nav-center-left.html',
       link: function(scope, element, attributes) {
-
+        scope.addActions([
+          'gps',
+          'location'
+        ]);
       }
     }
   });

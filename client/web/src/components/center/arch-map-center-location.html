@@ -1,0 +1,24 @@
+<md-toolbar>
+  <h1 class="md-toolbar-tools">{{'BY_GPS' | translate}}</h1>
+</md-toolbar>
+<md-content class="md-padding">
+  <ng-form name="chooseCenterForm">
+    <div layout="column" style="min-height: 310px;">
+      <p>{{'PLEASE_START_TYPING_THE_NAME_OF_A_LOCATION_THEN_SELECT_IT' | translate}}</p>
+      <div layout layout-sm="column">
+        <md-autocomplete md-selected-item="location.selected" md-search-text="location.search" md-items="item in getMatchLocations(location.search)" md-item-text="item.display_name" md-selected-item-change="extractCenter(item)" md-delay="2000" flex>
+          <span md-highlight-text="location.search">{{item.display_name}}</span>
+        </md-autocomplete>
+        <div ng-messages="chooseCenterForm.location.$error" ng-if="chooseCenterForm.location.$dirty">
+          <div ng-message="required">{{'PLEASE_PROVIDE_A_LOCATION' | translate}}</div>
+        </div>
+      </div>
+    </div>
+  </ng-form>
+  <md-button ng-click="closeRight()">
+    {{'CANCEL' | translate}}
+  </md-button>
+  <md-button ng-click="chooseCenter(center)" class="md-primary" ng-disabled="chooseCenterForm.$invalid">
+    {{'CHOOSE' | translate}}
+  </md-button>
+</md-content>
