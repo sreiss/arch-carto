@@ -1,22 +1,33 @@
-<div>
-  <form class="form-horizontal"
-        name="uploadForm" role="form" enctype="multipart/form-data"
-        novalidate>
+<md-toolbar class="md-theme-indigo">
+  <h1 class="md-toolbar-tools">{{'POINTS_OF_INTEREST' | translate}}</h1>
+</md-toolbar>
+<md-content class="md-theme-default" layout="column">
+  <arch-back-button back-state="map.home" layout-fill></arch-back-button>
+  <md-content class="md-theme-default md-padding">
 
-    <div style="text-align:center">
-      <field label="Schema File">
-        <input type="file"
-               nv-file-select
-               class="btn btn-group btn-input clearfix"
-               uploader="uploader"/>
-      </field>
-    </div>
+    <div>
+      <form class="form-horizontal"
+            name="uploadForm" role="form" enctype="multipart/form-data"
+            novalidate>
 
-    <div class="alert alert-danger" ng-show="uploadError!=null">{{uploadError}}</div>
-    <div class="col-xs-12">
-      <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-      <button class="btn btn-primary" ng-click="upload()"
-              ng-disabled="uploadForm.$invalid">Upload</button>
+        <div style="text-align:center">
+          <field label="Schema File">
+            <input type="file"
+                   nv-file-select
+                   class="btn btn-group btn-input clearfix"
+                   uploader="uploader"/>
+          </field>
+        </div>
+
+        <div class="alert alert-danger" ng-show="uploadError!=null">{{uploadError}}</div>
+        <div class="col-xs-12">
+          <md-button class="md-primary" ng-click="cancel()">Cancel</md-button>button>
+          <md-button class="md-primary" ng-click="upload()"
+                  ng-disabled="uploadForm.$invalid">Upload</md-button>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
+  </md-content>
+</md-content>
+
+
