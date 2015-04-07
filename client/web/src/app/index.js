@@ -74,6 +74,14 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
             template: '<arch-map-side-nav-path-left map-status="mapStatus"></arch-map-side-nav-path-left>'
           }
         }
+      })
+      .state('map.gpx', {
+        url: '/path',
+        views: {
+          sideNavLeft: {
+            template: '<arch-gpx-upload-form></arch-gpx-upload-form>'
+          }
+        }
       });
 
 
