@@ -7,7 +7,8 @@ angular.module('archCarto')
       templateUrl: 'components/bug/arch-map-bug-report.html',
       link: function(scope, element, attributes, archMap) {
         scope.bug = {
-          coordinates: scope.mapStatus.selectedCoordinates
+          coordinates: scope.mapStatus.selectedCoordinates,
+          status: 'unsolved'
         };
 
         scope.reportBug = function(bug) {

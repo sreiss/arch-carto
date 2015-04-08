@@ -19,16 +19,30 @@ module.exports = function(Bug) {
             var deferred = Q.defer();
             options = options || {};
 
-            var bug = new Bug();
-            bug.description = rawBug.description;
-            bug.coordinates = rawBug.coordinates;
-            bug.save(function(err) {
-               if (err) {
-                   deferred.reject(err);
-               } else {
-                   deferred.resolve(bug);
-               }
-            });
+            // TODO: Validation, to check the id exists!
+            if (rawBug._id) {
+                var id = rawBug._id;
+                delete rawBug._id;
+                Bug.findByIdAndUpdate(id, rawBug, function(err, bug) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(bug);
+                    }
+                });
+            } else {
+                var bug = new Bug();
+                bug.description = rawBug.description;
+                bug.coordinates = rawBug.coordinates;
+                bug.status = rawBug.status;
+                bug.save(function (err) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(bug);
+                    }
+                });
+            }
 
             return deferred.promise;
         }

@@ -1,0 +1,13 @@
+<span layout="row">
+  <md-button class="md-primary" ng-click="dropdown()" flex>
+    {{title}}
+    <span class="fa fa-angle-down drop-icon" arch-rotate="{{rotationAngle}}">
+    </span>
+  </md-button>
+  <md-button ng-click="splitFn()" flex ng-if="splitTitle">
+    {{splitTitle}}
+  </md-button>
+</span>
+<md-content class="md-padding" ng-if="dropped">
+  <ng-transclude></ng-transclude>
+</md-content>

@@ -6,7 +6,8 @@ module.exports = function(Types) {
             coordinates: {
                 latitude: {type: Number, required: true},
                 longitude: {type: Number, required: true}
-            }
+            },
+            status: {type: String, require: true}
         }
     };
 

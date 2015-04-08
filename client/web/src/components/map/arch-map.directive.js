@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav) {
+  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav, archRolesService) {
     return {
       restrict: 'E',
       templateUrl: 'components/map/arch-map.html',

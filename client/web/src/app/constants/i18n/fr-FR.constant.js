@@ -61,5 +61,7 @@ angular.module('archCarto')
     ACCESS_MAP: "Accéder à la carte",
     HOME: "Accueil",
     CLICK_ON_THE_MAP_TO_START: "Cliquez sur la carte pour commencer.",
-    CLICK_ON_THE_MAP_TO_REVEAL_COORDINATE_ACTIONS: "Cliquez sur la carte pour afficher les actions liées."
+    CLICK_ON_THE_MAP_TO_REVEAL_COORDINATE_ACTIONS: "Cliquez sur la carte pour afficher les actions liées.",
+    BUG_LIST: "Liste de bugs",
+    NO_BUG_REPORTED: "Aucun bug signalé"
   });
