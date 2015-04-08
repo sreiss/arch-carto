@@ -43,6 +43,10 @@ angular.module('archCarto')
             });
             map.addControl(drawControl);
 
+            scope.removePathControl = function() {
+              map.removeControl(drawControl);
+            };
+
             map.on('draw:created', function(e) {
               var type = e.layerType,
                 layer = e.layer;
