@@ -44,8 +44,7 @@ angular.module('archCarto')
 
         $q.all([
           archPoiService.getPoiList(),
-          archBugService.getBugList(),
-
+          archBugService.getBugList({status: 'unsolved'})
         ]).then(function(entitiesArray) {
           var types = ['poi', 'bug', 'selectedCoordinates'];
           for (var i = 0; i < entitiesArray.length; i += 1) {

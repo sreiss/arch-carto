@@ -4,8 +4,8 @@ angular.module('archCarto')
     var bugUrl = httpConstant.apiUrl + '/map/bug';
 
     return {
-      getBugList: function () {
-        return archHttpService.get(bugUrl);
+      getBugList: function (params) {
+        return archHttpService.get(bugUrl, {params: params});
       },
       saveBug: function (bug) {
         return archHttpService.post(bugUrl, bug);

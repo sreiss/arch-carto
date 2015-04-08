@@ -7,11 +7,13 @@ angular.module('archCarto')
       scope: {
         title: '=',
         splitTitle: '@',
-        splitFn: '&'
+        splitFn: '&',
+        showSplit: '='
       },
       templateUrl: 'app/utils/arch-content-dropdown.html',
       link: function(scope, element, attributes) {
-        var dropIcon = element.find('.drop-icon');
+        var dropIcon = element.find('.arch-drop-icon');
+        scope.showSplit = true;
         scope.rotationAngle = 0;
         scope.dropped = false;
         scope.dropdown = function() {

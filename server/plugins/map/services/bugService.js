@@ -6,7 +6,7 @@ module.exports = function(Bug) {
         getBugList: function(options) {
             var deferred = Q.defer();
             options = options || {};
-            Bug.find(function(err, bugs) {
+            Bug.find(options, function(err, bugs) {
                 if (err) {
                     deferred.reject(err);
                 } else {

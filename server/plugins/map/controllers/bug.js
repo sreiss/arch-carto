@@ -2,7 +2,7 @@ module.exports = function(bugService) {
 
     return {
         getBugList: function(req, res) {
-            bugService.getBugList()
+            bugService.getBugList(req.query)
                 .then(function(bugList) {
                     res.json(bugList);
                 })

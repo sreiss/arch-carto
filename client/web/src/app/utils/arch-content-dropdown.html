@@ -1,10 +1,10 @@
 <span layout="row">
-  <md-button class="md-primary" ng-click="dropdown()" flex>
-    {{title}}
-    <span class="fa fa-angle-down drop-icon" arch-rotate="{{rotationAngle}}">
+  <md-button class="md-primary arch-content-dropdow-button" ng-click="dropdown()" flex>
+    <span flex>{{title}}</span>
+    <span class="fa fa-angle-down arch-drop-icon" arch-rotate="{{rotationAngle}}">
     </span>
   </md-button>
-  <md-button ng-click="splitFn()" flex ng-if="splitTitle">
+  <md-button class="arch-content-dropdow-split-button" ng-click="splitFn()" flex ng-if="showSplit">
     {{splitTitle}}
   </md-button>
 </span>
