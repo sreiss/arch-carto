@@ -32,7 +32,7 @@ angular.module('archCarto')
           archMarkerService.addMarkerType('selectedCoordinates', {
             icon: {
               type: 'awesomeMarker',
-              markerColor: 'yellow'
+              markerColor: 'green'
             }
           });
           return archLayerService.getLayers()
@@ -46,7 +46,7 @@ angular.module('archCarto')
           archPoiService.getPoiList(),
           archBugService.getBugList({status: 'unsolved'})
         ]).then(function(entitiesArray) {
-          var types = ['poi', 'bug', 'selectedCoordinates'];
+          var types = ['poi', 'bug'];
           for (var i = 0; i < entitiesArray.length; i += 1) {
             archMarkerService.addEntities(types[i], entitiesArray[i])
               .then(function(markers) {

@@ -306,10 +306,13 @@ angular.module('archCarto')
 
               scope.mapStatus.clicked = true;
 
-              archMarkerService.addEntity('selectedCoordinates', {
-                _id: '-1',
-                coordinates: scope.mapStatus.selectedCoordinates
-              });
+              archMarkerService.removeMarkers('selectedCoordinates')
+                .then(function() {
+                  archMarkerService.addEntity('selectedCoordinates', {
+                    _id: '-1',
+                    coordinates: scope.mapStatus.selectedCoordinates
+                  });
+                });
             });
 
             // endregion

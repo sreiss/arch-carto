@@ -145,7 +145,7 @@ angular.module('archCarto')
         if (!angular.isDefined(_markers[markerType])) {
           deferred.reject(new Error("The given marker type " + markerType + " doesn't exist."));
         } else {
-          delete _markers[markerType];
+          _markers[markerType] = {};
           deferred.resolve(angular.isDefined(_markers[markerType]));
         }
 
