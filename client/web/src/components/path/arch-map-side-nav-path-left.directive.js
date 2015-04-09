@@ -1,12 +1,13 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMapSideNavPathLeft', function() {
+  .directive('archMapSideNavPathLeft', function(leafletData) {
     return {
       restrict: 'E',
       require: '^archMap',
       templateUrl: 'components/path/arch-map-side-nav-path-left.html',
       link: function(scope, element, attributes, archMap) {
-        archMap.getMap()
+
+        /*archMap.getMap()
           .then(function(map) {
             // Initialise the FeatureGroup to store editable layers
             var drawnItems = new L.FeatureGroup();
@@ -57,7 +58,7 @@ angular.module('archCarto')
 
               drawnItems.addLayer(layer);
             });
-          });
+          });*/
       }
     }
   });

@@ -5,23 +5,53 @@ angular.module('archCarto')
       restrict: 'E',
       templateUrl: 'components/map/arch-map.html',
       controller: function($scope) {
-        $scope.center = {
-          lat: 49.08655299999999,
-          lng: 7.483997999999929,
-          zoom: 12
-        };
-        $scope.layers = {
+        angular.extend($scope, {
+          center: {
+            lat: 49.08655299999999,
+            lng: 7.483997999999929,
+            zoom: 12
+          },
+          layers: {
 
-        };
-        $scope.markers = {
+          },
+          markers: {
 
-        };
-        $scope.paths = {
+          },
+          paths: {
 
-        };
+          },
+          controls: {
+            draw: {
+
+            },
+            Elevation: {
+              position: "topleft",
+              theme: "steelblue-theme",
+              width: 600,
+              height: 125,
+              margins: {
+                top: 10,
+                right: 20,
+                bottom: 30,
+                left: 50
+              },
+              collapsed: true
+            }
+          }
+        });
+
+        leafletData.getMap().then(function(map) {
+          var drawnItems = $scope.controls.edit.featureGroup;
+          map.on('draw:created', function (e) {
+            var layer = e.layer;
+            drawnItems.addLayer(layer);
+            console.log(JSON.stringify(layer.toGeoJSON()));
+          });
+        });
+
         $scope.cursor = {
-          lat: 49.08655299999999,
-          lng: 7.483997999999929
+            lat: 49.08655299999999,
+            lng: 7.483997999999929
         };
         $scope.mapStatus = {
           selectedCoordinates: null,
@@ -29,7 +59,7 @@ angular.module('archCarto')
         };
         $scope.actions = {};
 
-        leafletData.getMap('arch-map')
+        leafletData.getMap()
           .then(function(map) {
             map.addLayer($window.MQ.mapLayer());
             //var gpx = ; // URL to your GPX file or the GPX itself
@@ -38,6 +68,7 @@ angular.module('archCarto')
             //  map.fitBounds(e.target.getBounds());
             //}).addTo(map);
           });
+        /*
         archGpxService.getGpxUploader()
           .then(function(gpxUploader) {
             //$scope.gpxUploader = gpxUploader;
@@ -104,7 +135,7 @@ angular.module('archCarto')
 
               //map.addLayer(service);
             });
-          });
+          });*/
 
         this.getMap = function() {
           return leafletData.getMap('arch-map');
@@ -279,63 +310,7 @@ angular.module('archCarto')
                 _id: '-1',
                 coordinates: scope.mapStatus.selectedCoordinates
               });
-
-
-
-
-              //$mdSidenav('sideNavLeft').toggle();
-
-              /*if (scope.pathDrawer.enabled) {
-                archPathService.addPoint(selectedCoordinates)
-                  .then(function(marker) {
-                    scope.markers[marker._id] = marker;
-                  });
-              } else {
-                archMapDialogService.showActionDialog()
-                  .then(function(action) {
-                    if (action == 'poi') {
-                      archMapDialogService.showPoiDialog(selectedCoordinates)
-                        .then(archPoiService.savePoi)
-                        .then(function() {
-                          refreshMarkers();
-                          $translate(['POINT_OF_INTEREST_ADDED']).then(function(translations) {
-                            $mdToast.show($mdToast.simple().content(translations.POINT_OF_INTEREST_ADDED));
-                          });
-                        });
-                    } else if (action == 'bug') {
-                      archMapDialogService.showBugDialog(selectedCoordinates)
-                        .then(archBugService.saveBug)
-                        .then(function() {
-                          refreshMarkers();
-                          $translate(['BUG_REPORTED']).then(function(translations) {
-                            $mdToast.show($mdToast.simple().content(translations.BUG_REPORTED));
-                          });
-                        });
-                    } else if (action == 'gpx') {
-                      archMapDialogService.showGpxDialog()
-                        .then(archGpxService.saveGpx)
-                        .then(function() {
-                          refreshPaths();
-                          $translate(['GPX_UPLOADED']).then(function(translations) {
-                            $mdToast.show($mdToast.simple().content(translations.GPX_UPLOADED));
-                          });
-                        });
-                    } else if (action == 'center') {
-                      archMapDialogService.showCenterDialog(selectedCoordinates)
-                        .then(setCenter)
-                    } else if (action == 'path') {
-                      scope.pathDrawer.enabled = true;
-                      archLayerService.showLayers(['pathDrawer']);
-                      archLayerService.hideLayers(['poi', 'bug']);
-                      scope.paths['pathDrawer'] = archPathService.getPathDrawer().currentPath;
-                      $translate(['PATH_DRAWER_ENABLED']).then(function(translations) {
-                        $mdToast.show($mdToast.simple().content(translations.PATH_DRAWER_ENABLED));
-                      });
-                    }
-                  });
-                }*/
             });
-
 
             // endregion
 

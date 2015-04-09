@@ -19,16 +19,19 @@
                 </div>
               </span>-->
               <span layout="row" layout-align="begin center" flex>
-                <div class="smaller">
-                  <span class="padded">{{'LATITUDE' | translate}}: {{cursor.lat | number: 6}}</span>
-                  <span class="padded">{{'LONGITUDE' | translate}}: {{cursor.lng | number: 6}}</span>
+                <arch-map-center-search flex></arch-map-center-search>
+                <div class="smaller" flex>
+                  <div layout="row" layout-align="center center" class="arch-text-center">
+                    <span class="padded" flex>{{'LATITUDE' | translate}}: {{cursor.lat | number: 6}}</span>
+                    <span class="padded" flex>{{'LONGITUDE' | translate}}: {{cursor.lng | number: 6}}</span>
+                  </div>
                 </div>
               </span>
             </div>
           </div>
         </div>
       </md-toolbar>
-      <div leaflet id="arch-map" center="center" markers="markers" layers="layers" paths="paths" ng-class="{'is-drawing-path': pathDrawer.enabled}" layout="column" flex></div>
+      <div leaflet center="center" markers="markers" layers="layers" paths="paths" controls="controls" ng-class="{'is-drawing-path': pathDrawer.enabled}" layout="column" flex></div>
     </div>
     <md-sidenav class="md-sidenav-right arch-side-nav-right arch-side-nav-large" md-component-id="rightSideNav" ui-view="sideNavRight"></md-sidenav>
   </section>

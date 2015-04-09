@@ -36,7 +36,8 @@ angular.module('archCarto')
                 .then(function(translations) {
                   $mdToast.show($mdToast.simple().content(translations.BUG_MARKED_AS_RESOLVED));
                 });
-            });
+            })
+            .then(archMap.refreshMarkers());
         };
       }
     };

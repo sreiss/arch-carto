@@ -37,6 +37,7 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
           }
         }
       })
+      /*
       .state('map.center', {
         url: '/center',
         views: {
@@ -48,6 +49,7 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
           }
         }
       })
+      */
       .state('map.poi', {
         url: '/poi',
         views: {

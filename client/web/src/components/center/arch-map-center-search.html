@@ -1,0 +1,5 @@
+<div layout="row">
+  <md-autocomplete md-selected-item="location.selected" md-search-text="location.search" md-items="item in getMatchLocations(location.search)" md-item-text="item.display_name" md-selected-item-change="extractCenter(item)" md-delay="2000" placeholder="{{'TYPE_A_LOCATION_NAME' | translate}}" flex>
+    <span md-highlight-text="location.search">{{item.display_name}}</span>
+  </md-autocomplete>
+</div>
