@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMapSideNavPoiLeft', function($mdSidenav) {
+  .directive('archMapSideNavPoiLeft', function($mdSidenav, archMarkerService) {
       return {
         restrict: 'E',
         require: '^archMap',
@@ -18,6 +18,22 @@ angular.module('archCarto')
           scope.addActions([
             'addPoi'
           ]);
+
+          scope.poisDraggable = false;
+
+          scope.togglePoisLock = function() {
+            archMarkerService.toggleMarkersLock('poi')
+              .then(function(poisDraggable) {
+                scope.poisDraggable = poisDraggable;
+              });
+          };
+
+          scope.savePois = function() {
+            archMarkerService.toggleMarkersLock('poi')
+              .then(function(poisDraggable) {
+                scope.poisDraggable = poisDraggable;
+              });
+          };
 
           /*scope.doAction = function(name) {
             for (var action in scope.actions) {

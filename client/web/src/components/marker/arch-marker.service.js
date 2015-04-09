@@ -4,6 +4,7 @@ angular.module('archCarto')
     var _markers = {};
     var _markerIcons = {};
     var _loadedMarkerIds = {};
+    var _areDraggable = {};
 
     var checkEntity = function(entity) {
       var deferred = $q.defer();
@@ -136,6 +137,24 @@ angular.module('archCarto')
         var deferred = $q.defer();
 
         deferred.resolve(_markers[markerType]);
+
+        return deferred.promise;
+      },
+      toggleMarkersLock: function(markerType) {
+        var deferred = $q.defer();
+
+        if (!angular.isDefined(_markers[markerType])) {
+          deferred.reject(new Error("The given marker type " + markerType + " doesn't exist."));
+        } else {
+          if (angular.isUndefined(_areDraggable[markerType])) {
+            _areDraggable[markerType] = false;
+          }
+          _areDraggable[markerType] = !_areDraggable[markerType];
+          for (var markerId in _markers[markerType]) {
+            _markers[markerType][markerId].draggable = _areDraggable[markerType];
+          }
+          deferred.resolve(_areDraggable[markerType]);
+        }
 
         return deferred.promise;
       },

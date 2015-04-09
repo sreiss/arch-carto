@@ -64,5 +64,11 @@ angular.module('archCarto')
     CLICK_ON_THE_MAP_TO_REVEAL_COORDINATE_ACTIONS: "Cliquez sur la carte pour afficher les actions liées.",
     BUG_LIST: "Liste de bugs",
     NO_BUG_REPORTED: "Aucun bug signalé",
-    TYPE_A_LOCATION_NAME: "Entrez le nom d'un lieu"
+    TYPE_A_LOCATION_NAME: "Entrez le nom d'un lieu",
+    LOCK_POINTS_OF_INTEREST: "Verouiller les points d'intérêt",
+    UNLOCK_POINTS_OF_INTEREST: "Déverouiller les points d'intérêt",
+    RESOLVE: "Marquer comme résolu",
+    UNSOLVED: "Non résolus",
+    ALL: "Tous",
+    RESOLVED: "Résolus"
   });
