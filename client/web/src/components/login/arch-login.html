@@ -1,2 +1,9 @@
-<a ng-hide="alreadyLogged" href="{{loginUrl}}">{{'MAIN_PAGE_LOGIN' | translate}}</a>
-<a ng-show="alreadyLogged" href="{{mapUrl}}">{{'MAIN_PAGE_MAP' | translate}}</a>
+<span ng-if="!alreadyLogged">
+  <a ng-if="!alreadyLogged" class="md-button" href="{{loginUrl}}">{{'MAIN_PAGE_LOGIN' | translate}}</a>
+  <md-icon md-font-icon="fa fa-sign-in"></md-icon>
+</span>
+<span ng-if="alreadyLogged">
+  <a ng-if="alreadyLogged" class="md-button" href="{{mapUrl}}">{{'MAIN_PAGE_MAP' | translate}}</a>
+  <md-icon md-font-icon="fa fa-sign-out"></md-icon>
+</span>
+
