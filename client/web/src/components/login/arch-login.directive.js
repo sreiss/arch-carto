@@ -50,6 +50,7 @@ angular.module('archCarto')
 
             $scope.alreadyLogged = true;
             $scope.mapUrl = '/#/map';
+            $scope.username = token.user.fname + " " + token.user.lname;
           }
         }();
 
@@ -59,11 +60,21 @@ angular.module('archCarto')
 
           if(now.getTime() > token.expired_at)
           {
+            $cookieStore.remove('token');
             return true;
           }
           else
           {
             return false;
+          }
+        };
+
+        $scope.logout = function()
+        {
+          if(confirm("Souhaitez-vous réellement vous déconnecter ?"))
+          {
+            $cookieStore.remove('token');
+            window.location.reload();
           }
         };
       }

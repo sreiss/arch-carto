@@ -8,6 +8,7 @@ angular.module('archCarto')
     MAIN_PAGE_ABOUTUS: "A propos",
     MAIN_PAGE_SERVICES: "Services",
     MAIN_PAGE_LOGIN: "Connexion",
+    MAIN_PAGE_LOGOUT: "Déconnexion",
     MAIN_PAGE_SIGNIN: "Inscription",
     MAIN_PAGE_MAP: "Carte",
     MAIN_PAGE_BACKTOTOP: "Revenir en haut",
