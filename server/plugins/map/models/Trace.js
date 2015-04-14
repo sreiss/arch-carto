@@ -2,17 +2,24 @@ module.exports = function(Types) {
 
     return {
         schema: {
-            name: {type: String, required: true},
-            description: String,
-            points: [
+            type: String,
+            features: [
                 {
-                    coordinates: {
-                        latitude: {type: Number, required: true},
-                        longitude: {type: Number, required: true}
+                    type: String,
+                    properties: {
+                        name: String
+                    },
+                    geometry: {
+                        "type": String,
+                        coordinates: [{
+                            longitude: Number,
+                            laitude: Number,
+                            height: Number
+                        }]
                     }
-                }
-            ]
+                }]
         }
+
     };
 
 };

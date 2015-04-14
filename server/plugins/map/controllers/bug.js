@@ -14,6 +14,7 @@ module.exports = function(bugService) {
             var bug = req.body;
             bugService.saveBug(bug)
                 .then(function(savedBug) {
+                    res.status(200)
                     res.json({message: 'Bug saved!'});
                 })
                 .catch(function(err) {

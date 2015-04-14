@@ -19,7 +19,7 @@ exports.attach = function(opts) {
     expressApp.use(logger('dev'));
     expressApp.use(bodyParser.json());
     expressApp.use(bodyParser.urlencoded({extended: false}));
-    expressApp.use(multer({ dest: './uploads/',
+    expressApp.post('/map/gpx/',multer({ dest: './uploads/',
         rename: function (fieldname, filename) {
             return filename+Date.now();
         },

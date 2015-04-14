@@ -4,16 +4,9 @@ angular.module('archCarto')
     var _gpxUrl = httpConstant.apiUrl + '/map/gpx';
 
     return {
-      getGpxUploader: function() {
-        //var deferred = $q.defer();
-        //var fileUploader = new FileUploader({
-        //  url: _gpxUrl,
-        //  queueLimit: 1
-        //});
-        //console.log(_gpxUrl);
-        //deferred.resolve(fileUploader);
-        return archHttpService.get(_gpxUrl);
-        //return deferred.promise;
+      getTrace: function(params) {
+          return archHttpService.get(_gpxUrl, {params: params});
+
       }
     };
   });

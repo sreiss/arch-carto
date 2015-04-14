@@ -3,8 +3,13 @@ module.exports = function(gpxService) {
     return {
         saveGpx: function(req, res) {
             var gpx = req.file;
-            //console.log(gpx);
-            res.end("file uploaded");
+            gpxService.saveGpx(gpx).then(function(savedTrace) {
+                res.json({message: 'Trace saved!'});
+            })
+                .catch(function(err) {
+                    res.send(err);
+                });;
+            res.end("Trace uploaded");
         },
         getGpx: function(req, res) {
             gpxService.getTrace()

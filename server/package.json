@@ -23,6 +23,8 @@
     "multer": "^0.1.8",
     "nconf": "^0.7.1",
     "q": "^1.2.0",
-    "validator": "^3.30.0"
+    "validator": "^3.30.0",
+    "togeojson": "~0",
+    "jsdom": "~3"
   }
 }

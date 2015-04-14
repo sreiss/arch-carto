@@ -71,5 +71,7 @@ angular.module('archCarto')
     RESOLVE: "Marquer comme résolu",
     UNSOLVED: "Non résolus",
     ALL: "Tous",
-    RESOLVED: "Résolus"
+    RESOLVED: "Résolus",
+    TRACE_LIST: "Liste de trace",
+    NO_TRACE_REPORTED: "Aucune  trace signalée"
   });

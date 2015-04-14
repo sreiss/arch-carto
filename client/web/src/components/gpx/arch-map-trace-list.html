@@ -1,0 +1,15 @@
+<md-toolbar>
+  <h1 class="md-toolbar-tools">{{'TRACE_LIST' | translate}}</h1>
+</md-toolbar>
+<md-content class="md-padding">
+  <span ng-if="!traces">
+    {{'NO_TRACE_REPORTED' | translate}}
+  </span>
+  <span ng-if="traces">
+  <md-content class="md-padding">
+    <arch-content-dropdown ng-repeat="trace in traces | filter:filterOptions">
+      <p>{{'NAME' | translate}}: {{trace.features[0].properties.name}}</p>
+    </arch-content-dropdown>
+  </md-content>
+  </span>
+</md-content>
