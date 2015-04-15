@@ -13,7 +13,7 @@ module.exports = function(Types) {
                         "type": String,
                         coordinates: [{
                             longitude: Number,
-                            laitude: Number,
+                            latitude: Number,
                             height: Number
                         }]
                     }

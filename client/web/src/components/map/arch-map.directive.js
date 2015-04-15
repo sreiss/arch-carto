@@ -53,6 +53,7 @@ angular.module('archCarto')
             lat: 49.08655299999999,
             lng: 7.483997999999929
         };
+
         $scope.mapStatus = {
           selectedCoordinates: null,
           clicked: false
@@ -66,88 +67,64 @@ angular.module('archCarto')
               maxZoom: 18
             });
             tiles.addTo(map);
-            //var gpx = ; // URL to your GPX file or the GPX itself
-
-            //new L.GPX(gpx, {async: true}).on('loaded', function(e) {
-            //  map.fitBounds(e.target.getBounds());
-            //}).addTo(map);
           });
-        /*
-        archGpxService.getGpxUploader()
-          .then(function(gpxUploader) {
-            //$scope.gpxUploader = gpxUploader;
-            //console.log("toto");
-            //console.log(gpxUploader);
-            //console.log("toto");
 
-            leafletData.getMap('arch-map').then(function(map) {
-              //premiere version
-              //console.log("toto");
-              //var el = L.control.elevation();
-              //el.addTo(map);
-              //var g = new L.GPX(
-              //  gpxUploader, {
-              //    async: true
-              //  }
-              //).on('loaded',
-              //  function(e) {
-              //    map.fitBounds(e.target.getBounds());
-              //  }
-              //).addTo(map);
-              //g.on("addline",function(e){
-              //  el.addData(e.line);
-              //});
-              //g.addTo(map);
-
-              //deuxieme version
-              //
-              //var url = 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg',
-              //  attr ='Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-              //  service = new L.TileLayer(url, {subdomains:"1234",attribution: attr});
-              */
-
-
-
-              /*
-              var el = L.control.elevation({
-                position: "topleft",
-                theme: "steelblue-theme",
-                width: 600,
-                height: 125,
-                margins: {
-                  top: 10,
-                  right: 20,
-                  bottom: 30,
-                  left: 50
-                },
-                collapsed: true
-
-              });
-              el.addTo(map);
-
-              var g=new L.GPX(gpxUploader, {
-                async: true
-              });
-              g.on('loaded', function(e) {
-                map.fitBounds(e.target.getBounds());
-              });
-              g.on("addline",function(e){
-                el.addData(e.line);
-              });
-              g.addTo(map);
-
-              //map.addLayer(service);
-            });
-          });*/
 
         this.getMap = function() {
-          return leafletData.getMap('arch-map');
+          return leafletData.getMap();
         };
 
         this.setCenter = function(coordinates) {
           $scope.center.lat = coordinates.latitude;
           $scope.center.lng = coordinates.longitude;
         };
+
+        this.displayGeoJson = function(geoJson) {
+          this.getMap().then(function(map){
+            var myLayer = L.geoJson(geoJson).addTo(map);
+          });
+        };
+
+        this.displayElevation = function(geoJson) {
+          //all used options are the default values
+          //var el = $scope.controls.Elevation;
+          this.getMap().then(function(map) {
+            //el.clear();
+            //TO DO clear el to have only one chart
+            //map.removeControl(el);
+            var el = L.control.elevation({
+              position: "topright",
+              theme: "steelblue-theme", //default: lime-theme
+              width: 600,
+              height: 125,
+              margins: {
+                top: 10,
+                right: 20,
+                bottom: 30,
+                left: 50
+              },
+              useHeightIndicator: true, //if false a marker is drawn at map position
+              interpolation: "linear", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
+              hoverNumber: {
+                decimalsX: 3, //decimals on distance (always in km)
+                decimalsY: 0, //deciamls on height (always in m)
+                formatter: undefined //custom formatter function may be injected
+              },
+              xTicks: undefined, //number of ticks in x axis, calculated by default according to width
+              yTicks: undefined, //number of ticks on y axis, calculated by default according to height
+              collapsed: false    //collapsed mode, show chart on click or mouseover
+            });
+            //el.clearLayers();
+            el.addTo(map);
+            var layer = L.geoJson(geoJson, {
+              onEachFeature: el.addData.bind(el)
+               //working on a better solution
+            }).addTo(map);
+            map.fitBounds(layer.getBounds());
+
+          });
+        }
+
 
         // region action api
 

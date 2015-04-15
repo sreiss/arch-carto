@@ -44,7 +44,7 @@ module.exports = function (Trace) {
                                 var gpx = jsdom(data);
                                 var converted = togeojson.gpx(gpx);
                                 //console.log('je converti des fichiers');
-                                //console.log(JSON.stringify(converted, null, 2));
+                                console.log(JSON.stringify(converted, null, 2));
                                 //console.log(converted.features[0].properties.name);
                                 trace.type = converted.type;
                                 trace.features[0] = converted.features[0];
