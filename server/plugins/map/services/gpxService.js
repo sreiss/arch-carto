@@ -6,24 +6,23 @@ var togeojson = require('togeojson');
 
 module.exports = function (Trace) {
 
-    var storageCreated = false;
-    var createStorage = function() {
-        fileStorageService.addStorage('map', 'gpx');
-        storageCreated = true;
-    };
-
     return {
         saveGpx: function(gpxFile, options) {
             var deferred = Q.defer();
-            //createStorage();
-            console.log('Je save la');
+            var i = 0
             var filePath = path.join(__dirname, '../../../uploads/');
-            console.log(filePath);
+            var currentPath;
+            //console.log(filePath);
             fs.readdir(filePath, function(err, files){
                 //console.log(files.length);
-                for(var i = 0; i<files.length; i++)
+                for(i = 0; i < files.length; i++)
                 {
-                    fs.readFile(filePath+files[i],{encoding: 'utf-8'}, function(err, data){
+                    //console.log(files[i]);
+                    currentPath = filePath+files[i];
+                    console.log(currentPath);
+                    fs.readFile(currentPath,{encoding: 'utf-8'}, function(err, data){
+                        console.log(currentPath);
+                        console.log(i);
                         if (!err){
                             //console.log('received data: ' + data);
 
@@ -49,6 +48,8 @@ module.exports = function (Trace) {
                                 //console.log(converted.features[0].properties.name);
                                 trace.type = converted.type;
                                 trace.features[0] = converted.features[0];
+                            //console.log(files[i].name);
+
                             //console.log(JSON.stringify(trace, null, 2));
                             trace.save(function(err) {
                                     if (err) {
@@ -63,12 +64,16 @@ module.exports = function (Trace) {
                             console.log(err);
 
                         }
-                        return deferred.promise;
+
                     })
+                    fs.unlink(filePath+files[i], function(err) {console.log("success")})
 
                 }
 
+
             });
+            console.log('coucou');
+            return deferred.promise;
         },
         getTrace: function(options) {
             //new version
