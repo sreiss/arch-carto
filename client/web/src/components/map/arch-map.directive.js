@@ -68,11 +68,11 @@ angular.module('archCarto')
             tiles.addTo(map);
             //var gpx = ; // URL to your GPX file or the GPX itself
 
-            //new L.GPX(gpx, {async: true}).on('loaded', function(e) {
-            //  map.fitBounds(e.target.getBounds());
-            //}).addTo(map);
+            new L.GPX(gpx, {async: true}).on('loaded', function(e) {
+              map.fitBounds(e.target.getBounds());
+            }).addTo(map);
           });
-        /*
+
         archGpxService.getGpxUploader()
           .then(function(gpxUploader) {
             //$scope.gpxUploader = gpxUploader;
@@ -104,11 +104,11 @@ angular.module('archCarto')
               //var url = 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg',
               //  attr ='Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
               //  service = new L.TileLayer(url, {subdomains:"1234",attribution: attr});
-              */
 
 
 
-              /*
+
+
               var el = L.control.elevation({
                 position: "topleft",
                 theme: "steelblue-theme",
@@ -138,7 +138,7 @@ angular.module('archCarto')
 
               //map.addLayer(service);
             });
-          });*/
+          });
 
         this.getMap = function() {
           return leafletData.getMap('arch-map');

@@ -13,8 +13,8 @@ exports.attach = function(opts) {
 
     var expressApp = app.arch.expressApp = express();
 
-    expressApp.set('views', path.join(__dirname, '..', 'views'));
-    expressApp.set('view engine', 'jade');
+    //expressApp.set('views', path.join(__dirname, '..', 'views'));
+    //expressApp.set('view engine', 'jade');
 
     expressApp.use(logger('dev'));
     expressApp.use(bodyParser.json());
