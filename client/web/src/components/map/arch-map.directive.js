@@ -75,7 +75,7 @@ angular.module('archCarto')
             }).addTo(map);
           });
 
-        archGpxService.getGpxUploader()
+        /*archGpxService.getGpxUploader()
           .then(function(gpxUploader) {
             //$scope.gpxUploader = gpxUploader;
             //console.log("toto");
@@ -140,7 +140,7 @@ angular.module('archCarto')
 
               //map.addLayer(service);
             });
-          });
+          });*/
 
         this.getMap = function() {
           return leafletData.getMap();

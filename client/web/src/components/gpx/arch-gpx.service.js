@@ -6,7 +6,6 @@ angular.module('archCarto')
     return {
       getTrace: function(params) {
           return archHttpService.get(_gpxUrl, {params: params});
-
       }
     };
   });
