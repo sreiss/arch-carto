@@ -67,6 +67,8 @@ angular.module('archCarto')
               maxZoom: 18
             });
             tiles.addTo(map);
+            
+          });
 
         /*archGpxService.getGpxUploader()
           .then(function(gpxUploader) {
