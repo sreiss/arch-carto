@@ -15,7 +15,6 @@ exports.attach = function(opts) {
 
     //expressApp.set('views', path.join(__dirname, '..', 'views'));
     //expressApp.set('view engine', 'jade');
-
     expressApp.use(logger('dev'));
     expressApp.use(bodyParser.json());
     expressApp.use(bodyParser.urlencoded({extended: false}));
@@ -31,12 +30,13 @@ exports.attach = function(opts) {
             done=true;
         },
         onError: function (error, next) {
-            console.log(error)
-            next(error)
+            console.log(error);
+            next(error);
         }
     }));
     expressApp.use(cookieParser());
-    expressApp.use(express.static(path.join(__dirname, '..', 'public')));
+    expressApp.use('/', express.static(path.join(__dirname, '..', '..', 'public')));
+    //expressApp.use(express.static(path.join(__dirname, '..', 'public')));
 };
 
 exports.init = function (done) {
