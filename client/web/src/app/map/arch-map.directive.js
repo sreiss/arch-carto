@@ -3,7 +3,7 @@ angular.module('archCarto')
   .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav, archRolesService) {
     return {
       restrict: 'E',
-      templateUrl: 'components/map/arch-map.html',
+      templateUrl: 'app/map/arch-map.html',
       controller: function($scope) {
         angular.extend($scope, {
           center: {

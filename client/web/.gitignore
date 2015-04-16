@@ -3,4 +3,4 @@ bower_components/
 .sass-cache/
 .tmp/
 dist/
-src/app/constants/http.constant.js
+app/constants/http.constant.js
