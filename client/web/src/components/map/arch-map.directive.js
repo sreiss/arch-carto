@@ -68,13 +68,6 @@ angular.module('archCarto')
             });
             tiles.addTo(map);
 
-            //var gpx = ; // URL to your GPX file or the GPX itself
-
-            new L.GPX(gpx, {async: true}).on('loaded', function(e) {
-              map.fitBounds(e.target.getBounds());
-            }).addTo(map);
-          });
-
         /*archGpxService.getGpxUploader()
           .then(function(gpxUploader) {
             //$scope.gpxUploader = gpxUploader;
