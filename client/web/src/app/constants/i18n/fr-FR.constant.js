@@ -23,6 +23,7 @@ angular.module('archCarto')
     PLEASE_PROVIDE_GPS_COORDINATES_TO_CENTER_THE_MAP: "Veuillez fournir des coordonnées GPS pour centrer la carte.",
     CHOOSE_CENTER: "Déterminer le centre",
     SELECT_A_TYPE: "Sélectionner un type",
+    TYPE: "Type",
     ADD_A_NEW_TYPE: "Ajouter un nouveau type",
     ADD: "Ajouter",
     CANCEL: "Annuler",

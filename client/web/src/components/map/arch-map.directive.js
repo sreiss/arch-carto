@@ -53,6 +53,7 @@ angular.module('archCarto')
             lat: 49.08655299999999,
             lng: 7.483997999999929
         };
+
         $scope.mapStatus = {
           selectedCoordinates: null,
           clicked: false
@@ -66,6 +67,7 @@ angular.module('archCarto')
               maxZoom: 18
             });
             tiles.addTo(map);
+
             //var gpx = ; // URL to your GPX file or the GPX itself
 
             new L.GPX(gpx, {async: true}).on('loaded', function(e) {
@@ -141,13 +143,60 @@ angular.module('archCarto')
           });
 
         this.getMap = function() {
-          return leafletData.getMap('arch-map');
+          return leafletData.getMap();
         };
 
         this.setCenter = function(coordinates) {
           $scope.center.lat = coordinates.latitude;
           $scope.center.lng = coordinates.longitude;
         };
+
+        this.displayGeoJson = function(geoJson) {
+          this.getMap().then(function(map){
+            var myLayer = L.geoJson(geoJson).addTo(map);
+          });
+        };
+
+        this.displayElevation = function(geoJson) {
+          //all used options are the default values
+          //var el = $scope.controls.Elevation;
+          this.getMap().then(function(map) {
+            //el.clear();
+            //TO DO clear el to have only one chart
+            //map.removeControl(el);
+            var el = L.control.elevation({
+              position: "topright",
+              theme: "steelblue-theme", //default: lime-theme
+              width: 600,
+              height: 125,
+              margins: {
+                top: 10,
+                right: 20,
+                bottom: 30,
+                left: 50
+              },
+              useHeightIndicator: true, //if false a marker is drawn at map position
+              interpolation: "linear", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
+              hoverNumber: {
+                decimalsX: 3, //decimals on distance (always in km)
+                decimalsY: 0, //deciamls on height (always in m)
+                formatter: undefined //custom formatter function may be injected
+              },
+              xTicks: undefined, //number of ticks in x axis, calculated by default according to width
+              yTicks: undefined, //number of ticks on y axis, calculated by default according to height
+              collapsed: false    //collapsed mode, show chart on click or mouseover
+            });
+            //el.clearLayers();
+            el.addTo(map);
+            var layer = L.geoJson(geoJson, {
+              onEachFeature: el.addData.bind(el)
+               //working on a better solution
+            }).addTo(map);
+            map.fitBounds(layer.getBounds());
+
+          });
+        }
+
 
         // region action api
 
