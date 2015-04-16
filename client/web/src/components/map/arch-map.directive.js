@@ -291,27 +291,6 @@ angular.module('archCarto')
 
             var refreshMarkers = scope.refreshMarkers;
 
-            //archGpxService.getGpxUploader()
-            //  .then(function(gpxUploader) {
-            //    scope.gpxUploader = gpxUploader;
-            //    //console.log("toto");
-            //    console.log(gpxUploader);
-            //    //console.log("toto");
-            //
-            //    leafletData.getMap('map').then(function(map) {
-            //      console.log("toto");
-            //      new L.GPX(
-            //        gpxUploader, {
-            //          async: true
-            //        }
-            //      ).on('loaded',
-            //        function(e) {
-            //          map.fitBounds(e.target.getBounds());
-            //        }
-            //      ).addTo(map);
-            //      });
-            //  });
-
             scope.pathDrawn = function() {
               return archPathService.pathDrawn();
             };

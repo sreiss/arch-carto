@@ -28,13 +28,6 @@
         "dist/leaflet.draw.js",
         "dist/leaflet.draw.css"
       ]
-    },
-    "leaflet-gpx": {
-      "main": [
-        "gpx.js",
-        "pin-icon-end.png",
-        "pin-icon-start.pn"
-      ]
     }
   },
   "devDependencies": {
