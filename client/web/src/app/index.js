@@ -64,10 +64,8 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
       .state('map.bug', {
         url: '/bug',
         views: {
-          sideNavLeft: {
-            template: '<arch-map-side-nav-bug-left></arch-map-side-nav-bug-left>'
-          },
           sideNavRight: {
+            controller: 'ArchBugController',
             template: '<arch-map-side-nav-bug-right></arch-map-side-nav-bug-right>'
           }
         }

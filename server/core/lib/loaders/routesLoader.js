@@ -19,7 +19,7 @@ exports.init = function(done) {
     var plugins = app.arch.plugins;
     var expressApp = app.arch.expressApp;
 
-    for (pluginName in plugins) {
+    for (var pluginName in plugins) {
         var plugin = plugins[pluginName];
         var routes = plugin.routes = {};
         var controllers = plugin.controllers;

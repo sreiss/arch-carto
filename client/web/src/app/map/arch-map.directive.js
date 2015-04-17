@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav, archRolesService) {
+  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav, archRolesService, archComponentsConstant, archFormatService) {
     return {
       restrict: 'E',
       templateUrl: 'app/map/arch-map.html',
@@ -253,16 +253,8 @@ angular.module('archCarto')
           //LxDialogService.open('chooseCenterDialog');
         });
 
-        $scope.openLeft = function() {
-          $mdSidenav('leftSideNav').open();
-        };
-
         $scope.openRight = function() {
           $mdSidenav('rightSideNav').open();
-        };
-
-        $scope.closeLeft = function() {
-          $mdSidenav('leftSideNav').close();
         };
 
         $scope.closeRight = function () {
@@ -273,9 +265,51 @@ angular.module('archCarto')
           $mdSidenav('rightSideNav').toggle();
         };
 
-        $scope.toggleLeft = function() {
-          $mdSidenav('leftSideNav').toggle();
-        };
+        angular.forEach(archComponentsConstant, function(component, name) {
+          leafletData.getMap()
+            .then(function(map) {
+
+              console.log(L);
+              debugger;
+              /*
+              var componentClassName = archFormatService.capitalize(name);
+              L.Control[componentClassName] = L.Control.extend({
+                options: {
+                  position: 'topleft'
+                },
+
+                onAdd: function (map) {
+                  debugger;
+                  var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
+                  L.DomEvent
+                    .addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
+                    .addListener(controlDiv, 'click', L.DomEvent.preventDefault)
+                    .addListener(controlDiv, 'click', function () { MapShowCommand(); });
+
+                  var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
+                  controlUI.title = 'Map Commands';
+                  return controlDiv;
+                }
+              });
+
+              L.control[name] = function (options) {
+                var ComponentClass = L.Control[componentClassName];
+                return new ComponentClass(options);
+              };
+
+              L.Map.addInitHook(function () {
+                if (this.options.drawControl) {
+                  this.drawControl = new L.Control.Draw();
+                  this.addControl(this.drawControl);
+                }
+              });
+
+              console.log(L);
+              $scope.controls[name] = {};
+              debugger;
+              */
+            });
+        });
       },
       link: function(scope, element, attributes) {
         archMapService.init()
