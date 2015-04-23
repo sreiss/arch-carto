@@ -1,54 +1,74 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav, archRolesService, archComponentsConstant, archFormatService) {
+  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav, archRolesService, archComponentsConstant, archFormatService, archMapControlService, archMapLayerService, $q) {
     return {
       restrict: 'E',
       templateUrl: 'app/map/arch-map.html',
       controller: function($scope) {
-        angular.extend($scope, {
-          center: {
-            lat: 49.08655299999999,
-            lng: 7.483997999999929,
-            zoom: 12
-          },
-          layers: {
-
-          },
-          markers: {
-
-          },
-          paths: {
-
-          },
+        var toRegister = {
           controls: {
             draw: {
-
-            },
-            Elevation: {
-              position: "topleft",
-              theme: "steelblue-theme",
-              width: 600,
-              height: 125,
-              margins: {
-                top: 10,
-                right: 20,
-                bottom: 30,
-                left: 50
-              },
-              collapsed: true
+              polygon: false,
+              circle: false,
+              rectangle: false
+            }
+          },
+          layers: {
+            baselayers: {
+              thunderForestLandscape: {
+                name: 'Thunder Forest Landscape',
+                url: '//{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
+                maxZoom: 18,
+                type: 'xyz'
+              }
             }
           }
-        });
+        };
 
-        leafletData.getMap().then(function(map) {
-          debugger;
-          var drawnItems = $scope.controls.edit.featureGroup;
-          map.on('draw:created', function (e) {
-            var layer = e.layer;
-            drawnItems.addLayer(layer);
-            console.log(JSON.stringify(layer.toGeoJSON()));
+        $q.all([
+            archMapControlService.registerControls(toRegister.controls),
+            archMapLayerService.registerLayers(toRegister.layers)
+          ])
+          .then(function() {
+            return $q.all([
+              archMapControlService.getControls(),
+              archMapLayerService.getLayers()
+            ]);
+          })
+          .then(function(results) {
+            angular.extend($scope, {
+              map: {
+                center: {
+                  lat: 49.08655299999999,
+                  lng: 7.483997999999929,
+                  zoom: 12
+                },
+                layers: results[1],
+                markers: {},
+                paths: {},
+                controls: results[0],
+                isInit: false
+              }
+            });
+          })
+          .then(function() {
+            leafletData.getMap()
+              .then(function(map) {
+                var drawnItems = $scope.map.controls.edit.featureGroup;
+                map.on('draw:created', function (e) {
+                  var layer = e.layer;
+                  drawnItems.addLayer(layer);
+                  console.log(JSON.stringify(layer.toGeoJSON()));
+                });
+              });
+          })
+          .then(function() {
+            debugger;
+            setTimeout(function() {
+              $scope.map.isInit = true;
+            }, 1000);
           });
-        });
+
 
         $scope.cursor = {
             lat: 49.08655299999999,
@@ -61,15 +81,14 @@ angular.module('archCarto')
         };
         $scope.actions = {};
 
-        leafletData.getMap()
+        /*leafletData.getMap()
           .then(function(map) {
             map.addLayer($window.MQ.mapLayer());
-            var tiles = L.tileLayer('//{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png', {
+            var tiles = L.tileLayer(, {
               maxZoom: 18
             });
             tiles.addTo(map);
-
-          });
+          });*/
 
         /*archGpxService.getGpxUploader()
           .then(function(gpxUploader) {
@@ -271,7 +290,6 @@ angular.module('archCarto')
             .then(function(map) {
 
               console.log(L);
-              debugger;
               /*
               var componentClassName = archFormatService.capitalize(name);
               L.Control[componentClassName] = L.Control.extend({
@@ -313,72 +331,72 @@ angular.module('archCarto')
         });
       },
       link: function(scope, element, attributes) {
-        archMapService.init()
-          .then(function(layers) {
-            angular.extend(scope.layers, layers);
-
-            var pathDrawer = scope.pathDrawer = archPathService.getPathDrawer();
-
-            var refreshMarkers = scope.refreshMarkers;
-
-            scope.pathDrawn = function() {
-              return archPathService.pathDrawn();
-            };
-
-            // region actions
-
-            scope.disablePathDrawer = function() {
-              pathDrawer.enabled = false;
-              archLayerService.showLayers(['poi', 'bug']);
-              archLayerService.hideLayers(['pathDrawer']);
-              $translate(['PATH_DRAWER_QUIT']).then(function(translations) {
-                $mdToast.show($mdToast.simple().content(translations.PATH_DRAWER_QUIT));
-              });
-            };
-
-            scope.deletePath = function() {
-              archPathService.deletePath()
-                .then(function(markerIds) {
-                  markerIds.forEach(function(markerId) {
-                    delete scope.markers[markerId];
-                  });
-                });
-            };
-
-            // endregion
-
-            // region event handlers
-
-            // We refresh the markers when the user moves or zooms in or out.
-            scope.$on('leafletDirectiveMap.moveend', refreshMarkers);
-
-            scope.$on('leafletDirectiveMap.mousemove', function (event, args) {
-              var leafletEvent = args.leafletEvent;
-              var latlng = leafletEvent.latlng;
-              scope.cursor.lat = latlng.lat;
-              scope.cursor.lng = latlng.lng;
-            });
-
-            scope.$on('leafletDirectiveMap.click', function(event, args) {
-              scope.mapStatus.selectedCoordinates = {
-                latitude: args.leafletEvent.latlng.lat,
-                longitude: args.leafletEvent.latlng.lng
-              };
-
-              scope.mapStatus.clicked = true;
-
-              archMarkerService.removeMarkers('selectedCoordinates')
-                .then(function() {
-                  archMarkerService.addEntity('selectedCoordinates', {
-                    _id: '-1',
-                    coordinates: scope.mapStatus.selectedCoordinates
-                  });
-                });
-            });
-
-            // endregion
-
-          });
+        //archMapService.init()
+        //  .then(function(layers) {
+        //    angular.extend(scope.layers, layers);
+        //
+        //    var pathDrawer = scope.pathDrawer = archPathService.getPathDrawer();
+        //
+        //    var refreshMarkers = scope.refreshMarkers;
+        //
+        //    scope.pathDrawn = function() {
+        //      return archPathService.pathDrawn();
+        //    };
+        //
+        //    // region actions
+        //
+        //    scope.disablePathDrawer = function() {
+        //      pathDrawer.enabled = false;
+        //      archLayerService.showLayers(['poi', 'bug']);
+        //      archLayerService.hideLayers(['pathDrawer']);
+        //      $translate(['PATH_DRAWER_QUIT']).then(function(translations) {
+        //        $mdToast.show($mdToast.simple().content(translations.PATH_DRAWER_QUIT));
+        //      });
+        //    };
+        //
+        //    scope.deletePath = function() {
+        //      archPathService.deletePath()
+        //        .then(function(markerIds) {
+        //          markerIds.forEach(function(markerId) {
+        //            delete scope.markers[markerId];
+        //          });
+        //        });
+        //    };
+        //
+        //    // endregion
+        //
+        //    // region event handlers
+        //
+        //    // We refresh the markers when the user moves or zooms in or out.
+        //    scope.$on('leafletDirectiveMap.moveend', refreshMarkers);
+        //
+        //    scope.$on('leafletDirectiveMap.mousemove', function (event, args) {
+        //      var leafletEvent = args.leafletEvent;
+        //      var latlng = leafletEvent.latlng;
+        //      scope.cursor.lat = latlng.lat;
+        //      scope.cursor.lng = latlng.lng;
+        //    });
+        //
+        //    scope.$on('leafletDirectiveMap.click', function(event, args) {
+        //      scope.mapStatus.selectedCoordinates = {
+        //        latitude: args.leafletEvent.latlng.lat,
+        //        longitude: args.leafletEvent.latlng.lng
+        //      };
+        //
+        //      scope.mapStatus.clicked = true;
+        //
+        //      archMarkerService.removeMarkers('selectedCoordinates')
+        //        .then(function() {
+        //          archMarkerService.addEntity('selectedCoordinates', {
+        //            _id: '-1',
+        //            coordinates: scope.mapStatus.selectedCoordinates
+        //          });
+        //        });
+        //    });
+        //
+        //    // endregion
+        //
+        //  });
       }
     };
   });

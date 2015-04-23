@@ -18,7 +18,12 @@
           </div>
         </div>
       </md-toolbar>
-      <leaflet center="center" markers="markers" layers="layers" paths="paths" controls="controls" ng-class="{'is-drawing-path': pathDrawer.enabled}" layout="column" flex></div>
+      <span ng-if="!map.isInit" layout="column" layout-align="center center" flex>
+        <md-progress-circular md-mode="indeterminate" layout="column" layout-align="center center" flex></md-progress-circular>
+      </span>
+      <span ng-if="map.isInit" layout="column" flex>
+        <leaflet center="map.center" markers="map.markers" layers="map.layers" paths="map.paths" controls="map.controls" layout="column" flex></div>
+      </span>
     </div>
     <md-sidenav class="md-sidenav-right arch-side-nav-right arch-side-nav-large" md-component-id="rightSideNav" ui-view="sideNavRight"></md-sidenav>
   </section>
