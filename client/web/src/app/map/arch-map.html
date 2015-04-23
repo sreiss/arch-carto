@@ -5,18 +5,6 @@
         <div class="md-toolbar-tools">
          <div layout="row" flex class="fill-height">
             <div class="md-toolbar-tools">
-              <!--<span flex layout="row" layout-align="begin center">
-                <div class="md-toolbar-item" ng-if="pathDrawer.enabled">
-                  <md-button ng-click="disablePathDrawer()">
-                    {{'QUIT_PATH_DRAWER' | translate}}
-                  </md-button>
-                </div>
-                <div class="md-toolbar-item" ng-if="pathDrawn()">
-                  <md-button ng-click="deletePath()">
-                    {{'DELETE_PATH' | translate}}
-                  </md-button>
-                </div>
-              </span>-->
               <span layout="row" layout-align="begin center" flex>
                 <arch-map-center-search flex></arch-map-center-search>
                 <div class="smaller" flex>
@@ -30,7 +18,7 @@
           </div>
         </div>
       </md-toolbar>
-      <div leaflet center="center" markers="markers" layers="layers" paths="paths" controls="controls" ng-class="{'is-drawing-path': pathDrawer.enabled}" layout="column" flex></div>
+      <leaflet center="center" markers="markers" layers="layers" paths="paths" controls="controls" ng-class="{'is-drawing-path': pathDrawer.enabled}" layout="column" flex></div>
     </div>
     <md-sidenav class="md-sidenav-right arch-side-nav-right arch-side-nav-large" md-component-id="rightSideNav" ui-view="sideNavRight"></md-sidenav>
   </section>

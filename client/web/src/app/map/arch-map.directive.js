@@ -41,6 +41,7 @@ angular.module('archCarto')
         });
 
         leafletData.getMap().then(function(map) {
+          debugger;
           var drawnItems = $scope.controls.edit.featureGroup;
           map.on('draw:created', function (e) {
             var layer = e.layer;
