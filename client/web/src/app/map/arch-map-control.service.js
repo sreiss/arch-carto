@@ -4,11 +4,19 @@ angular.module('archCarto')
     var _controls = {};
 
     return {
-      getControls: function() {
+      getControls: function(type) {
+        if (type && _controls[type]) {
+          return $q.when(_controls[type]);
+        } else if (type) {
+          $q.reject(new Error('Control type ' + type + ' was not found.'));
+        }
         return $q.when(_controls);
       },
-      registerControl: function(controlName) {
-        return $q.when(_controls[controlName]);
+      registerControl: function(control, type) {
+        if (type && _controls[type]) {
+          $q.when(angular.extend(_controls[type], control));
+        }
+        return $q.when(_controls, control);
       },
       /**
        * Ajoute les contrôles donnés en paramètre à la carte.

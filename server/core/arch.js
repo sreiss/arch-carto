@@ -10,6 +10,8 @@ var path = require('path'),
     middlewaresLoader = require(path.join(__dirname, 'lib', 'loaders', 'middlewaresLoader')),
     db = require(path.join(__dirname, 'lib', 'db', 'db')),
     types = require(path.join(__dirname, 'lib', 'db', 'types')),
+    auditEvent = require(path.join(__dirname, 'lib', 'audit', 'auditEvent')),
+    auditEventService = require(path.join(__dirname, 'lib', 'audit', 'auditEventService')),
     servicesLoader = require(path.join(__dirname, 'lib', 'loaders', 'servicesLoader')),
     pluginLoader = require(path.join(__dirname, 'lib', 'loaders', 'pluginLoader'));
 
@@ -25,6 +27,8 @@ exports.attach = function(opts) {
     app.use(config);
     app.use(db);
     app.use(types);
+    app.use(auditEvent);
+    app.use(auditEventService);
     app.use(pluginLoader);
     app.use(expressApp);
     app.use(server);

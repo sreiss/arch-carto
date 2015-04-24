@@ -1,33 +1,13 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav, archRolesService, archComponentsConstant, archFormatService, archMapControlService, archMapLayerService, $q) {
+  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav, archRolesService, archComponentsConstant, archFormatService, archMapControlService, archMapLayerService, $q, archMapInitConstant) {
     return {
       restrict: 'E',
       templateUrl: 'app/map/arch-map.html',
       controller: function($scope) {
-        var toRegister = {
-          controls: {
-            draw: {
-              polygon: false,
-              circle: false,
-              rectangle: false
-            }
-          },
-          layers: {
-            baselayers: {
-              thunderForestLandscape: {
-                name: 'Thunder Forest Landscape',
-                url: '//{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
-                maxZoom: 18,
-                type: 'xyz'
-              }
-            }
-          }
-        };
-
         $q.all([
-            archMapControlService.registerControls(toRegister.controls),
-            archMapLayerService.registerLayers(toRegister.layers)
+            archMapControlService.registerControls(archMapInitConstant.controls),
+            archMapLayerService.registerLayers(archMapInitConstant.layers)
           ])
           .then(function() {
             return $q.all([
@@ -50,17 +30,6 @@ angular.module('archCarto')
                 isInit: false
               }
             });
-          })
-          .then(function() {
-            leafletData.getMap()
-              .then(function(map) {
-                var drawnItems = $scope.map.controls.edit.featureGroup;
-                map.on('draw:created', function (e) {
-                  var layer = e.layer;
-                  drawnItems.addLayer(layer);
-                  console.log(JSON.stringify(layer.toGeoJSON()));
-                });
-              });
           })
           .then(function() {
             debugger;
@@ -161,9 +130,13 @@ angular.module('archCarto')
           return leafletData.getMap();
         };
 
+        this.getCenter = function() {
+          return $scope.map.center;
+        };
+
         this.setCenter = function(coordinates) {
-          $scope.center.lat = coordinates.latitude;
-          $scope.center.lng = coordinates.longitude;
+          $scope.map.center.lat = coordinates.lat;
+          $scope.map.center.lng = coordinates.lng;
         };
 
         this.displayGeoJson = function(geoJson) {

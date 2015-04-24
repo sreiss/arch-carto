@@ -1,23 +1,8 @@
   <!--<arch-tip message="{{'CLICK_ON_THE_MAP_TO_START_AN_ACTIVITY' | translate}}"></arch-tip>-->
   <section layout="row" flex>
     <div layout="column" flex>
-      <md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>
-        <div class="md-toolbar-tools">
-         <div layout="row" flex class="fill-height">
-            <div class="md-toolbar-tools">
-              <span layout="row" layout-align="begin center" flex>
-                <arch-map-center-search flex></arch-map-center-search>
-                <div class="smaller" flex>
-                  <div layout="row" layout-align="center center" class="arch-text-center">
-                    <span class="padded" flex>{{'LATITUDE' | translate}}: {{cursor.lat | number: 6}}</span>
-                    <span class="padded" flex>{{'LONGITUDE' | translate}}: {{cursor.lng | number: 6}}</span>
-                  </div>
-                </div>
-              </span>
-            </div>
-          </div>
-        </div>
-      </md-toolbar>
+      <arch-map-navbar></arch-map-navbar>
+      <span ui-view="mapLeft"></span>
       <span ng-if="!map.isInit" layout="column" layout-align="center center" flex>
         <md-progress-circular md-mode="indeterminate" layout="column" layout-align="center center" flex></md-progress-circular>
       </span>

@@ -38,7 +38,7 @@ exports.init = function(done) {
                 var routeSlug = utils.slugify(routeName);
                 expressApp.use('/' + pluginSlug + '/' + routeSlug, router);
             } catch (err) {
-                console.error('No controller attached to ' + routeName + ' route in ' + pluginName + ' plugin');
+                console.error('No controller attached to ' + routeName + ' route in ' + pluginName + ' plugin', err);
             }
         }
     }

@@ -32,8 +32,8 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
       .state('map.home', {
         url: '',
         views: {
-          sideNavLeft: {
-            template: '<arch-map-side-nav-left></arch-map-side-nav-left>'
+          mapLeft: {
+            template: ''
           }
         }
       })
@@ -53,8 +53,8 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
       .state('map.poi', {
         url: '/poi',
         views: {
-          sideNavLeft: {
-            template: '<arch-map-side-nav-poi-left></arch-map-side-nav-poi-left>'
+          mapLeft: {
+            template: '<arch-poi></arch-poi>'
           },
           sideNavRight: {
             template: '<arch-map-side-nav-poi-right></arch-map-side-nav-poi-right>'
@@ -67,14 +67,6 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
           sideNavRight: {
             controller: 'ArchBugController',
             template: '<arch-map-side-nav-bug-right></arch-map-side-nav-bug-right>'
-          }
-        }
-      })
-      .state('map.path', {
-        url: '/path',
-        views: {
-          sideNavLeft: {
-            template: '<arch-map-side-nav-path-left></arch-map-side-nav-path-left>'
           }
         }
       })

@@ -4,17 +4,19 @@ angular.module('archCarto')
     return {
       restrict: 'E',
       require: '^archMap',
+      scope: {},
       templateUrl: 'components/center/arch-map-center-search.html',
       link: function(scope, element, attributes, archMap) {
+        scope.center = archMap.getCenter();
+
         scope.chooseCenter = function(center) {
           archMap.setCenter(center);
-          scope.closeRight();
         };
 
         scope.extractCenter = function(item) {
           if (angular.isDefined(item)) {
-            scope.center.latitude = parseFloat(item.lat);
-            scope.center.longitude = parseFloat(item.lon);
+            scope.center.lat = parseFloat(item.lat);
+            scope.center.lng = parseFloat(item.lon);
           }
           scope.chooseCenter(scope.center);
         };

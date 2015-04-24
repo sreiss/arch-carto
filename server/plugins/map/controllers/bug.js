@@ -11,11 +11,9 @@ module.exports = function(bugService) {
                 });
         },
         saveBug: function(req, res) {
-            var bug = req.body;
-            bugService.saveBug(bug)
+            bugService.saveBug(req.body)
                 .then(function(savedBug) {
-                    res.status(200)
-                    res.json({message: 'Bug saved!'});
+                    res.json(savedBug);
                 })
                 .catch(function(err) {
                     res.send(err);

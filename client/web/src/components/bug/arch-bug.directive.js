@@ -1,7 +1,10 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archBug', function() {
+  .directive('archBug', function(archMapMarkerService) {
     return {
-      restrict: 'E'
+      restrict: 'E',
+      controller: function($scope) {
+
+      }
     }
   });

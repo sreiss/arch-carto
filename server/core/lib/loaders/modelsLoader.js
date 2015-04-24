@@ -1,6 +1,7 @@
 var path = require('path'),
     fs = require('fs'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    extend = require('mongoose-schema-extend');
 
 exports.name = 'arch-loaders-modelsLoader';
 
@@ -13,6 +14,7 @@ exports.attach = function(opts) {
     var pluginsDir = app.arch.config.get('pluginsDir');
     var plugins = app.arch.plugins;
     var Types = app.arch.db.Types;
+    var auditEventService = app.arch.audit.auditEventService;
 
     for (var pluginName in plugins)
     {
@@ -27,7 +29,7 @@ exports.attach = function(opts) {
             var modelRequireName = path.basename(modelFiles[modelFile], '.js');
             var modelName = app.arch.utils.capitalize(modelRequireName);
             var modelPath = path.join(modelsPath, modelRequireName);
-            var schemaObj = require(modelPath)(Types);
+            var schemaObj = require(modelPath)(Types, auditEventService);
 
             schemaObj.modelName = modelName;
             schemaObj.priority = schemaObj.priority || 1;
@@ -38,20 +40,40 @@ exports.attach = function(opts) {
 
         for(var i = 0; i < schemaObjs.length; i++)
         {
-            try
+            /*try
             {
-                var schema = new mongoose.Schema(schemaObjs[i].schema);
+            */
+                var schemaObj = schemaObjs[i];
+                var schema;
 
-                if(schemaObjs[i].onSchemaReady)
+                if(schemaObj.extends)
                 {
-                    schemaObjs[i].onSchemaReady(schema);
+                    var toExtend = schemaObj.extends;
+                    var filteredSchemas = schemaObjs.filter(function(value) {
+                        return value.modelName == toExtend;
+                    });
+
+                    if (filteredSchemas.length > 0) {
+                        schema = schemaObj.schemaInstance = filteredSchemas[0].schemaInstance.extend(schemaObj.schema);
+                    }
+                } else {
+                    schema = schemaObj.schemaInstance = new mongoose.Schema(schemaObj.schema);
                 }
-                models[schemaObjs[i].modelName] = mongoose.model(schemaObjs[i].modelName, schema);
+                if(schemaObj.onSchemaReady)
+                {
+                    schemaObj.onSchemaReady(schema);
+                }
+                models[schemaObj.modelName] = mongoose.model(schemaObj.modelName, schema);
+                if (schemaObj.onModelReady)
+                {
+                    schemaObj.onModelReady(models[schemaObj.modelName]);
+                }
+            /*
             }
             catch (err)
             {
-                console.error('The model ' + schemaObjs[i].modelName + ' could not be loaded in ' + pluginName + ' plugin');
-            }
+                console.error('The model ' + schemaObj.modelName + ' could not be loaded in ' + pluginName + ' plugin', err);
+            }*/
         }
     }
 };
