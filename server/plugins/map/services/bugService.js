@@ -37,7 +37,8 @@ module.exports = function(Bug) {
                         // TODO: Get the point altitude
                         altitude: rawBug.properties.altitude,
                         description: rawBug.properties.description,
-                        status: rawBug.properties.status
+                        status: rawBug.properties.status,
+                        entity: 'Bug'
                     },
                     geometry: {
                         coordinates: rawBug.geometry.coordinates
