@@ -5,6 +5,7 @@ angular.module('archCarto')
       restrict: 'E',
       templateUrl: 'app/map/arch-map.html',
       controller: function($scope) {
+        $scope.x = '30px';
         $q.all([
             archMapControlService.registerControls(archMapInitConstant.controls),
             archMapLayerService.registerLayers(archMapInitConstant.layers)
@@ -32,7 +33,7 @@ angular.module('archCarto')
             });
           })
           .then(function() {
-            debugger;
+            //debugger;
             setTimeout(function() {
               $scope.map.isInit = true;
             }, 1000);
@@ -241,11 +242,25 @@ angular.module('archCarto')
 
         $scope.$on('leafletDirectiveMap.load', function(event, args) {
           refreshMarkers();
+
+          $mdSidenav('leftSideNav').toggle();
+          $mdSidenav('leftSideNav').open();
           /*archMapDialogService.showCenterDialog()
            .then(setCenter);*/
           //LxDialogService.open('chooseCenterDialog');
         });
 
+        $scope.openLeft = function() {
+          $mdSidenav('leftSideNav').open();
+        };
+
+        $scope.closeLeft = function () {
+          $mdSidenav('leftSideNav').close();
+        };
+
+        $scope.toggleLeft = function() {
+          $mdSidenav('leftSideNav').toggle();
+        };
         $scope.openRight = function() {
           $mdSidenav('rightSideNav').open();
         };

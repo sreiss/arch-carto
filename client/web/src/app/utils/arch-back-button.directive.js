@@ -10,7 +10,7 @@ angular.module('archCarto')
       templateUrl: 'app/utils/arch-back-button.html',
       controller: function($scope) {
         $scope.backState = $scope.backState || '';
-        $scope.backText = $scope.backText || 'BACK';
+        //$scope.backText = $scope.backText || 'BACK';
 
         $scope.clearBackdrop = function() {
           $document.find('body').find('.md-sidenav-backdrop').remove();

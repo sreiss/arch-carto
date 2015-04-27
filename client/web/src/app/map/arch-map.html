@@ -1,55 +1,83 @@
-  <!--<arch-tip message="{{'CLICK_ON_THE_MAP_TO_START_AN_ACTIVITY' | translate}}"></arch-tip>-->
-  <section layout="row" flex>
-    <div layout="column" flex>
-      <arch-map-navbar></arch-map-navbar>
-      <span ui-view="mapLeft"></span>
-      <span ng-if="!map.isInit" layout="column" layout-align="center center" flex>
+<!--<arch-tip message="{{'CLICK_ON_THE_MAP_TO_START_AN_ACTIVITY' | translate}}"></arch-tip>-->
+<section layout="row" flex>
+  <div layout="column" flex>
+    <md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>
+      <div class="md-toolbar-tools">
+        <div layout="row" flex class="fill-height">
+          <div class="md-toolbar-tools">
+              <span layout="row" layout-align="begin center" flex>
+                <arch-map-center-search flex></arch-map-center-search>
+                <div class="smaller" flex>
+                  <div layout="row" layout-align="center center" class="arch-text-center">
+                    <span class="padded" flex>{{'LATITUDE' | translate}}: {{cursor.lat | number: 6}}</span>
+                    <span class="padded" flex>{{'LONGITUDE' | translate}}: {{cursor.lng | number: 6}}</span>
+                  </div>
+                </div>
+              </span>
+          </div>
+        </div>
+      </div>
+    </md-toolbar>
+        <span ng-if="!map.isInit" layout="column" layout-align="center center" flex>
         <md-progress-circular md-mode="indeterminate" layout="column" layout-align="center center" flex></md-progress-circular>
       </span>
       <span ng-if="map.isInit" layout="column" flex>
-        <leaflet center="map.center" markers="map.markers" layers="map.layers" paths="map.paths" controls="map.controls" layout="column" flex></div>
+        <leaflet center="map.center" markers="map.markers" layers="map.layers" paths="map.paths" controls="map.controls" layout="column" ng-style="{ 'width' : width, 'margin-left' : x }"flex></div>
+  </span>
+
+
+  </div>
+  <!--<md-sidenav class="md-sidenav-left arch-side-nav-left arch-side-nav-large" md-component-id="leftSideNav" ui-view="sideNavLeft">-->
+  <arch-map-side-nav-left></arch-map-side-nav-left>
+  <!--<md-content class="md-padding">-->
+  <!--<md-button  class="md-primary" hide-gt-md>-->
+  <!--Close Sidenav Left-->
+  <!--</md-button>-->
+  <!--<p hide-md show-gt-md>-->
+  <!--This sidenav is locked open on your device. To go back to the default behavior,-->
+  <!--narrow your display.-->
+  <!--</p>-->
+  <!--</md-content>-->
+  <!--</md-sidenav>-->
+</section>
+
+
+<!--
+<lx-dialog class="dialog dialog--l" id="gpxDialog">
+  <div class="dialog__header">
+    <div class="toolbar bgc-light-blue-500 pl++">
+      <span class="toolbar__label tc-white fs-title">
+        {{'UPLOAD_A_GPX_TRACE' | translate}}
       </span>
     </div>
-    <md-sidenav class="md-sidenav-right arch-side-nav-right arch-side-nav-large" md-component-id="rightSideNav" ui-view="sideNavRight"></md-sidenav>
-  </section>
-
-
-  <!--
-  <lx-dialog class="dialog dialog--l" id="gpxDialog">
-    <div class="dialog__header">
-      <div class="toolbar bgc-light-blue-500 pl++">
-        <span class="toolbar__label tc-white fs-title">
-          {{'UPLOAD_A_GPX_TRACE' | translate}}
-        </span>
-      </div>
-    </div>
-    <div class="dialog__content">
-      <form name="gpxForm">
-        <div class="p++">
-          <div flex-container="row" flex-gutter="24">
-            <div flex-item>
-              <label>
-                {{'GPX_FILE' | translate}}
-              </label>
-              <div ng-if="gpxUploader" nv-file-drop uploader="gpxUploader">
-                <div class="upload-zone" nv-file-over uploader="gpxUploader" style="float: left;">
-                  Base drop zone indication
-                </div>
+  </div>
+  <div class="dialog__content">
+    <form name="gpxForm">
+      <div class="p++">
+        <div flex-container="row" flex-gutter="24">
+          <div flex-item>
+            <label>
+              {{'GPX_FILE' | translate}}
+            </label>
+            <div ng-if="gpxUploader" nv-file-drop uploader="gpxUploader">
+              <div class="upload-zone" nv-file-over uploader="gpxUploader" style="float: left;">
+                Base drop zone indication
               </div>
-              <div ng-repeat="item in gpxUploader.queue">
-                {{item.file.name}}
-              </div>
-              <div class="tc-red-600" ng-messages="gpxForm.gpxFile.$error" ng-if="gpxForm.gpxFile.$dirty">
-                <span ng-message="required">{{'YOU_MUST_CHOOSE_A_FILE_TO_UPLOAD' | translate}}</span>
-              </div>
+            </div>
+            <div ng-repeat="item in gpxUploader.queue">
+              {{item.file.name}}
+            </div>
+            <div class="tc-red-600" ng-messages="gpxForm.gpxFile.$error" ng-if="gpxForm.gpxFile.$dirty">
+              <span ng-message="required">{{'YOU_MUST_CHOOSE_A_FILE_TO_UPLOAD' | translate}}</span>
             </div>
           </div>
         </div>
-      </form>
-    </div>
-    <div class="dialog__actions">
-      <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close>{{'CANCEL' | translate}}</button>
-      <button class="btn btn--m btn--blue btn--raised" lx-ripple ng-click="gpxUploader.uploadAll()" ng-disabled="!gpxUploader.getNotUploadedItems().length">{{'UPLOAD' | translate}}</button>
-    </div>
-  </lx-dialog>
-  -->
+      </div>
+    </form>
+  </div>
+  <div class="dialog__actions">
+    <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close>{{'CANCEL' | translate}}</button>
+    <button class="btn btn--m btn--blue btn--raised" lx-ripple ng-click="gpxUploader.uploadAll()" ng-disabled="!gpxUploader.getNotUploadedItems().length">{{'UPLOAD' | translate}}</button>
+  </div>
+</lx-dialog>
+-->
