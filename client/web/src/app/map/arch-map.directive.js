@@ -245,6 +245,14 @@ angular.module('archCarto')
 
           $mdSidenav('leftSideNav').toggle();
           $mdSidenav('leftSideNav').open();
+
+
+          //fix the gray area when the map load
+          leafletData.getMap()
+             .then(function(map) {
+             L.Util.requestAnimFrame(map.invalidateSize,map,!1,map._container);
+          });
+
           /*archMapDialogService.showCenterDialog()
            .then(setCenter);*/
           //LxDialogService.open('chooseCenterDialog');

@@ -4,6 +4,7 @@ angular.module('archCarto')
     return {
       restrict: 'E',
       controller: function($scope) {
+        console.log('POI');
         archMapControlService.registerControl({
             draw: {
               polyline: false,

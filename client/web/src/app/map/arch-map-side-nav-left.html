@@ -8,19 +8,19 @@
     <span class="fa fa-crosshairs"></span>
     {{'CHOOSE_CENTER' | translate}}
   </md-button>-->
-  <md-button class="md-primary" ui-sref="map.poi">
+  <md-button aria-label="POI" class="md-primary" ng-mouseenter="showSimpleToast('POI')"  ui-sref="map.poi">
     <span class="fa fa-heart"></span>
     <!--{{'POINTS_OF_INTEREST' | translate}}-->
   </md-button>
-  <md-button class="md-primary" ui-sref="map.bug">
+  <md-button aria-label="BUG" class="md-primary" ng-mouseenter="showSimpleToast('BUG')" ui-sref="map.bug">
     <span class="fa fa-bug"></span>
     <!--{{'BUGS' | translate}}-->
   </md-button>
-  <md-button class="md-primary" ui-sref="map.path">
+  <md-button aria-label="PATH" class="md-primary"  ng-mouseenter="showSimpleToast('PATH')" ui-sref="map.path">
     <span class="fa fa-location-arrow"></span>
     <!--{{'PATHS' | translate}}-->
   </md-button>
-  <md-button class="md-primary" ui-sref="map.gpx">
+  <md-button aria-label="TRACE" class="md-primary" ng-mouseenter="showSimpleToast('TRACE')" ui-sref="map.gpx">
     <span class="fa fa-upload"></span>
     <!--{{'UPLOAD_A_GPX_TRACE' | translate}}-->
   </md-button>
