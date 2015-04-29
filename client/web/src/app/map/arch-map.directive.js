@@ -1,10 +1,14 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav, archRolesService, archComponentsConstant, archFormatService, archMapControlService, archMapLayerService, $q, archMapInitConstant) {
+  .directive('archMap', function (archMapService, archPoiService, archPathService, archBugService, archMarkerService, archMapMarkerService, archGpxService, archMapDialogService, archLayerService, $mdToast, $mdDialog, $translate, leafletData, $window, $mdSidenav, archRolesService, archComponentsConstant, archFormatService, archMapControlService, archMapLayerService, $q, archMapInitConstant) {
     return {
       restrict: 'E',
       templateUrl: 'app/map/arch-map.html',
       controller: function($scope) {
+        leafletData.getGeoJSON().then(function(lObjs){
+          window.leafletDataGeoJSON = lObjs;
+        });
+
         $scope.x = '30px';
         $q.all([
             archMapControlService.registerControls(archMapInitConstant.controls),
@@ -27,6 +31,10 @@ angular.module('archCarto')
                 layers: results[1],
                 markers: {},
                 paths: {},
+                geojson: {
+                  markers: {},
+                  paths: {}
+                },
                 controls: results[0],
                 isInit: false
               }
@@ -109,7 +117,7 @@ angular.module('archCarto')
             map.fitBounds(layer.getBounds());
 
           });
-        }
+        };
 
 
         // region action api
@@ -150,19 +158,26 @@ angular.module('archCarto')
 
         // endregion
 
-        var refreshMarkers = this.refreshMarkers = function() {
-          archMapService.refreshMarkers()
+        var refreshMarkers = this.refreshMarkers = function(type) {
+          archMapMarkerService.getMarkers(type)
             .then(function(markers) {
-              angular.extend($scope.markers, markers);
+              //angular.extend($scope.map.markers, markers);
+
+              // GEOJson injection
+              if (!$scope.map.geojson.markers[type]) {
+                $scope.map.geojson.markers[type] = {};
+              }
+              $scope.map.geojson.markers[type].data = markers;
+              $scope.map.geojson.markers[type].style = {
+                fillColor: "blue",
+                  weight: 2,
+                  opacity: 1,
+                  color: 'white',
+                  dashArray: '3',
+                  fillOpacity: 0.7
+              };
+              debugger;
             });
-          /*  archMapService.refreshMarkers(markerTypes[i])
-           .then(function(markers) {
-           angular.extend($scope.markers, markers);
-           });
-           leafletData.getMap('arch-map')
-           .then(function (map) {
-           console.log(map.getBounds());
-           });*/
         };
 
         $scope.$on('leafletDirectiveMap.load', function(event, args) {

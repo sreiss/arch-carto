@@ -1,10 +1,10 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archPoi', function(leafletData, archMapControlService) {
+  .directive('archPoi', function(leafletData, archMapControlService, archMapMarkerService) {
     return {
       restrict: 'E',
+      require: '^archMap',
       controller: function($scope) {
-        console.log('POI');
         archMapControlService.registerControl({
             draw: {
               polyline: false,
@@ -13,17 +13,20 @@ angular.module('archCarto')
               rectangle: false,
               marker: true
             }
-          })
-          .then(function() {
-            leafletData.getMap()
-              .then(function(map) {
-                var drawnItems = $scope.map.controls.edit.featureGroup;
-                map.on('draw:created', function (e) {
-                  var layer = e.layer;
-                  drawnItems.addLayer(layer);
-                  console.log(JSON.stringify(layer.toGeoJSON()));
+          });
+      },
+      link: function(scope, element, attributes, archMap) {
+        leafletData.getMap()
+          .then(function(map) {
+            var drawnItems = scope.map.controls.edit.featureGroup;
+            map.on('draw:created', function (e) {
+              var layer = e.layer;
+              drawnItems.addLayer(layer);
+              archMapMarkerService.addMarker(layer.toGeoJSON(), 'poi')
+                .then(function() {
+                  archMap.refreshMarkers('poi');
                 });
-              });
+            });
           });
       }
     };

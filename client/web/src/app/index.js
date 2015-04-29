@@ -53,7 +53,7 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
       .state('map.poi', {
         url: '/poi',
         views: {
-          mapLeft: {
+          mapPlugin: {
             template: '<arch-poi></arch-poi>'
           },
           sideNavRight: {

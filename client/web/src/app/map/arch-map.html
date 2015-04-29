@@ -1,4 +1,7 @@
 <!--<arch-tip message="{{'CLICK_ON_THE_MAP_TO_START_AN_ACTIVITY' | translate}}"></arch-tip>-->
+
+<ui-view name="mapPlugin"></ui-view>
+
 <section layout="row" flex>
   <div layout="column" flex>
     <md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>
@@ -22,7 +25,18 @@
         <md-progress-circular md-mode="indeterminate" layout="column" layout-align="center center" flex></md-progress-circular>
       </span>
       <span ng-if="map.isInit" layout="column" flex>
-        <leaflet center="map.center" markers="map.markers" layers="map.layers" paths="map.paths" controls="map.controls" layout="column" ng-style="{ 'width' : width, 'margin-left' : x }"flex></div>
+
+        <leaflet center="map.center"
+                 markers="map.markers"
+                 layers="map.layers"
+                 paths="map.paths"
+                 controls="map.controls"
+                 geojson="map.geojson"
+                 geojson-nested="true"
+                 layout="column"
+                 ng-style="{ 'width' : width, 'margin-left' : x }"
+                 flex></leaflet>
+
   </span>
 
 
