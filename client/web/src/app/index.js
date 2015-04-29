@@ -64,8 +64,8 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
       .state('map.bug', {
         url: '/bug',
         views: {
-          sideNavRight: {
-            controller: 'ArchBugController',
+          "sideNavRight": {
+            //controller: 'ArchBugController',
             template: '<arch-map-side-nav-bug-right></arch-map-side-nav-bug-right>'
           }
         }
@@ -73,11 +73,12 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
       .state('map.gpx', {
         url: '/path',
         views: {
-          sideNavLeft: {
+          "sideNavRight": {
             template: '<arch-gpx-upload-form></arch-gpx-upload-form>'
           }
         }
       });
+    console.log('State map');
 
 
     $urlRouterProvider.otherwise('/');

@@ -51,81 +51,6 @@ angular.module('archCarto')
         };
         $scope.actions = {};
 
-        /*leafletData.getMap()
-          .then(function(map) {
-            map.addLayer($window.MQ.mapLayer());
-            var tiles = L.tileLayer(, {
-              maxZoom: 18
-            });
-            tiles.addTo(map);
-          });*/
-
-        /*archGpxService.getGpxUploader()
-          .then(function(gpxUploader) {
-            //$scope.gpxUploader = gpxUploader;
-            //console.log("toto");
-            //console.log(gpxUploader);
-            //console.log("toto");
-
-            leafletData.getMap('arch-map').then(function(map) {
-              //premiere version
-              //console.log("toto");
-              //var el = L.control.elevation();
-              //el.addTo(map);
-              //var g = new L.GPX(
-              //  gpxUploader, {
-              //    async: true
-              //  }
-              //).on('loaded',
-              //  function(e) {
-              //    map.fitBounds(e.target.getBounds());
-              //  }
-              //).addTo(map);
-              //g.on("addline",function(e){
-              //  el.addData(e.line);
-              //});
-              //g.addTo(map);
-
-              //deuxieme version
-              //
-              //var url = 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg',
-              //  attr ='Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-              //  service = new L.TileLayer(url, {subdomains:"1234",attribution: attr});
-
-
-
-
-
-              var el = L.control.elevation({
-                position: "topleft",
-                theme: "steelblue-theme",
-                width: 600,
-                height: 125,
-                margins: {
-                  top: 10,
-                  right: 20,
-                  bottom: 30,
-                  left: 50
-                },
-                collapsed: true
-
-              });
-              el.addTo(map);
-
-              var g=new L.GPX(gpxUploader, {
-                async: true
-              });
-              g.on('loaded', function(e) {
-                map.fitBounds(e.target.getBounds());
-              });
-              g.on("addline",function(e){
-                el.addData(e.line);
-              });
-              g.addTo(map);
-
-              //map.addLayer(service);
-            });
-          });*/
 
         this.getMap = function() {
           return leafletData.getMap();
@@ -257,7 +182,7 @@ angular.module('archCarto')
            .then(setCenter);*/
           //LxDialogService.open('chooseCenterDialog');
         });
-
+        //probably need to  be in a service
         $scope.openLeft = function() {
           $mdSidenav('leftSideNav').open();
         };

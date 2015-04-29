@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archGpxUploadForm', ['$parse', function ($parse) {
+  .directive('archGpxUploadForm', ['$parse', function ($parse,$mdSidenav) {
   return {
     restrict: 'E',
     scope: {
@@ -8,8 +8,11 @@ angular.module('archCarto')
       formValid: '='
     },
     templateUrl: 'components/gpx/arch-upload-form.html',
-    controller: function($scope, httpConstant, FileUploader ,archGpxUploadService,archHttpService) {
+    controller: function($scope, httpConstant, FileUploader ,archGpxUploadService,archHttpService, $mdSidenav) {
+      $mdSidenav('rightSideNav').toggle();
+      $mdSidenav('rightSideNav').open();
       var _gpxUrl = httpConstant.apiUrl + '/map/gpx/';
+      console.log(_gpxUrl);
       $scope.uploader = new FileUploader({
         removeAfterUpload: true,
         autoUpload: false,
