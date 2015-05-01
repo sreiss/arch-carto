@@ -36,12 +36,32 @@ angular.module('archCarto', [
         }
       })
       .state('map.home', {
-        url: '',
+        url: ''
+      })
+      .state('map.path', {
+        url: '/path',
         views: {
           mapRight: {
-            template: '<md-sidenav md-is-locked-open="true"><md-content>Ok</md-content></md-sidenav>'
+            template: '<arch-path></arch-path>'
           }
         }
+      })
+      .state('map.marker', {
+        url: '/marker',
+        abstract: true,
+        views: {
+          mapRight: {
+            template: '<arch-marker></arch-marker>'
+          }
+        }
+      })
+      .state('map.marker.choice', {
+        url: '',
+        template: '<arch-marker-choice></arch-marker-choice>'
+      })
+      .state('map.marker.poi', {
+        url: '/poi',
+        template: '<arch-marker-poi></arch-marker-poi>'
       })
       /*
       .state('map.center', {

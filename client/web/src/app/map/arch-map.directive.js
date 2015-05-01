@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function(geolocation, $q, $log, $translate, archUtilsService, leafletData, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT, ARCH_LAYER_TYPES) {
+  .directive('archMap', function(geolocation, $q, $log, $translate, $mdSidenav, archUtilsService, leafletData, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT, ARCH_LAYER_TYPES) {
     return {
       restrict: 'E',
       require: ['^archMap'],
@@ -130,19 +130,22 @@ angular.module('archCarto')
 
         // region feature groups
 
+        this.hasFeatureGroup = function(name) {
+          return $q.when(angular.isDefined(_featureGroups[name]));
+        };
+
         this.addFeatureGroup = function(name, options) {
           var deferred = $q.defer();
           if (_featureGroups[name]) {
             $log.warn('The feature group ' + name + ' already existed and has been erased.');
-          } else {
-            leafletData.getMap()
-              .then(function (map) {
-                options = options || {};
-                var featureGroup = _featureGroups[name] = new L.FeatureGroup();
-                map.addLayer(featureGroup);
-                deferred.resolve(featureGroup);
-              });
           }
+          leafletData.getMap()
+            .then(function (map) {
+              options = options || {};
+              _featureGroups[name] = new L.FeatureGroup();
+              map.addLayer(_featureGroups[name]);
+              deferred.resolve(_featureGroups[name]);
+            });
           return deferred.promise;
         };
 
@@ -162,10 +165,24 @@ angular.module('archCarto')
           leafletData.getMap()
             .then(function(map) {
               options = options || {};
-              var control = _controls[name] = new LClass(options);
-              map.addControl(control);
+              _controls[name] = new LClass(options);
+              map.addControl(_controls[name]);
               deferred.resolve();
             });
+          return deferred.promise;
+        };
+
+        this.removeControl = function(name) {
+          var deferred = $q.defer();
+          if (!_controls[name]) {
+            deferred.reject(new Error('The control you are trying to remove doesn\'t exist'));
+          } else {
+            leafletData.getMap()
+              .then(function (map) {
+                map.removeControl(_controls[name]);
+                deferred.resolve();
+              });
+          }
           return deferred.promise;
         };
 
@@ -177,16 +194,6 @@ angular.module('archCarto')
       link: function(scope, element, attributes, controllers) {
 
         var archMap = controllers[0];
-
-        archMap.addFeatureGroup('edit', {})
-          .then(function(featureGroup) {
-            archMap.addControl('test', L.Control.Draw, {
-              edit: {
-                featureGroup: featureGroup
-              }
-            });
-          });
-
 
         // Ajout du centre
         geolocation.getLocation()
