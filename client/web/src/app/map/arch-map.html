@@ -1,21 +1,15 @@
 <md-content layout="column" layout-fill>
-  <navbar layout="row">
-      <md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>
-        <div class="md-toolbar-tools">
-          <div layout="row" flex class="fill-height">
-            <div class="md-toolbar-tools">
-                <span layout="row" layout-align="begin center" flex>
-                  <div flex>
-                    <arch-map-center-search flex></arch-map-center-search>
-                  </div>
-                  <div class="smaller" flex>
-                    <arch-map-coordinates-indicator flex></arch-map-coordinates-indicator>
-                  </div>
-                </span>
-            </div>
-          </div>
+  <navbar class="arch-navbar">
+      <!--<md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>-->
+      <span layout="row" layout-align="begin center" flex>
+        <div flex>
+          <arch-map-center-search></arch-map-center-search>
         </div>
-      </md-toolbar>
+        <div class="smaller" flex="30">
+          <arch-map-coordinates-indicator></arch-map-coordinates-indicator>
+        </div>
+      </span>
+      <!--</md-toolbar>-->
   </navbar>
 
   <section flex layout="row">
