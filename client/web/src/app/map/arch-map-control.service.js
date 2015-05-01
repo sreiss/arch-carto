@@ -1,33 +1,36 @@
 'use strict'
 angular.module('archCarto')
   .factory('archMapControlService', function($q) {
-    var _controls = {};
-
     return {
-      getControls: function(type) {
-        if (type && _controls[type]) {
-          return $q.when(_controls[type]);
-        } else if (type) {
-          $q.reject(new Error('Control type ' + type + ' was not found.'));
-        }
-        return $q.when(_controls);
-      },
-      registerControl: function(control, type) {
-        if (type && _controls[type]) {
-          $q.when(angular.extend(_controls[type], control));
-        }
-        return $q.when(_controls, control);
-      },
       /**
-       * Ajoute les contrôles donnés en paramètre à la carte.
-       * @param {Array} controlNames Le tableau du nom des contrôles à ajouter.
+       * Créer le control Leaftlet souhaité. Util pour créer des controles de navigation.
+       * @param name
+       * @param options
        * @returns {*}
        */
-      registerControls: function(controls, type) {
-        if (type) {
-          return $q.when(angular.extend(_controls[type], controls));
-        }
-        return $q.when(angular.extend(_controls, controls));
+      createControlClass: function(name, cssName) {
+        return L.Control[name] = L.Control.extend({
+          options: {
+            position: 'topleft',
+            clickFn: angular.noop
+          },
+          onAdd: function (map) {
+            var control = L.DomUtil.create('div', 'arch-control-' + cssName);
+            var bar = L.DomUtil.create('div', 'leaflet-bar arch-control-toolbar-' + cssName, control);
+
+            var a = L.DomUtil.create('a', 'arch-control-' + cssName + '-a', bar);
+            var clickFn = this.options.clickFn;
+            L.DomEvent
+              .addListener(a, 'click', L.DomEvent.stopPropagation)
+              .addListener(a, 'click', L.DomEvent.preventDefault)
+              .addListener(a, 'click', function () {
+                clickFn();
+              });
+
+            return control;
+          }
+        });
+
       }
     };
   });

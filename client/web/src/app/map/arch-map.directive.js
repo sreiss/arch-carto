@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function(geolocation, $q, $log, $translate, $mdSidenav, archUtilsService, leafletData, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT, ARCH_LAYER_TYPES) {
+  .directive('archMap', function(geolocation, $q, $log, $translate, $mdSidenav, $state, archUtilsService, leafletData, archMapControlService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT, ARCH_LAYER_TYPES) {
     return {
       restrict: 'E',
       require: ['^archMap'],
@@ -194,6 +194,24 @@ angular.module('archCarto')
       link: function(scope, element, attributes, controllers) {
 
         var archMap = controllers[0];
+
+        var markerControlClass = archMapControlService.createControlClass('GoToArchMarker', 'arch-marker');
+        archMap.addControl('goToArchMarker', markerControlClass, {
+            clickFn: function() {
+              $state.go('map.marker.choice');
+            }
+          })
+          .then(function() {
+            var pathControlClass = archMapControlService.createControlClass('GoToArchPath', 'arch-path');
+            archMap.addControl('goToArchPath', pathControlClass, {
+              clickFn: function() {
+                $state.go('map.path');
+              }
+            })
+          })
+          .catch(function(err) {
+            $log.error(err);
+          });
 
         // Ajout du centre
         geolocation.getLocation()
