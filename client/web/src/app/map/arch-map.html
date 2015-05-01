@@ -1,99 +1,34 @@
-<!--<arch-tip message="{{'CLICK_ON_THE_MAP_TO_START_AN_ACTIVITY' | translate}}"></arch-tip>-->
-
-<ui-view name="mapPlugin"></ui-view>
-
-<section layout="row" flex>
-  <div layout="column" flex>
-    <md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>
-      <div class="md-toolbar-tools">
-        <div layout="row" flex class="fill-height">
-          <div class="md-toolbar-tools">
-              <span layout="row" layout-align="begin center" flex>
-                <arch-map-center-search flex></arch-map-center-search>
-                <div class="smaller" flex>
-                  <div layout="row" layout-align="center center" class="arch-text-center">
-                    <span class="padded" flex>{{'LATITUDE' | translate}}: {{cursor.lat | number: 6}}</span>
-                    <span class="padded" flex>{{'LONGITUDE' | translate}}: {{cursor.lng | number: 6}}</span>
+<md-content layout="column" layout-fill>
+  <navbar layout="row">
+      <md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>
+        <div class="md-toolbar-tools">
+          <div layout="row" flex class="fill-height">
+            <div class="md-toolbar-tools">
+                <span layout="row" layout-align="begin center" flex>
+                  <div flex>
+                    <arch-map-center-search flex></arch-map-center-search>
                   </div>
-                </div>
-              </span>
-          </div>
-        </div>
-      </div>
-    </md-toolbar>
-        <span ng-if="!map.isInit" layout="column" layout-align="center center" flex>
-        <md-progress-circular md-mode="indeterminate" layout="column" layout-align="center center" flex></md-progress-circular>
-      </span>
-      <span ng-if="map.isInit" layout="column" flex>
-
-        <leaflet center="map.center"
-                 markers="map.markers"
-                 layers="map.layers"
-                 paths="map.paths"
-                 controls="map.controls"
-                 geojson="map.geojson"
-                 geojson-nested="true"
-                 layout="column"
-                 ng-style="{ 'width' : width, 'margin-left' : x }"
-                 flex></leaflet>
-
-  </span>
-
-
-  </div>
-  <!--<md-sidenav class="md-sidenav-left arch-side-nav-left arch-side-nav-large" md-component-id="leftSideNav" ui-view="sideNavLeft">-->
-  <arch-map-side-nav-left></arch-map-side-nav-left>
-  <div ui-view="sideNavRight"></div>
-  <!--<arch-gpx-upload-form></arch-gpx-upload-form>-->
-  <!--<md-content class="md-padding">-->
-  <!--<md-button  class="md-primary" hide-gt-md>-->
-  <!--Close Sidenav Left-->
-  <!--</md-button>-->
-  <!--<p hide-md show-gt-md>-->
-  <!--This sidenav is locked open on your device. To go back to the default behavior,-->
-  <!--narrow your display.-->
-  <!--</p>-->
-  <!--</md-content>-->
-  <!--</md-sidenav>-->
-</section>
-
-
-<!--
-<lx-dialog class="dialog dialog--l" id="gpxDialog">
-  <div class="dialog__header">
-    <div class="toolbar bgc-light-blue-500 pl++">
-      <span class="toolbar__label tc-white fs-title">
-        {{'UPLOAD_A_GPX_TRACE' | translate}}
-      </span>
-    </div>
-  </div>
-  <div class="dialog__content">
-    <form name="gpxForm">
-      <div class="p++">
-        <div flex-container="row" flex-gutter="24">
-          <div flex-item>
-            <label>
-              {{'GPX_FILE' | translate}}
-            </label>
-            <div ng-if="gpxUploader" nv-file-drop uploader="gpxUploader">
-              <div class="upload-zone" nv-file-over uploader="gpxUploader" style="float: left;">
-                Base drop zone indication
-              </div>
-            </div>
-            <div ng-repeat="item in gpxUploader.queue">
-              {{item.file.name}}
-            </div>
-            <div class="tc-red-600" ng-messages="gpxForm.gpxFile.$error" ng-if="gpxForm.gpxFile.$dirty">
-              <span ng-message="required">{{'YOU_MUST_CHOOSE_A_FILE_TO_UPLOAD' | translate}}</span>
+                  <div class="smaller" flex>
+                    <arch-map-coordinates-indicator flex></arch-map-coordinates-indicator>
+                  </div>
+                </span>
             </div>
           </div>
         </div>
-      </div>
-    </form>
-  </div>
-  <div class="dialog__actions">
-    <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close>{{'CANCEL' | translate}}</button>
-    <button class="btn btn--m btn--blue btn--raised" lx-ripple ng-click="gpxUploader.uploadAll()" ng-disabled="!gpxUploader.getNotUploadedItems().length">{{'UPLOAD' | translate}}</button>
-  </div>
-</lx-dialog>
--->
+      </md-toolbar>
+  </navbar>
+
+  <section flex layout="row">
+    <span ng-if="!map.isInit">
+      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </span>
+    <span ng-if="map.isInit" flex>
+      <leaflet defaults="map.defaults"
+               center="map.center"
+               class="arch-map-leaflet"></leaflet>
+    </span>
+
+    <span ui-view="mapPlugin"></span>
+    <span ui-view="mapRight"></span>
+  </section>
+</md-content>

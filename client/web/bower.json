@@ -19,7 +19,8 @@
     "angular-material": "~0.8.3",
     "angular-base64": "~2.0.3",
     "angular-ui-router": "~0.2.13",
-    "mdi": "~1.0.8-beta"
+    "mdi": "~1.0.8-beta",
+    "angularjs-geolocation": "~0.1.1"
   },
   "overrides": {
     "leaflet.draw": {

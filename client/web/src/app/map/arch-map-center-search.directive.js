@@ -5,20 +5,24 @@ angular.module('archCarto')
       restrict: 'E',
       require: '^archMap',
       scope: {},
-      templateUrl: 'components/center/arch-map-center-search.html',
+      templateUrl: 'app/map/arch-map-center-search.html',
       link: function(scope, element, attributes, archMap) {
-        scope.center = archMap.getCenter();
-
         scope.chooseCenter = function(center) {
-          archMap.setCenter(center);
+          archMap.setCenter(center)
+            .catch(function(err) {
+              $log.error(err);
+            });
         };
 
         scope.extractCenter = function(item) {
           if (angular.isDefined(item)) {
-            scope.center.lat = parseFloat(item.lat);
-            scope.center.lng = parseFloat(item.lon);
+            archMap.getCenter()
+              .then(function(center) {
+                center.lat = parseFloat(item.lat);
+                center.lng = parseFloat(item.lon);
+                scope.chooseCenter(center);
+              });
           }
-          scope.chooseCenter(scope.center);
         };
 
         scope.getMatchLocations = function(search) {

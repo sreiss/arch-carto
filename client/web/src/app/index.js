@@ -1,5 +1,11 @@
 'use strict';
-angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ui.router', 'ngMaterial', 'pascalprecht.translate', 'leaflet-directive', 'angularFileUpload', 'base64'])
+angular.module('archCarto', [
+    'ngAnimate', 'ngCookies', 'ngTouch',
+    'ngSanitize', 'ngMessages', 'ui.router',
+    'ngMaterial', 'pascalprecht.translate',
+    'leaflet-directive', 'angularFileUpload', 'base64',
+    'geolocation'
+  ])
   .config(function ($translateProvider, $stateProvider, $urlRouterProvider, i18nfrFRConstant, i18nenUSConstant, $mdThemingProvider) {
     L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
 
@@ -25,15 +31,15 @@ angular.module('archCarto', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 
         abstract: true,
         views: {
           main: {
-            template: '<arch-map layout="column" layout-fill></arch-map>'
+            template: '<arch-map class="arch-map"></arch-map>'
           }
         }
       })
       .state('map.home', {
         url: '',
         views: {
-          mapLeft: {
-            template: ''
+          mapRight: {
+            template: '<md-sidenav md-is-locked-open="true"><md-content>Ok</md-content></md-sidenav>'
           }
         }
       })
