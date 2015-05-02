@@ -195,10 +195,10 @@ angular.module('archCarto')
 
         var archMap = controllers[0];
 
-        var markerControlClass = archMapControlService.createControlClass('GoToArchMarker', 'arch-marker');
-        archMap.addControl('goToArchMarker', markerControlClass, {
+        var returnControlClass = archMapControlService.createControlClass('GoToArchMap', 'arch-map');
+        archMap.addControl('goToArchMap', returnControlClass, {
             clickFn: function() {
-              $state.go('map.marker.choice');
+              $state.go('map.home');
             }
           })
           .then(function() {
@@ -206,6 +206,14 @@ angular.module('archCarto')
             archMap.addControl('goToArchPath', pathControlClass, {
               clickFn: function() {
                 $state.go('map.path');
+              }
+            })
+          })
+          .then(function() {
+            var markerControlClass = archMapControlService.createControlClass('GoToArchMarker', 'arch-marker');
+            archMap.addControl('goToArchMarker', markerControlClass, {
+              clickFn: function() {
+                $state.go('map.marker.choice');
               }
             })
           })

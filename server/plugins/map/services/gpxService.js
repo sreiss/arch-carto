@@ -1,11 +1,13 @@
 var Q = require('q');
 var fs = require ('fs');
 var path = require('path');
-var jsdom = require('jsdom').jsdom;
+//var jsdom = require('jsdom').jsdom;
 var togeojson = require('togeojson');
 
 module.exports = function (Trace) {
 
+    return {};
+    /*
     return {
         saveGpx: function(gpxFile, options) {
             var deferred = Q.defer();
@@ -91,5 +93,6 @@ module.exports = function (Trace) {
 
         }
     };
+    */
 
 };
