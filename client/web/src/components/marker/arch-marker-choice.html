@@ -1,6 +1,29 @@
 <md-toolbar class="md-theme-indigo">
   <h1 class="md-toolbar-tools">{{'ADD_A_MARKER' | translate}}</h1>
 </md-toolbar>
-<md-button class="arch-navitem" ui-sref="map.marker.poi">
-  {{'POINT_OF_INTEREST' | translate}}
-</md-button>
+<md-content class="md-padding">
+  <p>
+    {{'PLEASE_INDICATE_THE_TYPE_OF_MARKER_YOU_WANT_TO_ADD' | translate}}
+  </p>
+  <md-grid-list md-cols-sm="3"
+                md-cols-md="3"
+                md-cols-gt-md="3"
+                md-row-height-gt-md="4:3"
+                md-row-height="4:3"
+                md-gutter="12px"
+                md-gutter-gt-sm="8px" >
+    <md-grid-tile>
+      <md-button class="arch-tile-button" ui-sref="map.marker.poi">
+        <i class="fa fa-heart arch-tile-icon"></i>
+        {{'POINT_OF_INTEREST' | translate}}
+      </md-button>
+    </md-grid-tile>
+    <md-grid-tile>
+      <md-button class="arch-tile-button" ui-sref="map.marker.bug">
+        <i class="fa fa-bug arch-tile-icon"></i>
+        {{'BUG' | translate}}
+      </md-button>
+    </md-grid-tile>
+  </md-grid-list>
+</md-content>
+

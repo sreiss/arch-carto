@@ -1,48 +1,50 @@
 <md-toolbar class="md-theme-indigo">
   <h1 class="md-toolbar-tools">{{'ADD_A_POINT_OF_INTEREST' | translate}}</h1>
 </md-toolbar>
-<ng-form name="poiForm">
-  <div layout layout-sm="column">
-    <md-input-container flex>
-      <label>{{'LATITUDE' | translate}}</label>
-      <input type="text" ng-model="poi.coordinates.latitude" ng-disabled="true" />
-    </md-input-container>
-    <md-input-container flex>
-      <label>{{'LONGITUDE' | translate}}</label>
-      <input type="text" ng-model="poi.coordinates.longitude" ng-disabled="true" />
-    </md-input-container>
-  </div>
-  <md-input-container flex>
-    <label>{{'NAME' | translate}}</label>
-    <input type="text" ng-model="poi.name" name="name" required />
-    <div ng-messages="poiForm.name.$error" ng-if="poiForm.name.$invalid && poiForm.name.$dirty">
-      <div ng-message="required">{{'PLEASE_PROVIDE_A_NAME' | translate}}</div>
-    </div>
-  </md-input-container>
-  <md-input-container flex>
-    <label>{{'DESCRIPTION' | translate}}</label>
-    <textarea ng-model="poi.description"></textarea>
-  </md-input-container>
-  <div layout="row" layout-align="center center" class="fill-height">
-    <span flex>
-      <md-select ng-model="poi.type" flex>
-        <md-select-label>{{ poi.type ? poi.type.name : ('SELECT_A_TYPE' | translate) }}</md-select-label>
-        <md-option ng-value="poiType" ng-repeat="poiType in poiTypes">{{poiType.name}}</md-option>
-      </md-select>
-    </span>
-    <span flex="15">
-      {{'OR' | translate}}
-    </span>
-    <span flex>
+<md-content class="md-padding">
+  <ng-form name="poiForm">
+    <div layout layout-sm="column">
       <md-input-container flex>
-        <label>{{'ADD_A_NEW_TYPE' | translate}}</label>
-        <input type="text" ng-model="newPoiTypeName" />
+        <label>{{'LATITUDE' | translate}}</label>
+        <input type="text" ng-model="poi.coordinates.lat" ng-disabled="true" />
       </md-input-container>
-    </span>
-    <span flex="15">
-      <md-button class="md-primary" ng-disabled="!newPoiTypeName" ng-click="addPoiType(newPoiTypeName)">
-        {{'ADD' | translate}}
-      </md-button>
-    </span>
-  </div>
-</ng-form>
+      <md-input-container flex>
+        <label>{{'LONGITUDE' | translate}}</label>
+        <input type="text" ng-model="poi.coordinates.lng" ng-disabled="true" />
+      </md-input-container>
+    </div>
+    <md-input-container flex>
+      <label>{{'NAME' | translate}}</label>
+      <input type="text" ng-model="poi.name" name="name" required />
+      <div ng-messages="poiForm.name.$error" ng-if="poiForm.name.$invalid && poiForm.name.$dirty">
+        <div ng-message="required">{{'PLEASE_PROVIDE_A_NAME' | translate}}</div>
+      </div>
+    </md-input-container>
+    <md-input-container flex>
+      <label>{{'DESCRIPTION' | translate}}</label>
+      <textarea ng-model="poi.description"></textarea>
+    </md-input-container>
+    <div layout="row" layout-align="center center" class="fill-height">
+      <span flex>
+        <md-select ng-model="poi.type" flex>
+          <md-select-label>{{ poi.type ? poi.type.name : ('SELECT_A_TYPE' | translate) }}</md-select-label>
+          <md-option ng-value="poiType" ng-repeat="poiType in poiTypes">{{poiType.name}}</md-option>
+        </md-select>
+      </span>
+      <span flex="15">
+        {{'OR' | translate}}
+      </span>
+      <span flex>
+        <md-input-container flex>
+          <label>{{'ADD_A_NEW_TYPE' | translate}}</label>
+          <input type="text" ng-model="newPoiTypeName" />
+        </md-input-container>
+      </span>
+      <span flex="15">
+        <md-button class="md-primary" ng-disabled="!newPoiTypeName" ng-click="addPoiType(newPoiTypeName)">
+          {{'ADD' | translate}}
+        </md-button>
+      </span>
+    </div>
+  </ng-form>
+</md-content>

@@ -74,5 +74,10 @@ angular.module('archCarto')
     ALL: "Tous",
     RESOLVED: "Résolus",
     TRACE_LIST: "Liste de trace",
-    NO_TRACE_REPORTED: "Aucune  trace signalée"
+    NO_TRACE_REPORTED: "Aucune  trace signalée",
+
+    ADD_A_MARKER: "Ajouter un point",
+    PLEASE_INDICATE_THE_TYPE_OF_MARKER_YOU_WANT_TO_ADD: "Veuillez indiquer le type de marqueur que vous souhaitez ajouter à la carte.",
+    POINT_OF_INTEREST: "Point d'intérêt",
+    BUG: "Anomalie"
   });

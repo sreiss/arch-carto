@@ -14,7 +14,9 @@ angular.module('archCarto')
               var coordinates = layer.getLatLng();
 
               scope.formValid = false;
-              scope.poi = {};
+              scope.poi = {
+                coordinates: coordinates
+              };
 
               scope.poiTypes = [];
 
