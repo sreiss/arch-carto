@@ -8,7 +8,7 @@ angular.module('archCarto')
        * @param options
        * @returns {*}
        */
-      createControlClass: function(name, cssName) {
+      createControlClass: function(name, cssName, imgName) {
         if (!L.Control[name]) {
           L.Control[name] = L.Control.extend({
             options: {
@@ -20,6 +20,11 @@ angular.module('archCarto')
               var bar = L.DomUtil.create('div', 'leaflet-bar arch-control-toolbar-' + cssName, control);
 
               var a = L.DomUtil.create('a', 'arch-control-' + cssName + '-a', bar);
+
+              var image = L.DomUtil.create('img', 'arch-control-img' + cssName, a);
+              image.setAttribute('src',"http://paulferrett.com/fontawesome-favicon/generate.php?icon=" +imgName);
+
+
               var clickFn = this.options.clickFn;
               L.DomEvent
                 .addListener(a, 'click', L.DomEvent.stopPropagation)

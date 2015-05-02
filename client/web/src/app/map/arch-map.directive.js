@@ -195,14 +195,14 @@ angular.module('archCarto')
 
         var archMap = controllers[0];
 
-        var returnControlClass = archMapControlService.createControlClass('GoToArchMap', 'arch-map');
+        var returnControlClass = archMapControlService.createControlClass('GoToArchMap', 'arch-map', 'home');
         archMap.addControl('goToArchMap', returnControlClass, {
             clickFn: function() {
               $state.go('map.home');
             }
           })
           .then(function() {
-            var pathControlClass = archMapControlService.createControlClass('GoToArchPath', 'arch-path');
+            var pathControlClass = archMapControlService.createControlClass('GoToArchPath', 'arch-path', 'retweet');
             archMap.addControl('goToArchPath', pathControlClass, {
               clickFn: function() {
                 $state.go('map.path');
@@ -210,10 +210,18 @@ angular.module('archCarto')
             })
           })
           .then(function() {
-            var markerControlClass = archMapControlService.createControlClass('GoToArchMarker', 'arch-marker');
+            var markerControlClass = archMapControlService.createControlClass('GoToArchMarker', 'arch-marker', 'map-marker');
             archMap.addControl('goToArchMarker', markerControlClass, {
               clickFn: function() {
                 $state.go('map.marker.choice');
+              }
+            })
+          })
+          .then(function() {
+            var pathControlClass = archMapControlService.createControlClass('GoToArchTrace', 'arch-trace', 'upload');
+            archMap.addControl('goToArchTrace', pathControlClass, {
+              clickFn: function() {
+                $state.go('map.gpx');
               }
             })
           })
