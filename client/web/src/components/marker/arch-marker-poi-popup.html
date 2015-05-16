@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+<md-content>
+  <div ng-if="!poi">
+    <md-progress-circular md-diameter="2"></md-progress-circular>
+  </div>
+  <div ng-if="poi">
+    <h2>{{poi.properties.name}}</h2>
+    <p>{{poi.properties.description}}</p>
+    <h3>{{'ASSOCIATED_MEDIAS' | translate}}</h3>
+    <div style="min-height: 16px">
+      <div ng-if="poi.properties.medias.length === 0">
+        {{'NO_MEDIAS_FOUND' | translate}}.
+        <a ui-sref="map.marker.media({type: 'poi', id: poiId})">
+          {{'ADD_SOME' | translate}}
+        </a>
+      </div>
+      <div ng-if="poi.properties.medias.length > 0">
+        <md-grid-list md-cols-sm="2"
+                      md-cols-md="2"
+                      md-cols-gt-md="2"
+                      md-row-height-gt-md="1:1"
+                      md-row-height="2:2"
+                      md-gutter="12px"
+                      md-gutter-gt-sm="8px" >
+          <md-grid-tile ng-repeat="media in poi.properties.medias">
+            <img style="max-height: 200px" ng-src="{{apiUrl + '/' + media.url }}" />
+          </md-grid-tile>
+        </md-grid-list>
+      </div>
+    </div>
+  </div>
+</md-content>

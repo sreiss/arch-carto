@@ -75,9 +75,12 @@ angular.module('archCarto')
     RESOLVED: "Résolus",
     TRACE_LIST: "Liste de trace",
     NO_TRACE_REPORTED: "Aucune  trace signalée",
-
+    OOPS_NO_CENTER: "Oops ! Pas de centre",
+    NO_CENTER_SET_YOU_NEED_TO_SET_ONE: "Le centre de la carte n'a pas pu être déterminé automatiquement, il vous faut le faire manuellement.",
     ADD_A_MARKER: "Ajouter un point",
     PLEASE_INDICATE_THE_TYPE_OF_MARKER_YOU_WANT_TO_ADD: "Veuillez indiquer le type de marqueur que vous souhaitez ajouter à la carte.",
     POINT_OF_INTEREST: "Point d'intérêt",
-    BUG: "Anomalie"
+    BUG: "Anomalie",
+
+    GEOJSON_TYPE_REQUIRED: "Un type est requis pour un point d'intérêt."
   });

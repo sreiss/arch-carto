@@ -15,7 +15,7 @@
 
   <section flex layout="row">
     <span ng-if="!map.isInit">
-      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      <md-progress-circular md-mode="indeterminate" layout="row" layout-align="center center"></md-progress-circular>
     </span>
     <span ng-if="map.isInit" flex>
       <leaflet defaults="map.defaults"

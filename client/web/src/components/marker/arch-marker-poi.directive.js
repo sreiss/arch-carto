@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMarkerPoi', function(archPoiService, archPoiTypeService, $filter, $state) {
+  .directive('archMarkerPoi', function(archPoiService, archPoiTypeService, archMarkerPoiService, $filter, $state, $translate, archTranslateService, $mdToast) {
     return {
       restrict: 'E',
       require: '^archMarker',
@@ -36,6 +36,17 @@ angular.module('archCarto')
                   }
                   scope.newPoiTypeName = '';
                 });
+              };
+
+              scope.save = function(poi) {
+                var geoJson = archMarkerPoiService.toGeoJson(poi);
+                archMarkerPoiService.save(geoJson)
+                  .then(function (result) {
+                    archTranslateService(result.message)
+                      .then(function(translation) {
+                        $mdToast.show($mdToast.simple().content(translation));
+                      });
+                  });
               };
 
               scope.$watch('poiForm.$valid', function(valid) {

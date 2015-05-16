@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function(geolocation, $q, $log, $translate, $mdSidenav, $state, archUtilsService, leafletData, archMapControlService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT, ARCH_LAYER_TYPES) {
+  .directive('archMap', function(geolocation, $q, $log, $translate, $mdSidenav, $mdDialog, $state, archUtilsService, leafletData, archMapControlService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT, ARCH_LAYER_TYPES) {
     return {
       restrict: 'E',
       require: ['^archMap'],
@@ -231,6 +231,16 @@ angular.module('archCarto')
 
         // Ajout du centre
         geolocation.getLocation()
+          // DEBUG ONLY
+          .catch(function() {
+            return archMap.setCenter({
+              lat: 49.10,
+              lng: 7.5,
+              zoom: ARCH_MAP_INIT.defaultZoom
+            });
+          })
+          //
+          /* PROD
           .then(function(data) {
             return archMap.setCenter({
               lat: data.coords.latitude,
@@ -240,7 +250,42 @@ angular.module('archCarto')
           })
           .catch(function(err) {
             $log.error(err);
+            return $mdDialog.show({
+                controller: function($scope) {
+                  $scope.center = {};
+
+                  var unregisterCenterWatch = $scope.$watch('center', function(center) {
+
+                    if (center.lat && center.lng) {
+                      unregisterCenterWatch();
+                      $mdDialog.hide(center);
+                    }
+
+                  });
+                },
+                templateUrl: 'app/map/arch-set-center-dialog.html'
+              })
+              .then(function(center) {
+                return archMap.setCenter({
+                  lat: center.lat,
+                  lng: center.lng,
+                  zoom: ARCH_MAP_INIT.defaultZoom
+                });
+              })
+              .catch(function(err) {
+                $log.error(err);
+              });
+
           });
+          /*.then(function(hasCenter) {
+            if (!hasCenter) {
+              return archMap.setCenter({
+                lat: 90,
+                lng: 90,
+                zoom: ARCH_MAP_INIT.defaultZoom
+              });
+            }
+          });*/
 
         $translate(['OUTDOOR_LAYER'])
           .then(function(translations) {

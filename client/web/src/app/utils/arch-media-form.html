@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+<div ngf-drop=""
+     ngf-select=""
+     ng-model="files"
+     class="arch-file-upload"
+     ng-model-rejected="rejFiles"
+     ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
+     ngf-multiple="true"
+     ngf-allow-dir="true"
+     ngf-accept="'image/*,application/pdf'"
+     ngf-drop-available="dropAvailable">
+  <div ng-hide="dropAvailable" class="ng-hide">{{'FILE_DROP_UNAVAILABLE' | translate}}</div>
+  <div ng-show="dropAvailable">{{'DROP_FILES_HERE' | translate}}</div>
+</div>
+<md-content class="md-padding">
+  <div ng-repeat="file in files" class="arch-media-preview">
+    <img ngf-src="file" ng-show="file.type.indexOf('image') > -1" ngf-accept="'image/*'">
+    <ng-form name="metaForm">
+      <md-input-container flex>
+        <label>{{'NAME' | translate}}</label>
+        <input type="text" ng-model="metas[$index].name" name="name" required />
+        <div ng-messages="metaForm.name.$error" ng-if="metaForm.name.$invalid && metaForm.name.$dirty">
+          <div ng-message="required">{{'PLEASE_PROVIDE_A_NAME' | translate}}</div>
+        </div>
+      </md-input-container>
+      <md-input-container flex>
+        <label>{{'DESCRIPTION' | translate}}</label>
+        <textarea ng-model="metas[$index].description" name="description"></textarea>
+      </md-input-container>
+    </ng-form>
+    <md-button ng-click="upload(file, metas[$index])" ng-disabled="metaForm.$invalid">{{'UPLOAD' | translate}}</md-button>
+  </div>
+</md-content>

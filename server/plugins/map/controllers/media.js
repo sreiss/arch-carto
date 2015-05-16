@@ -1,3 +1,15 @@
-/**
- * Created by Simon on 16/05/2015.
- */
+module.exports = function(mediaService) {
+
+    return {
+        save: function(req, res) {
+            mediaService.save({
+                    files: req.files,
+                    body: req.body
+                })
+                .then(function(media) {
+                    res.json(media);
+                });
+        }
+    };
+
+};

@@ -1,7 +1,7 @@
-module.exports = function(bugController, bugRouter) {
+module.exports = function(bugController, bugRouter, bugValidatorMiddleware, validationGateMiddleware) {
 
     bugRouter.route('/')
         .get(bugController.getBugList)
-        .post(bugController.saveBug);
+        .post(bugValidatorMiddleware.validateSaveBug, validationGateMiddleware, bugController.saveBug);
 
 };

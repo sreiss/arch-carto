@@ -1,9 +1,9 @@
 'use strict'
 angular.module('archCarto')
-  .factory(function($translate) {
+  .factory('archTranslateService', function($translate) {
 
     return function(toTranslate) {
-      $translate(toTranslate)
+      return $translate(toTranslate)
         .catch(function(err) {
           return toTranslate;
         })

@@ -48,3 +48,11 @@
     </div>
   </ng-form>
 </md-content>
+<md-content class="md-padding">
+  <md-button ng-click="cancel()">
+    {{'CANCEL' | translate}}
+  </md-button>
+  <md-button class="md-primary md-raised" ng-click="save(poi)" ng-disabled="poiForm.$invalid || !poi.type">
+    {{'SAVE' | translate}}
+  </md-button>
+</md-content>

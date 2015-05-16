@@ -1,3 +1,8 @@
-/**
- * Created by Simon on 14/05/2015.
- */
+module.exports = {
+    isArray: function(value) {
+        return Array.isArray(value);
+    },
+    isObject: function(value) {
+        return typeof value === 'object';
+    }
+};

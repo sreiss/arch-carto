@@ -3,10 +3,10 @@ angular.module('archCarto', [
     'ngAnimate', 'ngCookies', 'ngTouch',
     'ngSanitize', 'ngMessages', 'ui.router',
     'ngMaterial', 'pascalprecht.translate',
-    'leaflet-directive', 'angularFileUpload', 'base64',
-    'geolocation'
+    'leaflet-directive', 'base64',
+    'geolocation', 'ngFileUpload'
   ])
-  .config(function ($translateProvider, $stateProvider, $urlRouterProvider, i18nfrFRConstant, i18nenUSConstant, $mdThemingProvider) {
+  .config(function ($translateProvider, $stateProvider, $urlRouterProvider, i18nfrFRConstant, i18nenUSConstant, $mdThemingProvider, $httpProvider) {
     L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
 
     $mdThemingProvider.theme('default')
@@ -63,6 +63,10 @@ angular.module('archCarto', [
         url: '/poi',
         template: '<arch-marker-poi></arch-marker-poi>'
       })
+      .state('map.marker.media', {
+        url: '/media/:type/:id',
+        template: '<arch-marker-media></arch-marker-media>'
+      })
       /*
       .state('map.center', {
         url: '/center',
@@ -113,5 +117,34 @@ angular.module('archCarto', [
       .translations('fr', i18nfrFRConstant)
       .translations('en', i18nenUSConstant)
       .preferredLanguage('fr');
+
+    $httpProvider.interceptors.push(function($q, $translate, $injector) {
+      return {
+        'responseError': function (rejection) {
+          //debugger;
+          if (rejection.data) {
+            var $mdToast = $injector.get('$mdToast');
+            var untranslatedMessage = angular.copy(rejection.data.message);
+            return $translate(untranslatedMessage)
+              .then(function (translation) {
+                  return $mdToast.show({
+                    template: '<md-toast class="md-toast arch-toast-error">' + translation + '</md-toast>',
+                    hideDelay: 3000,
+                    position: 'bottom left'
+                  });
+              })
+              .then(function () {
+                return $q.reject(rejection);
+              })
+              .catch(function () {
+                return $q.reject(rejection);
+              });
+          } else {
+            return $q.reject(rejection);
+          }
+        }
+      };
+    })
+
   })
 ;

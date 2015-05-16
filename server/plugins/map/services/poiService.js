@@ -3,10 +3,25 @@ var Q = require('q');
 module.exports = function(Poi, poiTypeService) {
 
     return {
-        getPoi: function(id) {
+        getPoi: function(id, options) {
             var deferred = Q.defer();
-            Poi.find({_id: id})
-                .populate('type')
+
+            var populate = [];
+
+            if (!options.noType) {
+                populate.push('properties.type');
+            }
+
+            if (!options.noAudit) {
+                populate.push('properties.auditEvents');
+            }
+
+            if (!options.noMedias) {
+                populate.push('properties.medias');
+            }
+
+            Poi.findById(id)
+                .populate(populate.join(' '))
                 .exec(function (err, poi) {
                     if (err) {
                         deferred.reject(err);
@@ -21,7 +36,7 @@ module.exports = function(Poi, poiTypeService) {
         getAllPois: function() {
             var deferred = Q.defer();
             Poi.find()
-                .populate('type')
+                .populate('properties.type')
                 .exec(function (err, pois) {
                     if (err) {
                         deferred.reject(err);
@@ -32,29 +47,40 @@ module.exports = function(Poi, poiTypeService) {
         },
         savePoi: function(rawPoi) {
             var deferred = Q.defer();
-
-            var poi = new Poi();
-            poi.name = rawPoi.name;
-            poi.description = rawPoi.description;
-            poi.coordinates = rawPoi.coordinates;
-
-            poiTypeService.getPoiType(rawPoi.type.name)
-                .then(function(poiType) {
-                    if (poiType == null) {
-                        poiType = poiTypeService.savePoiType(rawPoi.type);
-                    }
-                    return poiType;
-                })
-                .then(function(dbPoiType) {
-                    poi.type = dbPoiType;
-                    poi.save(function(err) {
-                        if (err) {
-                            deferred.reject(err);
-                        }
+            if (rawPoi._id) {
+                var id = rawPoi._id;
+                delete rawPoi._id;
+                Poi.findByIdAndUpdate(id, rawPoi, function(err, poi) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
                         deferred.resolve(poi);
-                    })
+                    }
                 });
-
+            } else {
+                var poi = new Poi({
+                    properties: {
+                        // TODO: Get the user ID
+                        userId: rawPoi.properties.userId,
+                        // TODO: Get the point altitude
+                        altitude: rawPoi.properties.altitude,
+                        description: rawPoi.properties.description,
+                        type: rawPoi.properties.type,
+                        name: rawPoi.properties.name,
+                        entity: 'Poi'
+                    },
+                    geometry: {
+                        coordinates: rawPoi.geometry.coordinates
+                    }
+                });
+                poi.save(function (err) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(poi);
+                    }
+                });
+            }
             return deferred.promise;
         },
         deletePoi: function(id) {

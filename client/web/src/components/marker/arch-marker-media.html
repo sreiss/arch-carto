@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+<md-toolbar class="md-theme-indigo">
+  <h1 class="md-toolbar-tools">{{'ADD_MEDIA' | translate}}</h1>
+</md-toolbar>
+<md-content class="md-padding" ng-switch="type">
+  <div ng-switch-when="poi">
+    {{'POINT_OF_INTEREST'}}: {{marker.properties.name}}
+  </div>
+  <arch-media-form upload-url="uploadUrl" added="medias"></arch-media-form>
+  <div ng-if="marker.properties.media && marker.properties.media.length > 0">
+    <h4>{{'ALREADY_ADDED' | translate}}</h4>
+  </div>
+</md-content>
+<md-content class="md-padding">
+  <md-button ng-click="cancel()">
+    {{'CANCEL' | translate}}
+  </md-button>
+</md-content>
