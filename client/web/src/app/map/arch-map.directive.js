@@ -239,15 +239,14 @@ angular.module('archCarto')
               zoom: ARCH_MAP_INIT.defaultZoom
             });
           })
-          //
-          /* PROD
           .then(function(data) {
             return archMap.setCenter({
               lat: data.coords.latitude,
               lng: data.coords.longitude,
               zoom: ARCH_MAP_INIT.defaultZoom
             });
-          })
+          });
+        /* PROD
           .catch(function(err) {
             $log.error(err);
             return $mdDialog.show({

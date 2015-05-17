@@ -8,7 +8,7 @@ angular.module('archCarto', [
   ])
   .config(function ($translateProvider, $stateProvider, $urlRouterProvider, i18nfrFRConstant, i18nenUSConstant, $mdThemingProvider, $httpProvider) {
     L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
-    L.Icon.Default.imagePath = 'http://api.tiles.mapbox.com/mapbox.js/v1.0.0beta0.0/images';
+    //L.Icon.Default.imagePath = 'http://api.tiles.mapbox.com/mapbox.js/v1.0.0beta0.0/images';
 
     $mdThemingProvider.theme('default')
       .primaryPalette('green')
