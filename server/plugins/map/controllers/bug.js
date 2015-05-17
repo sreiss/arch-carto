@@ -1,22 +1,39 @@
 module.exports = function(bugService) {
 
     return {
-        getBugList: function(req, res) {
-            bugService.getBugList(req.query)
-                .then(function(bugList) {
-                    res.json(bugList);
+        getBug: function(req, res, next) {
+            bugService.get(req.params.id)
+                .then(function(bug) {
+                    res.json({
+                        message: 'BUG_RETRIEVED',
+                        value: bug
+                    });
                 })
                 .catch(function(err) {
-                    res.send(err);
+                    next(err);
                 });
         },
-        saveBug: function(req, res) {
-            bugService.saveBug(req.body)
-                .then(function(savedBug) {
-                    res.json(savedBug);
+        getBugList: function(req, res, next) {
+            bugService.getBugList(req.query)
+                .then(function(bugList) {
+                    res.json({
+                        value: bugList
+                    });
                 })
                 .catch(function(err) {
-                    res.send(err);
+                    next(err);
+                });
+        },
+        saveBug: function(req, res, next) {
+            bugService.saveBug(req.body)
+                .then(function(savedBug) {
+                    res.json({
+                        message: 'BUG_REPORTED',
+                        value: savedBug
+                    });
+                })
+                .catch(function(err) {
+                    next(err);
                 });
         }
     };

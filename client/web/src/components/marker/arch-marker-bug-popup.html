@@ -1,0 +1,10 @@
+<md-content>
+  <h2>{{'BUG' | translate}}</h2>
+  <div ng-if="!bug">
+    <md-progress-circular md-diameter="20" md-mode="indeterminate"></md-progress-circular>
+  </div>
+  <div ng-if="bug">
+    <p>{{bug.properties.description}}</p>
+    <p>{{bug.properties.status.name | translate}}</p>
+  </div>
+</md-content>

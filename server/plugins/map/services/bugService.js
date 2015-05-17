@@ -1,8 +1,24 @@
 var Q = require('q');
+var ArchError = GLOBAL.ArchError;
 
-module.exports = function(Bug) {
+module.exports = function(Bug, bugStatusService) {
 
     return {
+        get: function(id) {
+            var deferred = Q.defer();
+            Bug.findById(id)
+                .populate('properties.status')
+                .exec(function(err, bug) {
+                   if (err) {
+                       deferred.reject(err);
+                   } else if (!bug) {
+                       deferred.reject(ArchError('BUG_NOT_FOUND'));
+                   } else {
+                       deferred.resolve(bug);
+                   }
+                });
+            return deferred.promise;
+        },
         getBugList: function(criteria) {
             var deferred = Q.defer();
             criteria = criteria || {};
@@ -30,27 +46,36 @@ module.exports = function(Bug) {
                     }
                 });
             } else {
-                var bug = new Bug({
-                    properties: {
-                        // TODO: Get the user ID
-                        userId: rawBug.properties.userId,
-                        // TODO: Get the point altitude
-                        altitude: rawBug.properties.altitude,
-                        description: rawBug.properties.description,
-                        status: rawBug.properties.status,
-                        entity: 'Bug'
-                    },
-                    geometry: {
-                        coordinates: rawBug.geometry.coordinates
-                    }
-                });
-                bug.save(function (err) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(bug);
-                    }
-                });
+                bugStatusService.findOneBugStatus({name: 'REPORTED'})
+                    .catch(function(err) {
+                        return bugStatusService.saveBugStatus({
+                            name: 'REPORTED',
+                            description: 'A_NEWLY_REPORTED_BUG'
+                        });
+                    })
+                    .then(function(bugStatus) {
+                        var bug = new Bug({
+                            properties: {
+                                // TODO: Get the user ID
+                                //userId: rawBug.properties.userId,
+                                // TODO: Get the point altitude
+                                altitude: rawBug.properties.altitude,
+                                description: rawBug.properties.description,
+                                status: bugStatus._id,
+                                entity: 'Bug'
+                            },
+                            geometry: {
+                                coordinates: rawBug.geometry.coordinates
+                            }
+                        });
+                        bug.save(function (err) {
+                            if (err) {
+                                deferred.reject(err);
+                            } else {
+                                deferred.resolve(bug);
+                            }
+                        });
+                    });
             }
             return deferred.promise;
         }

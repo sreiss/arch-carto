@@ -64,6 +64,10 @@ angular.module('archCarto', [
         url: '/poi',
         template: '<arch-marker-poi></arch-marker-poi>'
       })
+      .state('map.marker.bug', {
+        url: '/bug',
+        template: '<arch-marker-bug></arch-marker-bug>'
+      })
       .state('map.marker.media', {
         url: '/media/:type/:id',
         template: '<arch-marker-media></arch-marker-media>'
@@ -119,27 +123,31 @@ angular.module('archCarto', [
       .translations('en', i18nenUSConstant)
       .preferredLanguage('fr');
 
-    $httpProvider.interceptors.push(function($q, $translate, $injector) {
+    $httpProvider.interceptors.push(function($q, archTranslateService, $injector) {
       return {
         'responseError': function (rejection) {
           //debugger;
           if (rejection.data) {
             var $mdToast = $injector.get('$mdToast');
             var untranslatedMessage = angular.copy(rejection.data.message);
-            return $translate(untranslatedMessage)
-              .then(function (translation) {
+            if (untranslatedMessage) {
+              return archTranslateService(untranslatedMessage)
+                .then(function (translation) {
                   return $mdToast.show({
                     template: '<md-toast class="md-toast arch-toast-error">' + translation + '</md-toast>',
                     hideDelay: 3000,
                     position: 'bottom left'
                   });
-              })
-              .then(function () {
-                return $q.reject(rejection);
-              })
-              .catch(function () {
-                return $q.reject(rejection);
-              });
+                })
+                .then(function () {
+                  return $q.reject(rejection);
+                })
+                .catch(function () {
+                  return $q.reject(rejection);
+                });
+            } else {
+              return $q.reject(rejection);
+            }
           } else {
             return $q.reject(rejection);
           }
