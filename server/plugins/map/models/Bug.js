@@ -12,7 +12,7 @@ module.exports = function(Types, auditEventService) {
         },
         onSchemaReady: function(bugSchema) {
             bugSchema.pre('save', function(next) {
-                this.properties.entity = "Bug";
+                this.properties.entity = "BUG";
                 return next();
             });
         },

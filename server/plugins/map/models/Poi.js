@@ -14,7 +14,7 @@ module.exports = function(Types) {
         },
         onSchemaReady: function(bugSchema) {
             bugSchema.pre('save', function(next) {
-                this.properties.entity = "Poi";
+                this.properties.entity = "POI";
                 return next();
             });
         },

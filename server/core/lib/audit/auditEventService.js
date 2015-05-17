@@ -36,6 +36,7 @@ exports.attach = function(opts) {
 
             var auditEvent = new AuditEvent({
                 type: rawAuditEvent.type,
+                entityId: rawAuditEvent.entityId,
                 entity: rawAuditEvent.entity,
                 userId: rawAuditEvent.userId
             });

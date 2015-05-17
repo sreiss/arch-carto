@@ -8,6 +8,10 @@ module.exports = function(Bug, bugStatusService) {
             var deferred = Q.defer();
             Bug.findById(id)
                 .populate('properties.status')
+                .populate({
+                    path: 'properties.auditEvents',
+                    limit: 1
+                })
                 .exec(function(err, bug) {
                    if (err) {
                        deferred.reject(err);
@@ -24,6 +28,10 @@ module.exports = function(Bug, bugStatusService) {
             criteria = criteria || {};
             Bug.find(criteria)
                 .populate('properties.status')
+                .populate({
+                    path: 'properties.auditEvents',
+                    limit: 1
+                })
                 .exec(function(err, bugs) {
                     if (err) {
                         deferred.reject(err);

@@ -13,7 +13,10 @@ module.exports = function(Poi, poiTypeService) {
             }
 
             if (!options.noAudit) {
-                populate.push('properties.auditEvents');
+                populate.push({
+                    path: 'properties.auditEvents',
+                    limit: 1
+                });
             }
 
             if (!options.noMedias) {
@@ -37,6 +40,10 @@ module.exports = function(Poi, poiTypeService) {
             var deferred = Q.defer();
             Poi.find()
                 .populate('properties.type')
+                .populate({
+                    path: 'properties.auditEvents',
+                    limit: 1
+                })
                 .exec(function (err, pois) {
                     if (err) {
                         deferred.reject(err);

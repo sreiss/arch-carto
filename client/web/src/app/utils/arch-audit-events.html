@@ -1,0 +1,5 @@
+<span ng-if="auditEvents">
+  <span ng-if="auditEvents.length == 1" class="md-subhead">
+      {{ auditEvents[0].type | translate}} {{'SINCE' | translate}} {{auditEvents[0].date | date}}
+  </span>
+</span>

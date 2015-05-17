@@ -23,7 +23,8 @@ module.exports = function(Types, auditEventService) {
 
                     var auditEvent = {
                         type: eventType,
-                        entity: model.properties.entity
+                        entity: model.properties.entity,
+                        entityId: model._id
                     };
                     auditEventService.saveAuditEvent(auditEvent)
                         .then(function(auditEventId) {
@@ -36,12 +37,16 @@ module.exports = function(Types, auditEventService) {
                 });
             };
 
+            var assignLastAuditEvent = function(model, next) {
+                return next();
+            };
+
             schema.pre('save', function(next) {
-                addAuditEvent('awaitingAddition', this, next);
+                addAuditEvent('AWAITING_ADDITION', this, next);
             });
 
             schema.pre('update', function(next) {
-                addAuditEvent('awaitingUpdate', this, next);
+                addAuditEvent('AWAITING_UPDATE', this, next);
             });
         },
         onModelReady: function(Point) {

@@ -18,6 +18,18 @@ angular.module('archCarto')
           .then(function(map) {
             _poisLayer = L.geoJson(null, {
               onEachFeature: function(feature, layer) {
+                var iconOptions = {
+                  icon: 'heart'
+                };
+
+                if (feature.properties.auditEvents[0].type == 'AWAITING_ADDITION') {
+                  iconOptions.markerColor = 'purple';
+                } else {
+                  iconOptions.markerColor = 'blue';
+                }
+
+                layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
+
                 if (feature.properties) {
                   var html = angular.element('<arch-marker-poi-popup></arch-marker-poi-popup>');
                   layer.bindPopup(html[0], {poiId: feature._id, maxWidth: 600, minWidth: 600, className: 'arch-popup'});
@@ -27,6 +39,15 @@ angular.module('archCarto')
 
             _bugsLayer = L.geoJson(null, {
               onEachFeature: function(feature, layer) {
+                var iconOptions = {
+                  icon: 'bug'
+                };
+
+                //if (feature.properties.auditEvents[0].type == 'AWAITING_ADDITION') {
+                  iconOptions.markerColor = 'red';
+                //}
+
+                layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
                 if (feature.properties) {
                   var html = angular.element('<arch-marker-bug-popup></arch-marker-bug-popup>');
                   layer.bindPopup(html[0], {bugId: feature._id, maxWidth: 600, minWidth: 600, className: 'arch-popup'});

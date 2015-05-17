@@ -82,5 +82,12 @@ angular.module('archCarto')
     POINT_OF_INTEREST: "Point d'intérêt",
     BUG: "Anomalie",
 
-    GEOJSON_TYPE_REQUIRED: "Un type est requis pour un point d'intérêt."
+    SINCE: "depuis",
+    AWAITING_ADDITION: "En attente d'ajout",
+    AWAITING_DELETION: "En attente de suppression",
+    AWAITING_UPDATE: "En attente de mise à jour",
+    ADDED: "Ajouté",
+    DELETED: "Supprimé",
+    UPDATED: "Mis à jour",
+    REPORTED: "Signalé"
   });

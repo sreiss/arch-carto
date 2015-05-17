@@ -11,6 +11,7 @@ exports.attach = function(opts) {
     var auditEventSchema = mongoose.Schema({
         type: {type: String, required: true},
         entity: {type: String, required: true},
+        entityId: {type: mongoose.Schema.Types.ObjectId, required: true},
         userId: {type: mongoose.Schema.Types.ObjectId, required: true},
         date: {type: Date, required: true}
     });
@@ -25,7 +26,7 @@ exports.attach = function(opts) {
     AuditEvent.schema
         .path('type')
         .validate(function(value) {
-            return /added|updated|deleted|awaitingDeletion|awaitingAddition|awaitingUpdate/i.test(value);
+            return /ADDED|UPDATED|DELETED|AWAITING_DELETION|AWAITING_ADDITION|AWAITING_UPDATE/i.test(value);
         }, 'Invalid audit event type');
 };
 
