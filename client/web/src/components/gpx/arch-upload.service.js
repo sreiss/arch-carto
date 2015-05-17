@@ -18,10 +18,10 @@ angular.module('archCarto')
           //.error(function(){
           //  console.log('Error upload');
           //});
-          var gpx = file[0];
-          var formData = new FormData();
+          //var gpx = file[0];
+          //var formData = new FormData();
           formData.append("file", gpx);
-          return archHttpService.post(_gpxUrl, formData, {
+          return archHttpService.post(_gpxUrl, file, {
             headers: {'Content-Type': undefined},
             transformRequest: angular.identity
           });
