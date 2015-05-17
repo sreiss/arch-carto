@@ -81,6 +81,10 @@ angular.module('archCarto')
           return $q.when($scope.map.center);
         };
 
+        this.getMap = function() {
+          return leafletData.getMap();
+        };
+
         // endregion
 
         // region layers
@@ -232,22 +236,22 @@ angular.module('archCarto')
         // Ajout du centre
         geolocation.getLocation()
           // DEBUG ONLY
-          .catch(function() {
-            return archMap.setCenter({
-              lat: 49.10,
-              lng: 7.5,
-              zoom: ARCH_MAP_INIT.defaultZoom
-            });
-          })
+          //.catch(function() {
+          //  return archMap.setCenter({
+          //    lat: 49.10,
+          //    lng: 7.5,
+          //    zoom: ARCH_MAP_INIT.defaultZoom
+          //  });
+          //})
           //
-          /* PROD
+          /* PROD*/
           .then(function(data) {
             return archMap.setCenter({
               lat: data.coords.latitude,
               lng: data.coords.longitude,
               zoom: ARCH_MAP_INIT.defaultZoom
             });
-          })
+          })/*
           .catch(function(err) {
             $log.error(err);
             return $mdDialog.show({
