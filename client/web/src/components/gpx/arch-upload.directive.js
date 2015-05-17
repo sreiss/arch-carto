@@ -66,7 +66,6 @@ angular.module('archCarto')
       scope: false,
       link: function(scope, element, attrs) {
         var fn = $parse(attrs.onReadFile);
-        console.log('nxm'+fn);
 
 
         //'use strict';
@@ -265,15 +264,15 @@ angular.module('archCarto')
 
         //return t;
 
-        var geoJson;
+        scope.geoJson = "";
         element.on('change', function(onChangeEvent) {
           var reader = new FileReader();
 
           reader.onload = function(onLoadEvent) {
             scope.$apply(function() {
-              geoJson = JSON.stringify(gpx(onLoadEvent.target.result));
+              scope.geoJson = JSON.stringify(gpx(onLoadEvent.target.result));
               //fn(scope, {$fileContent:geoJson});
-              console.log('I am in scope.$apply'+geoJson);
+              //console.log('I am in scope.$apply'+geoJson);
               //archGpxUploadService.uploadFileToUrl(geoJson);
 
             });
@@ -282,7 +281,8 @@ angular.module('archCarto')
           reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);
         });
         scope.upload = function(){
-          //archGpxUploadService.uploadFileToUrl(geoJson);
+          //console.log(scope.geoJson);
+          archGpxUploadService.uploadFileToUrl(scope.geoJson);
         }
       }
     };

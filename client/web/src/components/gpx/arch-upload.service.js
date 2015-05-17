@@ -4,7 +4,7 @@ angular.module('archCarto')
     var _gpxUrl = httpConstant.apiUrl + '/map/gpx';
 
     return{
-      uploadFileToUrl: function(file){
+      uploadFileToUrl: function(trace){
         //var fd = new FormData();
         //fd.append('file', file);
         //archHttpService.post(_gpxUrl, fd, {
@@ -20,11 +20,9 @@ angular.module('archCarto')
           //});
           //var gpx = file[0];
           //var formData = new FormData();
-          formData.append("file", gpx);
-          return archHttpService.post(_gpxUrl, file, {
-            headers: {'Content-Type': undefined},
-            transformRequest: angular.identity
-          });
+          //formData.append("file", gpx);
+        console.log(trace);
+          return archHttpService.post(_gpxUrl, trace);
       }
     }
   });
