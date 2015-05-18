@@ -5,10 +5,6 @@ module.exports = function(Types) {
             type: String,
             features: [
                 {
-                    type: String,
-                    properties: {
-                        name: String
-                    },
                     geometry: {
                         "type": String,
                         coordinates: [{
@@ -16,7 +12,11 @@ module.exports = function(Types) {
                             latitude: Number,
                             height: Number
                         }]
-                    }
+                    },
+                    properties: {
+                        name: String
+                    },
+                    type: String
                 }]
         }
 

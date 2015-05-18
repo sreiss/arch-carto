@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMapTraceList', function(archGpxService, $mdToast, $translate,leafletData) {
+  .directive('archMapTraceList', function(archGpxService, $mdToast, $translate,archGpxUploadService) {
     return {
       restrict: 'E',
       require: '^archMap',
@@ -27,7 +27,7 @@ angular.module('archCarto')
               //TO DO clear el to have only one chart
               //map.removeControl(el);
               var el = L.control.elevation({
-                position: "topright",
+                position: "bottomleft",
                 theme: "steelblue-theme", //default: lime-theme
                 width: 600,
                 height: 125,
@@ -46,7 +46,7 @@ angular.module('archCarto')
                 },
                 xTicks: undefined, //number of ticks in x axis, calculated by default according to width
                 yTicks: undefined, //number of ticks on y axis, calculated by default according to height
-                collapsed: false    //collapsed mode, show chart on click or mouseover
+                collapsed: true    //collapsed mode, show chart on click or mouseover
               });
               //el.clearLayers();
               el.addTo(map);
@@ -65,6 +65,43 @@ angular.module('archCarto')
 
 
           //myLayer.addData(geoJson);
+        }
+
+        scope.editTrace = function(geoJson){
+          var id = geoJson._id;
+          console.log("rawGeoJson"+JSON.stringify(geoJson));
+          archMap.getMap().then(function (map) {
+          var featureGroup = L.featureGroup().addTo(map);
+
+          L.geoJson(geoJson, {
+            onEachFeature: function (feature, layer) {
+              featureGroup.addLayer(layer);
+            }
+          });
+
+
+          var drawControl = new L.Control.Draw({
+            edit: {
+              featureGroup: featureGroup
+            }
+          }).addTo(map);
+
+            map.on('draw:edited', function (e) {
+              var layers = e.layers;
+
+              layers.eachLayer(function (layer) {
+                //do whatever you want, most likely save back to db
+                featureGroup.addLayer(layer);
+                geoJson.features[0] = layer.toGeoJSON();
+                console.log("new geojson"+ JSON.stringify(geoJson));
+                //var newTrace = JSON.stringify(layer.toGeoJSON());
+                //console.log(JSON.stringify(newTrace));
+                archGpxUploadService.uploadFileToUrl(geoJson);
+
+              });
+
+            });
+        });
         }
       }
     };
