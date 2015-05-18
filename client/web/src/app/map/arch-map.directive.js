@@ -209,7 +209,7 @@ angular.module('archCarto')
             var pathControlClass = archMapControlService.createControlClass('GoToArchPath', 'arch-path', 'retweet');
             archMap.addControl('goToArchPath', pathControlClass, {
               clickFn: function() {
-                $state.go('map.path');
+                $state.go('map.path.draw');
               }
             })
           })

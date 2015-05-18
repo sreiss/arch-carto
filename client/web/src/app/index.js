@@ -41,11 +41,16 @@ angular.module('archCarto', [
       })
       .state('map.path', {
         url: '/path',
+        abstract: true,
         views: {
           mapRight: {
             template: '<arch-path></arch-path>'
           }
         }
+      })
+      .state('map.path.draw', {
+        url: '',
+        template: '<arch-path-draw></arch-path-draw>'
       })
       .state('map.marker', {
         url: '/marker',

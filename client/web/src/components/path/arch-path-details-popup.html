@@ -1,0 +1,7 @@
+<md-content>
+  <h2>{{'PATH' | translate}}</h2>
+  <p>{{'COATING' | translate}}:
+    <span ng-if="path.coating">{{path.coating}}</span>
+    <span ng-if="!path.coating">{{'NOT_DEFINED' | translate}}</span>
+  </p>
+</md-content>

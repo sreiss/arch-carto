@@ -1,6 +1,40 @@
 'use strict'
 angular.module('archCarto')
-  .service('archPathService', function(archMarkerService, $q) {
+  .service('archPathService', function(archMarkerService, $q, archHttpService, httpConstant) {
+    var _pathUrl = httpConstant.apiUrl + '/map/path';
+
+    return {
+      toGeoJson: function(path) {
+        var geoJson = {
+          properties: {
+            description: path.description,
+            altitudes: []
+          },
+          geometry: {
+            coordinates: []
+          }
+        };
+
+        for(var i = 0; i < path.altitudes.length; i += 1) {
+          geoJson.properties.altitudes.push(path.altitudes[i]);
+        }
+
+        for(var j = 0; j < path.coordinates.length; j += 1) {
+          geoJson.geometry.coordinates.push([path.coordinates[j].lng, path.coordinates[j].lat]);
+        }
+
+        return geoJson;
+      },
+      save: function(path) {
+        return archHttpService.post(_pathUrl, path);
+      },
+      getList: function() {
+        return archHttpService.get(_pathUrl);
+      }
+    };
+
+
+    /*
     var _pathDrawer = {
       enabled: false,
       currentPath: {
@@ -81,4 +115,5 @@ angular.module('archCarto')
         return deferred.promise;
       }
     }
+    */
   });
