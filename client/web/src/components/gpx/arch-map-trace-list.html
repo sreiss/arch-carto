@@ -7,8 +7,11 @@
   </span>
   <span ng-if="traces">
   <md-content class="md-padding">
-    <arch-content-dropdown ng-repeat="trace in traces | filter:filterOptions" title="trace.features[0].properties.name" ng-click="displayTrace(trace)">
-      <p>{{'TYPE' | translate}}: {{trace.features[0].geometry.type}}</p>
+    <arch-content-dropdown ng-repeat="trace in traces | filter:filterOptions" title="trace.features[0].properties.name" >
+      <p>{{'TYPE' | translate}}: {{trace._id}}</p>
+      <md-button class="md-primary" ng-click="displayTrace(trace)">Display</md-button>
+      <md-button class="md-primary" ng-click="editTrace(trace)">Edit</md-button>
+
     </arch-content-dropdown>
   </md-content>
   </span>
