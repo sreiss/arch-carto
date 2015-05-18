@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archPath', function(leafletData, $log, $mdSidenav, $q, archPathService, $compile) {
+  .directive('archPath', function(leafletData, $log, $mdSidenav, $q, archPathService, $compile, $state) {
     return {
       restrict: 'E',
       require: '^archMap',
@@ -74,7 +74,7 @@ angular.module('archCarto')
                     $scope.hasDrawnPath = false;
                     _currentLayer = false;
                     $scope.cancel = angular.noop;
-                    $state.go('map.marker.choice');
+                    $state.go('map.path.draw');
                   });
               };
             });
