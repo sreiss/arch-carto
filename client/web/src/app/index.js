@@ -108,7 +108,7 @@ angular.module('archCarto', [
       .state('map.gpx', {
         url: '/gpx',
         views: {
-          "sideNavRight": {
+          "mapRight": {
             template: '<arch-gpx-upload-form></arch-gpx-upload-form>'
           }
         }

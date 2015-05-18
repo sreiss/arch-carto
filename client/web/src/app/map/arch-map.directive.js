@@ -81,6 +81,10 @@ angular.module('archCarto')
           return $q.when($scope.map.center);
         };
 
+        this.getMap = function() {
+          return leafletData.getMap();
+        };
+
         // endregion
 
         // region layers
@@ -245,8 +249,7 @@ angular.module('archCarto')
               lng: data.coords.longitude,
               zoom: ARCH_MAP_INIT.defaultZoom
             });
-          });
-        /* PROD
+          })
           .catch(function(err) {
             $log.error(err);
             return $mdDialog.show({

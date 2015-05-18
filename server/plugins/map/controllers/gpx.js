@@ -2,7 +2,7 @@ module.exports = function(gpxService) {
 
     return {
         saveGpx: function(req, res) {
-            var gpx = req.file;
+                var gpx = req.body;
             gpxService.saveGpx(gpx).then(function(savedTrace) {
                 res.json({message: 'Trace saved!'});
             })
