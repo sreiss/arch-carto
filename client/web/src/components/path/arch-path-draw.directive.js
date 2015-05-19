@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archPathDraw', function(archPathService) {
+  .directive('archPathDraw', function(archPathService, archPathJunctionService, $q) {
     return {
       restrict: 'E',
       require: '^archPath',
@@ -9,21 +9,33 @@ angular.module('archCarto')
         scope.$watch('hasDrawnPath', function(hasDrawnPath) {
 
           if (hasDrawnPath) {
-            archPath.getCurrentLayer()
-              .then(function (layer) {
-                var coordinates = layer.getLatLngs();
+            $q.all([
+                archPath.getCurrentLayer(),
+                archPath.getCurrentJunctionsLayer()
+              ])
+              .then(function (results) {
+                var currentLayer = results[0];
+                var currentJunctionsLayer = results[1];
+
+                var pathCoordinates = currentLayer.getLatLngs();
 
                 scope.path = {
-                  altitudes: [],
-                  coordinates: coordinates
+                  coordinates: pathCoordinates
                 };
 
                 scope.save = function(path) {
-                  var geoJson = archPathService.toGeoJson(path);
-                  archPathService.save(geoJson)
-                    .then(function(result) {
-                      debugger;
-                    });
+
+                  var junctionLayers = currentJunctionsLayer.getLayers();
+                  junctionLayers.forEach(function(layer) {
+                    var junction = {
+                      coordinates: layer.getLatLng(),
+                      paths: [archPathService.toGeoJson(path)]
+                    };
+
+                    var geoJson = archPathJunctionService.toGeoJson(junction);
+
+                    archPathJunctionService.save(geoJson);
+                  });
                 };
               });
           }

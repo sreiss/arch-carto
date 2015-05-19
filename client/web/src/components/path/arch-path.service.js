@@ -7,17 +7,12 @@ angular.module('archCarto')
       toGeoJson: function(path) {
         var geoJson = {
           properties: {
-            description: path.description,
-            altitudes: []
+            description: path.description || ''
           },
           geometry: {
             coordinates: []
           }
         };
-
-        for(var i = 0; i < path.altitudes.length; i += 1) {
-          geoJson.properties.altitudes.push(path.altitudes[i]);
-        }
 
         for(var j = 0; j < path.coordinates.length; j += 1) {
           geoJson.geometry.coordinates.push([path.coordinates[j].lng, path.coordinates[j].lat]);

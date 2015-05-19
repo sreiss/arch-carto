@@ -4,7 +4,6 @@ module.exports = function(Types) {
         extends: 'Point',
         schema: {
             properties: {
-                altitude: {type: Number, required: true},
                 name: {type: String, required: true},
                 description: {type: String},
                 type: {type: Types.ObjectId, ref: 'PoiType', required: true},
@@ -12,8 +11,8 @@ module.exports = function(Types) {
                 medias: [{type: Types.ObjectId, ref: 'Media'}]
             }
         },
-        onSchemaReady: function(bugSchema) {
-            bugSchema.pre('save', function(next) {
+        onSchemaReady: function(schema) {
+            schema.pre('save', function(next) {
                 this.properties.entity = "POI";
                 return next();
             });
