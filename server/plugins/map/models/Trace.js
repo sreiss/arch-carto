@@ -3,8 +3,7 @@ module.exports = function(Types) {
     return {
         schema: {
             type: String,
-            features: [
-                {
+            features: [{
                     geometry: {
                         "type": String,
                         coordinates: [{
