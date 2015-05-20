@@ -3,8 +3,8 @@ module.exports = function(gpxService) {
     return {
         saveGpx: function(req, res) {
                 var gpx = req.body;
-            console.log("controller gpx");
-            console.log(gpx);
+            //console.log("controller gpx");
+            //console.log(gpx);
             gpxService.saveGpx(gpx).then(function(savedTrace) {
                 res.json({message: 'Trace saved!'});
             })

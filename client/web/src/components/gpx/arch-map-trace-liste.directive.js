@@ -22,6 +22,7 @@ angular.module('archCarto')
           //archMap.displayElevation(geoJson);
 //          //all used options are the default values
 //          //var el = $scope.controls.Elevation;
+//          console.log(geoJson);
             archMap.getMap().then(function (map) {
               //el.clear();
               //TO DO clear el to have only one chart

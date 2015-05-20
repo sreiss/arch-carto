@@ -19,16 +19,16 @@ module.exports = function (Trace) {
                 var id = rawTrace._id;
 
                 delete rawTrace._id;
-                console.log(rawTrace);
+                console.log(JSON.stringify(rawTrace));
                 //first version
-                //Trace.findByIdAndUpdate(id, rawTrace, function (err, traceNew) {
+                //Trace.findByIdAndUpdate(id, { type: 'NTM'}, function (err, newTrace) {
                 //    if (err) {
-                //        console.log("Error nouveau geojson");
+                //        console.log("Error nouveau geojson"+newTrace);
                 //        deferred.reject(err);
                 //    } else {
                 //        console.log("nouveau geojson");
-                //        console.log(traceNew);
-                //        deferred.resolve(traceNew);
+                //        console.log(newTrace);
+                //        deferred.resolve(newTrace.features[0].toString());
                 //    }
                 //});
                 //second version should work
@@ -39,6 +39,11 @@ module.exports = function (Trace) {
                 //            deferred.reject(err);
                 //        } else {
                 //            console.log("nouveau geojson");
+                //            console.log(newTrace);
+                //            newTrace.type = "";
+                //            newTrace.features[0] = "";
+                //            delete newTrace.features;
+                //            console.log(newTrace);
                 //            newTrace.type = rawTrace.type;
                 //            newTrace.features[0] = rawTrace.features[0];
                 //            newTrace.save(function(err) {
@@ -61,6 +66,16 @@ module.exports = function (Trace) {
                         var modifiedTrace = new Trace();
                         console.log("Coming from");
                         console.log(JSON.stringify(newTrace));
+                        Trace.findByIdAndRemove(id, function(err, newTrace){
+                            if (err) {
+                                console.log("Error nouveau geojson");
+                                deferred.reject(err);
+                            } else {
+                                console.log('Delete in db');
+                            }
+
+                        })
+                        modifiedTrace._id = id;
                         modifiedTrace.type = rawTrace.type;
                         modifiedTrace.features[0] = rawTrace.features[0];
                         modifiedTrace.save(function(err) {
@@ -74,6 +89,28 @@ module.exports = function (Trace) {
                         })
                     }
                 });
+                // fourth version yayy
+                //var query = { _id: id };
+                //Trace.update(query, { type: rawTrace.type }, function(err, rawModified){
+                //    console.log(rawModified);
+                //});
+                //var data = features[0];
+                //Trace.update(
+                //    { "_id" : id},
+                //    {
+                //        type: rawTrace.type,
+                //        features: [ {geometry: rawTrace.features[0].geometry, properties: rawTrace.features[0].properties, type: rawTrace.features[0].type}]
+                //    },
+                //    function(err, traceAffected){
+                //        if (err) {
+                //                    console.log("Error nouveau geojson");
+                //                    deferred.reject(err);
+                //                } else {
+                //                    console.log("nouveau geojson");
+                //                    console.log(traceAffected);
+                //                    deferred.resolve(traceAffected);
+                //                }
+                //    });
 
                 //console.log("juste avanat ke create");
                 //Trace.create({id},trace.type,trace.features[0],function (err, trace) {
@@ -91,6 +128,7 @@ module.exports = function (Trace) {
                 var trace = new Trace();
                 trace.type = rawTrace.type;
                 trace.features[0] = rawTrace.features[0];
+
                 trace.save(function(err) {
                     if (err) {
                         console.log('Ca marche pas');
@@ -112,6 +150,7 @@ module.exports = function (Trace) {
                 if (err) {
                     deferred.reject(err);
                 } else {
+                    console.log(util.inspect(traces));
                     deferred.resolve(traces);
                 }
             });
