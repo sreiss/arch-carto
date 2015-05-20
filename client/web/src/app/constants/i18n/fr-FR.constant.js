@@ -89,5 +89,9 @@ angular.module('archCarto')
     ADDED: "Ajouté",
     DELETED: "Supprimé",
     UPDATED: "Mis à jour",
-    REPORTED: "Signalé"
+    REPORTED: "Signalé",
+
+    COATING: "Revêtement",
+    NOT_DEFINED: "Non défini",
+    EDIT: "Editer"
   });

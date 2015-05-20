@@ -6,6 +6,8 @@ module.exports = function(Poi, poiTypeService) {
         getPoi: function(id, options) {
             var deferred = Q.defer();
 
+            var query = Poi.findById(id);
+
             var populate = [];
 
             if (!options.noType) {
@@ -23,9 +25,11 @@ module.exports = function(Poi, poiTypeService) {
                 populate.push('properties.medias');
             }
 
-            Poi.findById(id)
-                .populate(populate.join(' '))
-                .exec(function (err, poi) {
+            for (var i = 0; i < populate.length; i += 1) {
+                query.populate.apply(query, [populate[i]]);
+            }
+
+            query.exec(function (err, poi) {
                     if (err) {
                         deferred.reject(err);
                     }

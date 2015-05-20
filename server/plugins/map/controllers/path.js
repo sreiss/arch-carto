@@ -24,6 +24,18 @@ module.exports = function(pathService) {
                 .catch(function(err) {
                    next(err);
                 });
+        },
+        get: function(req, res, next) {
+            pathService.get(req.params.id)
+                .then(function(path) {
+                    res.json({
+                        message: 'PATH_RETRIEVED',
+                        value: path
+                    });
+                })
+                .catch(function(err) {
+                   next(err);
+                });
         }
     }
 

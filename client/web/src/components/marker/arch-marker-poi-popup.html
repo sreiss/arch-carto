@@ -11,10 +11,10 @@
     <div style="min-height: 16px">
       <div ng-if="poi.properties.medias.length === 0">
         {{'NO_MEDIAS_FOUND' | translate}}.
-        <a ui-sref="map.marker.media({type: 'poi', id: poiId})">
-          {{'ADD_SOME' | translate}}
-        </a>
       </div>
+      <a ui-sref="map.marker.media({type: 'poi', id: poiId})">
+        {{'ADD_SOME' | translate}}
+      </a>
       <div ng-if="poi.properties.medias.length > 0" style="max-height: 300px;">
         <md-grid-list md-cols-sm="2"
                       md-cols-md="2"

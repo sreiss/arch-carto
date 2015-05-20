@@ -38,7 +38,8 @@ exports.attach = function(opts) {
                 type: rawAuditEvent.type,
                 entityId: rawAuditEvent.entityId,
                 entity: rawAuditEvent.entity,
-                userId: rawAuditEvent.userId
+                userId: rawAuditEvent.userId,
+                pendingChanges: rawAuditEvent.pendingChanges || {}
             });
             auditEvent.save(function(err, savedAuditEvent) {
                 if (err) {

@@ -49,8 +49,13 @@ angular.module('archCarto', [
         }
       })
       .state('map.path.draw', {
-        url: '',
-        template: '<arch-path-draw></arch-path-draw>'
+        url: '/:id',
+        template: '<arch-path-draw></arch-path-draw>',
+        controller: function($scope, $stateParams) {
+          if ($stateParams.id != '') {
+            $scope.id = $stateParams.id;
+          }
+        }
       })
       .state('map.marker', {
         url: '/marker',

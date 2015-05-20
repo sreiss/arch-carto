@@ -1,6 +1,12 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMap', function(geolocation, $q, $log, $translate, $mdSidenav, $mdDialog, $state, archUtilsService, leafletData, archMapControlService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT, ARCH_LAYER_TYPES) {
+  .directive('archMap', function(
+    geolocation, $q, $log, $compile,
+    $translate, $mdSidenav, $mdDialog,
+    $state, archUtilsService, leafletData,
+    archMapControlService, archMarkerBugService, archMarkerPoiService,
+    archPathJunctionService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT,
+    ARCH_LAYER_TYPES) {
     return {
       restrict: 'E',
       require: ['^archMap'],
@@ -11,6 +17,10 @@ angular.module('archCarto')
 
         var _controls = {};
         var _featureGroups = {};
+        var _poisLayer = null;
+        var _bugsLayer = null;
+        var _pathLayer = null;
+        var _junctionsLayer = null;
 
         // endregion
 
@@ -22,6 +32,168 @@ angular.module('archCarto')
         $scope.map.layers = {};
 
         // region layers
+
+        // TODO: Refactor !
+        leafletData.getMap()
+          .then(function(map) {
+            _poisLayer = L.geoJson(null, {
+              onEachFeature: function(feature, layer) {
+                var iconOptions = {
+                  icon: 'heart'
+                };
+
+                if (feature.properties.auditEvents[0].type == 'AWAITING_ADDITION') {
+                  iconOptions.markerColor = 'purple';
+                } else {
+                  iconOptions.markerColor = 'blue';
+                }
+
+                layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
+
+                if (feature.properties) {
+                  var html = angular.element('<arch-marker-poi-popup></arch-marker-poi-popup>');
+                  layer.bindPopup(html[0], {poiId: feature._id, maxWidth: 600, minWidth: 600, className: 'arch-popup'});
+                }
+              }
+            }).addTo(map);
+
+            _bugsLayer = L.geoJson(null, {
+              onEachFeature: function(feature, layer) {
+                var iconOptions = {
+                  icon: 'bug'
+                };
+
+                //if (feature.properties.auditEvents[0].type == 'AWAITING_ADDITION') {
+                iconOptions.markerColor = 'red';
+                //}
+
+                layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
+                if (feature.properties) {
+                  var html = angular.element('<arch-marker-bug-popup></arch-marker-bug-popup>');
+                  layer.bindPopup(html[0], {bugId: feature._id, maxWidth: 600, minWidth: 600, className: 'arch-popup'});
+                }
+              }
+            }).addTo(map);
+
+            _pathLayer = L.geoJson(null, {
+              onEachFeature: function(feature, layer) {
+                if (feature.properties) {
+                  var html = angular.element('<arch-path-details-popup></arch-path-details-popup>');
+                  layer.bindPopup(html[0], {pathId: feature._id, maxWidth: 600, minWidth: 600, className: 'arch-popup'});
+                }
+              }
+            }).addTo(map);
+
+            _junctionsLayer = L.geoJson(null, {
+              onEachFeature: function(feature, layer) {
+                var iconOptions = {
+                  icon: 'arrows'
+                };
+
+                //if (feature.properties.auditEvents[0].type == 'AWAITING_ADDITION') {
+                iconOptions.markerColor = 'red';
+                //}
+
+                layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
+              }
+            }).addTo(map);
+
+
+            map.on('popupopen', function(event) {
+              var popupScope = $scope.$new();
+              var hasDirective = false;
+              if (event.popup.options.poiId) {
+                popupScope.poiId = event.popup.options.poiId;
+                hasDirective = true;
+              }
+              if (event.popup.options.bugId) {
+                popupScope.bugId = event.popup.options.bugId;
+                hasDirective = true;
+              }
+              if (event.popup.options.pathId) {
+                popupScope.pathId = event.popup.options.pathId;
+                hasDirective = true;
+              }
+              if (hasDirective) {
+                $compile(event.popup._content)(popupScope);
+              } else {
+                popupScope.$destroy();
+              }
+            });
+
+            map.on('popupclose', function(event) {
+              $mdSidenav('right').close()
+                .then(function() {
+                  if (event.popup.options.poiId || event.popup.options.bugId) {
+                    $state.go('map.marker.choice');
+                  } else if (event.popup.options.pathId) {
+                    $state.go('map.path.draw');
+                  }
+                });
+            });
+
+            archMarkerBugService.getList()
+              .then(function(result) {
+                result.value.forEach(function(feature) {
+                  _bugsLayer.addData(feature);
+                });
+              });
+
+            archMarkerPoiService.getList()
+              .then(function(result) {
+                result.value.forEach(function(feature) {
+                  _poisLayer.addData(feature);
+                });
+              });
+
+            archPathJunctionService.getList()
+              .then(function(result) {
+                result.value.forEach(function(junction) {
+                  var mouseOverHook = function(e) {
+                    e.layer.setIcon(L.AwesomeMarkers.icon({
+                      icon: 'arrows',
+                      markerColor: 'green'
+                    }));
+                  };
+                  _junctionsLayer.on('mouseover', mouseOverHook);
+
+                  var mouseOutHook = function(e) {
+                    e.layer.setIcon(L.AwesomeMarkers.icon({
+                      icon: 'arrows',
+                      markerColor: 'red'
+                    }));
+                  };
+                  _junctionsLayer.on('mouseout', mouseOutHook);
+
+                  $scope.$on('$destroy', function() {
+                    _junctionsLayer.off('mouseover', mouseOverHook);
+                    _junctionsLayer.off('mouseout', mouseOutHook);
+                  });
+
+                  _junctionsLayer.addData(junction);
+                  junction.properties.paths.forEach(function(path) {
+                    _pathLayer.addData(path);
+                  });
+                });
+              });
+
+          });
+
+        this.getPoisLayer = function() {
+          return $q.when(_poisLayer);
+        };
+
+        this.getBugsLayer = function() {
+          return $q.when(_bugsLayer);
+        };
+
+        this.getPathLayer = function() {
+          return $q.when(_pathLayer);
+        };
+
+        this.getJunctionsLayer = function() {
+          return $q.when(_junctionsLayer);
+        };
 
         Object.keys(ARCH_LAYER_TYPES)
           .map(function(key) {

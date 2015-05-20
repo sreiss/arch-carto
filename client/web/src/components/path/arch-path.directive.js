@@ -10,63 +10,16 @@ angular.module('archCarto')
 
         var _currentLayer = null;
         var _currentJunctionLayer = null;
-        var _pathLayer = null;
-        var _junctionsLayer = null;
 
         $scope.hasDrawnPath = false;
 
+        $scope.cancel = function() {
+          $state.go('map.path.draw', {id: ''});
+          $mdSidenav('right').close();
+        };
+
         leafletData.getMap()
           .then(function(map) {
-            _pathLayer = L.geoJson(null, {
-              onEachFeature: function(feature, layer) {
-                if (feature.properties) {
-                  var html = angular.element('<arch-path-details-popup></arch-path-details-popup>');
-                  layer.bindPopup(html[0], {pathId: feature._id, maxWidth: 600, minWidth: 600, className: 'arch-popup'});
-                }
-              }
-            }).addTo(map);
-
-            _junctionsLayer = L.geoJson(null, {
-              onEachFeature: function(feature, layer) {
-                var iconOptions = {
-                  icon: 'arrows'
-                };
-
-                //if (feature.properties.auditEvents[0].type == 'AWAITING_ADDITION') {
-                iconOptions.markerColor = 'red';
-                //}
-
-                layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
-              }
-            }).addTo(map);
-
-            controller.getPathLayer = function() {
-              return $q.when(_pathLayer);
-            };
-
-            map.on('popupopen', function(event) {
-              var popupScope = $scope.$new();
-              var hasDirective = false;
-              if (event.popup.options.pathId) {
-                popupScope.pathId = event.popup.options.pathId;
-                hasDirective = true;
-              }
-              if (hasDirective) {
-                $compile(event.popup._content)(popupScope);
-              } else {
-                popupScope.$destroy();
-              }
-            });
-
-            archPathJunctionService.getList()
-              .then(function(result) {
-                result.value.forEach(function(junction) {
-                  _junctionsLayer.addData(junction);
-                  junction.properties.paths.forEach(function(path) {
-                    _pathLayer.addData(path);
-                  });
-                });
-              });
 
             map.on('draw:created', function (e) {
               var layerType = e.layerType;
@@ -77,6 +30,12 @@ angular.module('archCarto')
                 map.removeLayer(_currentLayer);
                 $scope.hasDrawnPath = false;
                 controller.cleanCurrentLayer = angular.noop;
+              };
+
+              controller.cleanCurrentJunctionsLayer = function() {
+                map.removeLayer(_currentJunctionLayer);
+                $scope.hasDrawnPath = false;
+                controller.cleanCurrentJunctionsLayer = angular.noop;
               };
 
               map.addLayer(_currentLayer);
@@ -100,21 +59,48 @@ angular.module('archCarto')
                     $scope.hasDrawnPath = false;
                     _currentLayer = null;
                     _currentJunctionLayer = null;
-                    $scope.cancel = angular.noop;
+                    $scope.cancel = function() {
+                      $state.go('map.path.draw', {id: ''});
+                      $mdSidenav('right').close();
+                    };
                     $state.go('map.path.draw');
                   });
               };
             });
 
+            var nearestHook;
             map.on('draw:drawstart', function(e) {
-              /*
               var layerType = e.layerType;
               if (layerType === 'polyline') {
-                map.on('mousemove', function(e) {
-                  var index = leafletKnn(_pathLayer);
+                /*
+                nearestHook = function(e) {
+                  var index = leafletKnn(_junctionsLayer);
                   var nearestLayer = index.nearest(e.latlng, 1)[0].layer;
-                  debugger;
-                });
+                  var cursor = e.latlng;
+                  var layerCoords = nearestLayer.getLatLng();
+                  console.log(cursor.distanceTo(layerCoords));
+
+                  /*if (cursor.distanceTo(layerCoords) < 50) {
+                    nearestLayer.setIcon(L.AwesomeMarkers.icon({
+                      icon: 'arrows',
+                      markerColor: 'green'
+                    }));
+                  } else {
+                    nearestLayer.setIcon(L.AwesomeMarkers.icon({
+                      icon: 'arrows',
+                      markerColor: 'red'
+                    }));
+                  }
+                };
+                map.on('mousemove', nearestHook);
+                */
+              }
+            });
+
+            map.on('draw:drawstop', function(e) {
+              /*
+              if (nearestHook) {
+                map.off('mousemove', nearestHook);
               }
               */
             });

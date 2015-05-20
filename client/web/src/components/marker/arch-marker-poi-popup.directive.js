@@ -16,7 +16,6 @@ angular.module('archCarto')
         refreshPoi();
 
         $rootScope.$on('poiMediaAttached', function(event, poi) {
-          debugger;
           if (poi._id == scope.poi._id) {
             refreshPoi();
           }

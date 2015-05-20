@@ -1,7 +1,8 @@
 <md-content>
   <h2>{{'PATH' | translate}}</h2>
   <p>{{'COATING' | translate}}:
-    <span ng-if="path.coating">{{path.coating}}</span>
-    <span ng-if="!path.coating">{{'NOT_DEFINED' | translate}}</span>
+    <span ng-if="path.properties.coating">{{path.properties.coating}}.</span>
+    <span ng-if="!path.properties.coating">{{'NOT_DEFINED' | translate}}.</span>
+    <a ui-sref="map.path.draw({id: path._id})" ng-if="path._id">{{'EDIT' | translate}}</a>
   </p>
 </md-content>

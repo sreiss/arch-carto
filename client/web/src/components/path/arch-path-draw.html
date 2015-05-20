@@ -2,6 +2,14 @@
   <h1 class="md-toolbar-tools">{{'PATH_DETAILS' | translate}}</h1>
 </md-toolbar>
 <md-content class="md-padding">
+  <ng-form name="bugForm">
+    <md-input-container flex>
+      <label>{{'COATING' | translate}}</label>
+      <input type="text" ng-model="path.properties.coating" />
+    </md-input-container>
+  </ng-form>
+</md-content>
+<md-content class="md-padding">
   <md-button ng-click="cancel()">
     {{'CANCEL' | translate}}
   </md-button>

@@ -12,6 +12,7 @@ exports.attach = function(opts) {
         type: {type: String, required: true},
         entity: {type: String, required: true},
         entityId: {type: mongoose.Schema.Types.ObjectId, required: true},
+        pendingChanges: {type: mongoose.Schema.Types.Mixed},
         userId: {type: mongoose.Schema.Types.ObjectId, required: true},
         date: {type: Date, required: true}
     });

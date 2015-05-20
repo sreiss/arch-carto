@@ -1,3 +1,5 @@
+var deepcopy = require('deepcopy');
+
 module.exports = function(Types, auditEventService) {
 
     return {

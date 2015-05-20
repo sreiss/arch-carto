@@ -3,9 +3,12 @@ angular.module('archCarto')
   .directive('archMarkerPoi', function(archPoiService, archPoiTypeService, archMarkerPoiService, $filter, $state, $translate, archTranslateService, $mdToast, $mdSidenav) {
     return {
       restrict: 'E',
-      require: '^archMarker',
+      require: ['^archMap', '^archMarker'],
       templateUrl: 'components/marker/arch-marker-poi.html',
-      link: function(scope, element, attributes, archMarker) {
+      link: function(scope, element, attributes, controllers) {
+        var archMap = controllers[0];
+        var archMarker = controllers[1];
+
         archMarker.getCurrentLayer()
           .then(function(layer) {
             if (!layer) {
@@ -42,7 +45,7 @@ angular.module('archCarto')
                 var geoJson = archMarkerPoiService.toGeoJson(poi);
                 archMarkerPoiService.save(geoJson)
                   .then(function (result) {
-                    archMarker.getPoisLayer()
+                    archMap.getPoisLayer()
                       .then(function(layer) {
                         return layer.addData(result.value);
                       })

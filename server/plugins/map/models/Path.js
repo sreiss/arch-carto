@@ -1,3 +1,5 @@
+var deepcopy = require('deepcopy');
+
 module.exports = function(Types, auditEventService) {
 
     return {
@@ -24,7 +26,8 @@ module.exports = function(Types, auditEventService) {
                     var auditEvent = {
                         type: eventType,
                         entity: "PATH",
-                        entityId: model._id
+                        entityId: model._id,
+                        pendingChanges: deepcopy(model._doc)
                     };
                     auditEventService.saveAuditEvent(auditEvent)
                         .then(function(auditEventId) {

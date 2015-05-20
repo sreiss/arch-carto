@@ -9,9 +9,9 @@ module.exports = function() {
                 .notEmpty()
                 .isObjectId();
 
-            req.checkBody('properties.altitude', 'ALTITUDE_MUST_BE_NUMERIC')
+            /*req.checkBody('properties.altitude', 'ALTITUDE_MUST_BE_NUMERIC')
                 .notEmpty()
-                .isNumeric();
+                .isNumeric();*/
 
             req.checkBody('properties.name', 'NAME_REQUIRED')
                 .notEmpty();
