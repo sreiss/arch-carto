@@ -103,5 +103,7 @@ angular.module('archCarto')
     SANDY: "Sableux",
     STONY: "Rocailleux",
     SELECT_A_COATING: "Selectionner un revêtement",
-    PATH_DETAILS: "Détails du tronçon"
+    PATH_DETAILS: "Détails du tronçon",
+    ROAD: "Route",
+    DIRT_ROAD: "Chemin de terre"
   });
