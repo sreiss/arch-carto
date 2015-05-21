@@ -2,11 +2,11 @@
 angular.module('archCarto')
   .constant('httpConstant', {
      /* PROD */
-    casClientUrl: 'http://acrobatt-vm11.psi.ad.unistra.fr:3010',
-    casServerUrl: 'http://acrobatt-vm11.psi.ad.unistra.fr:3020',
-    cartoClientUrl: 'http://acrobatt-vm11.psi.ad.unistra.fr:3012',
+    casClientUrl: 'http://acrobatt-vm12.psi.ad.unistra.fr:3020',
+    casServerUrl: 'http://acrobatt-vm12.psi.ad.unistra.fr:3020',
+    cartoClientUrl: 'http://acrobatt-vm11.psi.ad.unistra.fr:3022',
     cartoServerUrl: 'http://acrobatt-vm11.psi.ad.unistra.fr:3022',
-    clientRedirectUri : 'http://acrobatt-vm11.psi.ad.unistra.fr:3012/#/map',
+    clientRedirectUri : 'http://acrobatt-vm11.psi.ad.unistra.fr:3022/#/map',
 
     /* DEV
     casClientUrl: 'http://localhost:3010',
