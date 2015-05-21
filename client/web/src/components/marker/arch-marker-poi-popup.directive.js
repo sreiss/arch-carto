@@ -5,7 +5,7 @@ angular.module('archCarto')
       restrict: 'E',
       templateUrl: 'components/marker/arch-marker-poi-popup.html',
       link: function(scope, element, attributes) {
-        scope.apiUrl = httpConstant.apiUrl;
+        scope.apiUrl = httpConstant.cartoServerUrl;
 
         var refreshPoi = function() {
           archMarkerPoiService.get(scope.poiId)

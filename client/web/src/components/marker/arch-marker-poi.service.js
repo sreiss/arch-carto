@@ -1,7 +1,7 @@
 'use strict'
 angular.module('archCarto')
   .service('archMarkerPoiService', function(archHttpService, $q, httpConstant) {
-    var poiUrl = httpConstant.apiUrl + '/map/poi';
+    var poiUrl = httpConstant.cartoServerUrl + '/map/poi';
 
     return {
       toGeoJson: function(poi) {

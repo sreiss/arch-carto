@@ -13,7 +13,7 @@ angular.module('archCarto')
         $mdSidenav('right').toggle();
         $mdSidenav('right').open();
         // first version
-        //var _gpxUrl = httpConstant.apiUrl + '/map/gpx/';
+        //var _gpxUrl = httpConstant.cartoServerUrl + '/map/gpx/';
         //console.log(_gpxUrl);
         //$scope.uploader = new FileUploader({
         //  removeAfterUpload: true,

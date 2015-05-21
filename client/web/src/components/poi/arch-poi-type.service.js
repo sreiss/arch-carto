@@ -1,7 +1,7 @@
 'use strict'
 angular.module('archCarto')
   .factory('archPoiTypeService', function($http, httpConstant, $q) {
-    var poiTypeUrl = httpConstant.apiUrl + '/map/poi-type';
+    var poiTypeUrl = httpConstant.cartoServerUrl + '/map/poi-type';
 
     return {
       getPoiTypeList: function(success) {

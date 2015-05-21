@@ -1,7 +1,7 @@
 'use strict';
 angular.module('archCarto')
   .factory('archPathJunctionService', function(archHttpService, httpConstant) {
-    var _junctionUrl = httpConstant.apiUrl + '/map/junction';
+    var _junctionUrl = httpConstant.cartoServerUrl + '/map/junction';
 
     return {
       toGeoJson: function(junction) {

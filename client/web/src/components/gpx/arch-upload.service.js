@@ -1,7 +1,7 @@
 'use strict'
 angular.module('archCarto')
   .factory('archGpxUploadService', function (archHttpService, $q, httpConstant) {
-    var _gpxUrl = httpConstant.apiUrl + '/map/gpx';
+    var _gpxUrl = httpConstant.cartoServerUrl + '/map/gpx';
 
     return{
       uploadFileToUrl: function(trace){

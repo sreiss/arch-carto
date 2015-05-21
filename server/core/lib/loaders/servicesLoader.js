@@ -9,7 +9,6 @@ exports.attach = function(opts) {
     var plugins = app.arch.plugins;
     var config = app.arch.config;
     var utils = app.arch.utils;
-    var auditEventService = app.arch.auditEventService;
 
     for (var pluginName in plugins) {
         var plugin = plugins[pluginName];
@@ -40,12 +39,14 @@ exports.attach = function(opts) {
 
             var serviceArgs = [];
             var pluginDependencies = plugin.plugin.dependencies || [];
+
             dependencyNames.forEach(function(dependencyName) {
                 dependencyName = dependencyName.trim();
                 if (dependencyName != '') {
-                    if (dependencyName == 'auditEventService') {
-                        serviceArgs.push(auditEventService);
-                    } else if (plugin.models[dependencyName]) {
+                    if(dependencyName == 'config') {
+                        serviceArgs.push(config);
+                    }
+                    else if (plugin.models[dependencyName]) {
                         serviceArgs.push(plugin.models[dependencyName]);
                     } else if (plugin.services[dependencyName]) {
                         serviceArgs.push(plugin.services[dependencyName]);
@@ -75,26 +76,26 @@ exports.attach = function(opts) {
 
         // Dependency injection
         /*
-        for (pluginServiceName in pluginServices) {
-            var serviceSignature = pluginServices[pluginServiceName].toString();
-            var dependencyNames = serviceSignature
-                .substring(serviceSignature.indexOf('(') + 1, serviceSignature.indexOf(')'))
-                .split(',');
+         for (pluginServiceName in pluginServices) {
+         var serviceSignature = pluginServices[pluginServiceName].toString();
+         var dependencyNames = serviceSignature
+         .substring(serviceSignature.indexOf('(') + 1, serviceSignature.indexOf(')'))
+         .split(',');
 
-            var serviceArgs = [];
-            dependencyNames.forEach(function(dependencyName) {
-                dependencyName = dependencyName.trim();
-                if (pluginModels[dependencyName]) {
-                    serviceArgs.push(pluginModels[dependencyName]);
-                } else if (pluginServices[dependencyName]) {
-                    serviceArgs.push(pluginServices[dependencyName]);
-                } else {
-                    serviceArgs.push(null);
-                }
-            });
+         var serviceArgs = [];
+         dependencyNames.forEach(function(dependencyName) {
+         dependencyName = dependencyName.trim();
+         if (pluginModels[dependencyName]) {
+         serviceArgs.push(pluginModels[dependencyName]);
+         } else if (pluginServices[dependencyName]) {
+         serviceArgs.push(pluginServices[dependencyName]);
+         } else {
+         serviceArgs.push(null);
+         }
+         });
 
-            pluginServices[pluginServiceName] = pluginServices[pluginServiceName].apply(this, serviceArgs);
-        }*/
+         pluginServices[pluginServiceName] = pluginServices[pluginServiceName].apply(this, serviceArgs);
+         }*/
     }
 };
 

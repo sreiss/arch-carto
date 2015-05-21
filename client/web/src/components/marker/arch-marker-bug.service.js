@@ -1,7 +1,7 @@
 'use strict'
 angular.module('archCarto')
   .factory('archMarkerBugService', function(httpConstant, archHttpService) {
-    var _bugUrl = httpConstant.apiUrl + '/map/bug';
+    var _bugUrl = httpConstant.cartoServerUrl + '/map/bug';
 
     return {
       toGeoJson: function(bug) {

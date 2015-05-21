@@ -7,7 +7,7 @@ angular.module('archCarto')
       controller: function($scope, $stateParams) {
         $mdSidenav('right').open();
 
-        $scope.uploadUrl = httpConstant.apiUrl + '/map/media';
+        $scope.uploadUrl = httpConstant.cartoServerUrl + '/map/media';
 
         $scope.type = $stateParams.type;
         $scope.medias = [];

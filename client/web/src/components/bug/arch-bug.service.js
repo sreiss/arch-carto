@@ -1,7 +1,7 @@
 'use strict'
 angular.module('archCarto')
   .service('archBugService', function(archHttpService, $q, httpConstant) {
-    var bugUrl = httpConstant.apiUrl + '/map/bug';
+    var bugUrl = httpConstant.cartoServerUrl + '/map/bug';
 
     return {
       getBugList: function (params) {

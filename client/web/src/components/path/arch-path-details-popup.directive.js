@@ -5,7 +5,7 @@ angular.module('archCarto')
       restrict: 'E',
       templateUrl: 'components/path/arch-path-details-popup.html',
       link: function(scope, element, attributes) {
-        scope.apiUrl = httpConstant.apiUrl;
+        scope.apiUrl = httpConstant.cartoServerUrl;
 
         var refresh = function() {
           archPathService.get(scope.pathId)

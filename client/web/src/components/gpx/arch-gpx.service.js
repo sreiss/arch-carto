@@ -1,7 +1,7 @@
 'use strict'
 angular.module('archCarto')
   .factory('archGpxService', function($http, httpConstant, $q,archHttpService) {
-    var _gpxUrl = httpConstant.apiUrl + '/map/gpx';
+    var _gpxUrl = httpConstant.cartoServerUrl + '/map/gpx';
 
     return {
       getTrace: function(params) {
