@@ -35,7 +35,8 @@ angular.module('archCarto')
                 $mdSidenav('right').open();
 
                 scope.path = {
-                  coordinates: pathCoordinates
+                  coordinates: pathCoordinates,
+                  properties: {}
                 };
 
                 scope.save = function(path) {
