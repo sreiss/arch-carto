@@ -10,7 +10,7 @@ angular.module('archCarto')
             name: poi.name,
             description: poi.description,
             type: poi.type._id,
-            altitude: 0
+            medias: []
           },
           geometry: {
             coordinates: [poi.coordinates.lng, poi.coordinates.lat]

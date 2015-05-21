@@ -124,11 +124,7 @@ angular.module('archCarto')
             map.on('popupclose', function(event) {
               $mdSidenav('right').close()
                 .then(function() {
-                  if (event.popup.options.poiId || event.popup.options.bugId) {
-                    $state.go('map.marker.choice');
-                  } else if (event.popup.options.pathId) {
-                    $state.go('map.path.draw');
-                  }
+                  $state.go($state.current.name, {id: ''});
                 });
             });
 

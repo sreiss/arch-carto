@@ -74,7 +74,7 @@ module.exports = function(Poi, poiTypeService) {
                         // TODO: Get the user ID
                         userId: rawPoi.properties.userId,
                         // TODO: Get the point altitude
-                        altitude: rawPoi.properties.altitude,
+                        medias: rawPoi.properties.medias,
                         description: rawPoi.properties.description,
                         type: rawPoi.properties.type,
                         name: rawPoi.properties.name,

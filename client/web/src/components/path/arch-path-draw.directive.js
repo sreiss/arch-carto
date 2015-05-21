@@ -55,7 +55,7 @@ angular.module('archCarto')
                   });
                 };
               });
-          } else {
+          } else if (scope.id) {
             // If we are just editing the path
             archPathService.get(scope.id)
               .then(function(result) {
@@ -66,6 +66,7 @@ angular.module('archCarto')
                     .then(function(result) {
                       archTranslateService(result.message)
                         .then(function(translation) {
+                          scope.$emit('pathUpdated', result.value);
                           $mdToast.show($mdToast.simple().content(translation));
                         });
                     });

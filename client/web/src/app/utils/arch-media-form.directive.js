@@ -1,14 +1,15 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMediaForm', function(archMediaService) {
+  .directive('archMediaForm', function(archMediaService, httpConstant) {
     return {
       restrict: 'E',
       scope: {
-        uploadUrl: '=',
+        uploadUrl: '=?',
         added: '='
       },
       templateUrl: 'app/utils/arch-media-form.html',
       link: function(scope, element, attributes) {
+        scope.uploadUrl = scope.uploadUrl || httpConstant.apiUrl + '/map/media';
         scope.dropAvailable = true;
         scope.metas = [];
 

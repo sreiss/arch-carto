@@ -15,7 +15,7 @@ angular.module('archCarto')
         };
         refresh();
 
-        $rootScope.$on('pathMediaAttached', function(event, path) {
+        $rootScope.$on('pathUpdated', function(event, path) {
           if (path._id == scope.path._id) {
             refresh();
           }

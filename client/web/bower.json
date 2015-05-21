@@ -9,6 +9,7 @@
     "angular-sanitize": "~1.3.4",
     "leaflet": "~0.7.3",
     "leafletKnn": "https://github.com/mapbox/leaflet-knn.git#0.1.0",
+    "GeoLib": "https://github.com/manuelbieh/Geolib.git",
     "Leaflet.Elevation": "https://github.com/MrMufflon/Leaflet.Elevation.git#~0.0.3",
     "Leaflet.awesome-markers": "~2.0.2",
     "Leaflet.draw": "https://github.com/Leaflet/Leaflet.draw.git",
@@ -35,6 +36,12 @@
     "leafletKnn": {
       "main": [
         "leaflet-knn.js"
+      ]
+    },
+    "GeoLib": {
+      "main": [
+        "dist/geolib.js",
+        "dist/geolib.elevation.js"
       ]
     }
   },

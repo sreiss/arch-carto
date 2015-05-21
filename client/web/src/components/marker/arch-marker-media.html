@@ -3,7 +3,7 @@
 </md-toolbar>
 <md-content class="md-padding" ng-switch="type">
   <div ng-switch-when="poi">
-    {{'POINT_OF_INTEREST'}}: {{marker.properties.name}}
+    {{'POINT_OF_INTEREST' | translate}}: {{marker.properties.name}}
   </div>
   <arch-media-form upload-url="uploadUrl" added="medias"></arch-media-form>
   <div ng-if="marker.properties.media && marker.properties.media.length > 0">

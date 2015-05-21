@@ -93,5 +93,9 @@ angular.module('archCarto')
 
     COATING: "Revêtement",
     NOT_DEFINED: "Non défini",
-    EDIT: "Editer"
+    EDIT: "Editer",
+    ADD_MEDIA: "Ajouter une photo",
+    DROP_FILES_HERE: "Déposez vos fichiers ici",
+    ADD_SOME: "En ajouter",
+    ASSOCIATED_MEDIAS: "Photos associés"
   });

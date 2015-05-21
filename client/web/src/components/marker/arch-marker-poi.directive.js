@@ -16,6 +16,7 @@ angular.module('archCarto')
             } else {
               var coordinates = layer.getLatLng();
 
+              scope.medias = [];
               scope.formValid = false;
               scope.poi = {
                 coordinates: coordinates
@@ -43,6 +44,9 @@ angular.module('archCarto')
 
               scope.save = function(poi) {
                 var geoJson = archMarkerPoiService.toGeoJson(poi);
+                for(var i = 0; i < scope.medias.length; i += 1) {
+                  geoJson.properties.medias.push(scope.medias[i].data._id);
+                }
                 archMarkerPoiService.save(geoJson)
                   .then(function (result) {
                     archMap.getPoisLayer()
