@@ -1,6 +1,6 @@
 <div ng-if="!alreadyLogged">
   <md-button class="md-button" href="{{loginUrl}}">{{'MAIN_PAGE_LOGIN' | translate}}</md-button>
-  <md-button class="md-button">{{'MAIN_PAGE_SIGNIN' | translate}}</md-button>
+  <md-button class="md-button" ui-sref="subscribe">{{'MAIN_PAGE_SIGNIN' | translate}}</md-button>
 </div>
 
 <div ng-if="alreadyLogged">

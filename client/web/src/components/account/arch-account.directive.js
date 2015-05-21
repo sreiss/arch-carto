@@ -8,7 +8,10 @@ angular.module('archCarto')
         var init = function()
         {
           // Get login url.
-          $scope.loginUrl = archAccountService.getLoginUrl();
+          archAccountService.getLoginUrl().then(function(loginUrl)
+          {
+            $scope.loginUrl = loginUrl;
+          });
 
           // Check token in coockies.
           var token = archAccountService.getCurrentToken();
