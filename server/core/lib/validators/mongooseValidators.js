@@ -1,14 +1,14 @@
 var ObjectId = require('mongoose').Types.ObjectId;
 
-module.exports = {
+var mongooseValidators = {
     isObjectId: function(value) {
         return ObjectId.isValid(value);
     },
     toObjectId: function(value) {
-        if (this.isObjectId(value)) {
+        if (mongooseValidators.isObjectId(value)) {
             return value;
-        } else if (value._id && this.isObjectId(value._id)) {
-            return value;
+        } else if (value._id && mongooseValidators.isObjectId(value._id)) {
+            return value._id;
         } else {
             return false;
         }
@@ -19,7 +19,7 @@ module.exports = {
         }
         var result = [];
         for (var i = 0; i < value.length; i += 1) {
-            if (this.toObjectId(value[i]) === false) {
+            if (mongooseValidators.toObjectId(value[i]) === false) {
                 return false;
             } else {
                 if (result.indexOf(value[i])) {
@@ -30,3 +30,5 @@ module.exports = {
         return result;
     }
 };
+
+module.exports = mongooseValidators;

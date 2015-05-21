@@ -4,8 +4,10 @@
 <md-content class="md-padding">
   <ng-form name="bugForm">
     <md-input-container flex>
-      <label>{{'COATING' | translate}}</label>
-      <input type="text" ng-model="path.properties.coating" />
+      <md-select ng-model="path.properties.coating" flex>
+        <md-select-label>{{ path.properties.coating ? (path.properties.coating.name | translate) : ('SELECT_A_COATING' | translate) }}</md-select-label>
+        <md-option ng-value="coating" ng-repeat="coating in coatings">{{coating.name | translate}}</md-option>
+      </md-select>
     </md-input-container>
   </ng-form>
   <arch-media-form added="medias"></arch-media-form>

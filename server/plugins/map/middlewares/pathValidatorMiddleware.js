@@ -6,6 +6,10 @@ module.exports = function() {
                 .optional()
                 .toObjectIds();
 
+            req.checkBody('properties.coating', 'INVALID_COATING')
+                .optional()
+                .toObjectId();
+
             return next();
         }
     };

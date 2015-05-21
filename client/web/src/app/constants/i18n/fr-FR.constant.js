@@ -97,5 +97,11 @@ angular.module('archCarto')
     ADD_MEDIA: "Ajouter une photo",
     DROP_FILES_HERE: "Déposez vos fichiers ici",
     ADD_SOME: "En ajouter",
-    ASSOCIATED_MEDIAS: "Photos associés"
+    ASSOCIATED_MEDIAS: "Photos associés",
+    NO_MEDIAS_FOUND: "Aucune photo associée",
+    PATH: "Tronçon",
+    SANDY: "Sableux",
+    STONY: "Rocailleux",
+    SELECT_A_COATING: "Selectionner un revêtement",
+    PATH_DETAILS: "Détails du tronçon"
   });

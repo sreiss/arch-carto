@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archPathDraw', function(archPathService, archPathJunctionService, $q, $mdSidenav, $mdToast, archTranslateService) {
+  .directive('archPathDraw', function(archPathService, archPathJunctionService, $q, $mdSidenav, $mdToast, archTranslateService, archPathCoatingService) {
     return {
       restrict: 'E',
       require: ['^archMap', '^archPath'],
@@ -16,6 +16,11 @@ angular.module('archCarto')
         scope.$watch('hasDrawnPath', function(hasDrawnPath) {
 
           scope.medias = [];
+          archPathCoatingService.getList()
+            .then(function(result) {
+              scope.coatings = result.value;
+            });
+
           if (hasDrawnPath) {
             $q.all([
                 archPath.getCurrentLayer(),
@@ -40,7 +45,7 @@ angular.module('archCarto')
                     for(var i = 0; i < scope.medias.length; i += 1) {
                       pathGeoJson.properties.medias.push(scope.medias[i].data._id);
                     }
-                    debugger;
+
                     var junction = {
                       coordinates: layer.getLatLng(),
                       paths: [pathGeoJson]

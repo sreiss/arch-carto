@@ -29,6 +29,7 @@ module.exports = function(Path) {
                 })
                 .populate('properties.auditEvents.userId')
                 .populate('properties.medias')
+                .populate('properties.coating')
                 .exec(function(err, path) {
                     if (err) {
                         deferred.reject(err);
@@ -47,6 +48,7 @@ module.exports = function(Path) {
                     var id = rawPath._id;
                     delete rawPath._id;
                     delete rawPath.properties.auditEvents;
+                    rawPath.properties.coating = rawPath.properties.coating._id;
                     Path.findByIdAndUpdate(id, rawPath, function(err, updatedPath) {
                         if (err) {
                             deferred.reject(err);
