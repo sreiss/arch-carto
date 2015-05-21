@@ -15,6 +15,7 @@ angular.module('archCarto')
 
         scope.$watch('hasDrawnPath', function(hasDrawnPath) {
 
+          scope.medias = [];
           if (hasDrawnPath) {
             $q.all([
                 archPath.getCurrentLayer(),
@@ -35,9 +36,14 @@ angular.module('archCarto')
                 scope.save = function(path) {
                   var junctionLayers = currentJunctionsLayer.getLayers();
                   junctionLayers.forEach(function(layer) {
+                    var pathGeoJson = archPathService.toGeoJson(path);
+                    for(var i = 0; i < scope.medias.length; i += 1) {
+                      pathGeoJson.properties.medias.push(scope.medias[i].data._id);
+                    }
+                    debugger;
                     var junction = {
                       coordinates: layer.getLatLng(),
-                      paths: [archPathService.toGeoJson(path)]
+                      paths: [pathGeoJson]
                     };
 
                     var geoJson = archPathJunctionService.toGeoJson(junction);
@@ -60,8 +66,10 @@ angular.module('archCarto')
             archPathService.get(scope.id)
               .then(function(result) {
                 scope.path = result.value;
-
                 scope.save = function(path) {
+                  for (var i = 0; i < scope.medias.length; i += 1) {
+                    path.properties.medias.push(scope.medias[i].data._id);
+                  }
                   archPathService.save(path)
                     .then(function(result) {
                       archTranslateService(result.message)

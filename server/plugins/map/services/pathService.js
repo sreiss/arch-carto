@@ -28,6 +28,7 @@ module.exports = function(Path) {
                     limit: 1
                 })
                 .populate('properties.auditEvents.userId')
+                .populate('properties.medias')
                 .exec(function(err, path) {
                     if (err) {
                         deferred.reject(err);
@@ -61,7 +62,7 @@ module.exports = function(Path) {
                     var path = new Path({
                         properties: {
                             coating: rawPath.properties.coating || '',
-                            altitudes: rawPath.properties.altitudes || []
+                            medias: rawPath.properties.medias
                         },
                         geometry: {
                             coordinates: rawPath.geometry.coordinates

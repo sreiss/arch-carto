@@ -7,7 +7,8 @@ module.exports = function(Types, auditEventService) {
             type: {type: String, required: true},
             properties: {
                 auditEvents: [{type: Types.ObjectId, ref: 'AuditEvent'}],
-                coating: {type: String}
+                coating: {type: String},
+                medias: [{type: Types.ObjectId, ref: 'Media'}]
             },
             geometry: {
                 type: {type: String, required: true},

@@ -5,4 +5,26 @@
     <span ng-if="!path.properties.coating">{{'NOT_DEFINED' | translate}}.</span>
     <a ui-sref="map.path.draw({id: path._id})" ng-if="path._id">{{'EDIT' | translate}}</a>
   </p>
+  <h3>{{'ASSOCIATED_MEDIAS' | translate}}</h3>
+  <div style="min-height: 16px">
+    <div ng-if="path.properties.medias.length === 0">
+      {{'NO_MEDIAS_FOUND' | translate}}.
+    </div>
+    <a ui-sref="map.marker.media({type: 'path', id: pathId})">
+      {{'ADD_SOME' | translate}}
+    </a>
+    <div ng-if="path.properties.medias.length > 0" style="max-height: 300px;">
+      <md-grid-list md-cols-sm="2"
+                    md-cols-md="2"
+                    md-cols-gt-md="2"
+                    md-row-height-gt-md="1:1"
+                    md-row-height="2:2"
+                    md-gutter="12px"
+                    md-gutter-gt-sm="8px" >
+        <md-grid-tile ng-repeat="media in path.properties.medias">
+          <img style="max-height: 200px" ng-src="{{apiUrl + '/' + media.url }}" />
+        </md-grid-tile>
+      </md-grid-list>
+    </div>
+  </div>
 </md-content>

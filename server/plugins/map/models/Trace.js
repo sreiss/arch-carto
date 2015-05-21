@@ -19,6 +19,7 @@ module.exports = function(Types) {
                 }]
         },
         onSchemaReady: function(schema) {
+            /*
             var addAuditEvent = function (eventType, model, next) {
                 model.type = "Feature";
                 model.geometry.type = "LineString";
@@ -51,6 +52,7 @@ module.exports = function(Types) {
             schema.pre('update', function (next) {
                 addAuditEvent('UPDATED', this, next);
             });
+            */
         }
     };
 

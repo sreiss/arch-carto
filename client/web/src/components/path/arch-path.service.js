@@ -7,7 +7,8 @@ angular.module('archCarto')
       toGeoJson: function(path) {
         var geoJson = {
           properties: {
-            coating: path.properties.coating || ''
+            coating: path.properties.coating || '',
+            medias: []
           },
           geometry: {
             coordinates: []

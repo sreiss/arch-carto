@@ -1,8 +1,8 @@
-module.exports = function(pathController, pathRouter) {
+module.exports = function(pathController, pathRouter, pathValidatorMiddleware, validationGateMiddleware) {
 
     pathRouter.route('/')
         .get(pathController.getList)
-        .post(pathController.save);
+        .post(pathValidatorMiddleware.validateSave, validationGateMiddleware, pathController.save);
 
     pathRouter.route('/:id')
         .get(pathController.get);
