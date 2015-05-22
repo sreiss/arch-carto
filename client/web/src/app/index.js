@@ -125,6 +125,13 @@ angular.module('archCarto', [
             template: '<arch-gpx-upload-form></arch-gpx-upload-form>'
           }
         }
+      }).state('subscribe', {
+        url: '/subscribe',
+        views: {
+          main: {
+            templateUrl: 'app/subscribe/subscribe.html'
+          }
+        }
       });
     console.log('State map');
 

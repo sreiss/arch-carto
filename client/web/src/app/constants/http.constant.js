@@ -8,12 +8,12 @@ angular.module('archCarto')
     cartoServerUrl: 'http://acrobatt-vm11.psi.ad.unistra.fr:3022',
     clientRedirectUri : 'http://acrobatt-vm11.psi.ad.unistra.fr:3022/#/map',
 
-    /* DEV
+    /* DEV 
     casClientUrl: 'http://localhost:3010',
     casServerUrl: 'http://localhost:3020',
     cartoClientUrl: 'http://localhost:3012',
     cartoServerUrl: 'http://localhost:3022',
-    clientRedirectUri : 'http://localhost:3012/#/map',*/
+    clientRedirectUri : 'http://localhost:3012/#/map', */
 
     signupType: {
       name: 'CARTO',
