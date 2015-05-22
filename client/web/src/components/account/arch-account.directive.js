@@ -27,6 +27,8 @@ angular.module('archCarto')
             }
             else
             {
+              $scope.alreadyLogged = true;
+
               $scope.token = token;
               $scope.user = token.user;
 
