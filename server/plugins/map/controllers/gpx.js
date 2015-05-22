@@ -1,26 +1,31 @@
 module.exports = function(gpxService) {
 
     return {
-        saveGpx: function(req, res) {
-                var gpx = req.body;
-            //console.log("controller gpx");
-            //console.log(gpx);
-            gpxService.saveGpx(gpx).then(function(savedTrace) {
-                res.json({message: 'Trace saved!'});
-            })
-                .catch(function(err) {
-                    res.send(err);
-                });;
-            res.end("Trace uploaded");
-        },
-        getGpx: function(req, res) {
-            gpxService.getTrace()
-                    .then(function(gpx) {
-                        res.json(gpx);
-                    })
-                    .catch(function(err) {
-                        res.send(err);
+        saveGpx: function(req, res, next) {
+            gpxService.saveGpx(req.body)
+                .then(function(savedTrace) {
+                    res.json({
+                        message: 'TRACE_SAVED',
+                        value: savedTrace
                     });
+                })
+                .catch(function(err) {
+                    next(err);
+                });
+        },
+        getGpx: function(req, res, next) {
+            gpxService.getTrace()
+                .then(function(gpx) {
+                    // TODO: Better response
+                    //res.json({
+                    //    message: 'TRACE_RETRIEVED',
+                    //    value: gpx
+                    //});
+                    res.json(gpx);
+                })
+                .catch(function(err) {
+                    next(err);
+                });
 
         }
     };
