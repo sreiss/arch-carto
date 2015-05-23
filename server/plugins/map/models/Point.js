@@ -40,10 +40,6 @@ module.exports = function(Types, auditEventService) {
                 });
             };
 
-            var assignLastAuditEvent = function(model, next) {
-                return next();
-            };
-
             schema.pre('save', function(next) {
                 addAuditEvent('AWAITING_ADDITION', this, next);
             });
@@ -53,6 +49,22 @@ module.exports = function(Types, auditEventService) {
             });
         },
         onModelReady: function(Point) {
+            var populateLastEvent = function(model, next) {
+                Point.populate(model, {
+                    path: 'properties.auditEvents',
+                    limit: 1
+                }, function(err, point) {
+                    return next(point);
+                });
+            };
+
+            Point.schema.post('save', function(model, next) {
+                populateLastEvent(model, next);
+            });
+
+            Point.schema.post('update', function(model, next) {
+                populateLastEvent(model, next);
+            });
         },
         priority: 1
     };

@@ -9,6 +9,6 @@ module.exports = function(poiController, poiRouter, poiValidationMiddleware, val
         .delete(poiController.deletePoi);
 
     poiSocket({
-        save: poiController.ws.save
+        save: poiController.io.save
     });
 };

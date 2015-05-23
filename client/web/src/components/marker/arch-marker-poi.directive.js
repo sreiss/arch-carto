@@ -47,6 +47,7 @@ angular.module('archCarto')
                 for(var i = 0; i < scope.medias.length; i += 1) {
                   geoJson.properties.medias.push(scope.medias[i].data._id);
                 }
+                console.log('save clicked');
                 archMarkerPoiService.save(geoJson);
                 /*
                   .then(function (result) {

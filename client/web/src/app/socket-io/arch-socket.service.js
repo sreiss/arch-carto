@@ -1,6 +1,6 @@
 'use strict';
 angular.module('archCarto')
-  .factory('archSocketService', function(socketFactory, archSocketConstant, $q, $mdToast, $mdSidenav) {
+  .factory('archSocketService', function(socketFactory, archSocketConstant, $q, $mdToast, $mdSidenav, $log) {
     var _sockets = [];
 
     return {

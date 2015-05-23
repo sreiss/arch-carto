@@ -36,7 +36,7 @@ module.exports = function(bugService) {
                     next(err);
                 });
         },
-        ws: {
+        io: {
             save: function(socket, bugNamespace) {
                 return function(bug) {
                     bugService.save(bug)

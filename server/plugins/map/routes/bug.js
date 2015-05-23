@@ -8,6 +8,6 @@ module.exports = function(bugController, bugRouter, bugValidatorMiddleware, vali
         .get(bugValidatorMiddleware.validateGetBug, validationGateMiddleware, bugController.getBug);
 
     bugSocket({
-        save: bugController.ws.save
+        save: bugController.io.save
     });
 };

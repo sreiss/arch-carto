@@ -56,7 +56,7 @@ module.exports = function(Poi, poiTypeService) {
                 });
             return deferred.promise;
         },
-        savePoi: function(rawPoi) {
+        save: function(rawPoi) {
             var deferred = Q.defer();
             if (rawPoi._id) {
                 var id = rawPoi._id;

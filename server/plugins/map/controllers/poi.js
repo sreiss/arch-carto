@@ -26,7 +26,7 @@ module.exports = function (poiService) {
             }
         },
         savePoi: function(req, res) {
-            poiService.savePoi(req.body)
+            poiService.save(req.body)
                 .then(function(poi) {
                     res.json({
                         message: 'POI_SAVED',
@@ -45,7 +45,7 @@ module.exports = function (poiService) {
                     next(err);
                 });
         },
-        ws: {
+        io: {
             save: function(socket, namespace) {
                 return function(poi) {
                     poiService.save(poi)
