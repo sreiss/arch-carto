@@ -24,7 +24,8 @@
     "angular-ui-router": "~0.2.13",
     "mdi": "~1.0.8-beta",
     "angularjs-geolocation": "~0.1.1",
-    "ng-file-upload": "~4.2.1"
+    "ng-file-upload": "~4.2.1",
+    "angular-socket-io": "~0.7.0"
   },
   "overrides": {
     "leaflet.draw": {

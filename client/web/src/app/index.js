@@ -4,7 +4,7 @@ angular.module('archCarto', [
     'ngSanitize', 'ngMessages', 'ui.router',
     'ngMaterial', 'pascalprecht.translate',
     'leaflet-directive', 'base64',
-    'geolocation', 'ngFileUpload'
+    'geolocation', 'ngFileUpload', 'btford.socket-io'
   ])
   .config(function ($translateProvider, $stateProvider, $urlRouterProvider, i18nfrFRConstant, i18nenUSConstant, $mdThemingProvider, $httpProvider) {
     L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';

@@ -9,14 +9,6 @@ exports.attach = function(opts) {
     var port = config.get('http:port');
     var server = app.arch.server = http.createServer(app.arch.expressApp);
 
-    server.on('listen', function () {
-        var addr = server.address();
-        var bind = typeof addr === 'string'
-            ? 'pipe ' + addr
-            : 'port ' + addr.port;
-        debug('Listening on ' + bind);
-    });
-
     server.on('error', function (err) {
         if (err.syscall !== 'listen') {
             throw err;
@@ -24,7 +16,7 @@ exports.attach = function(opts) {
 
         var bind = typeof port === 'string'
             ? 'Pipe ' + port
-            : 'Port ' + port
+            : 'Port ' + port;
 
         // handle specific listen errors with friendly messages
         switch (err.code) {

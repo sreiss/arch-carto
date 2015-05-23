@@ -2,7 +2,7 @@
 angular.module('archCarto')
   .directive('archMap', function(
     geolocation, $q, $log, $compile,
-    $translate, $mdSidenav, $mdDialog,
+    $translate, $mdSidenav, $mdDialog, $mdToast,
     $state, archUtilsService, leafletData,
     archMapControlService, archMarkerBugService, archMarkerPoiService,
     archPathJunctionService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT,
@@ -359,6 +359,21 @@ angular.module('archCarto')
         };
 
         // endregion
+
+        // endregion
+
+        // region refresh bug
+
+        archMarkerBugService.messages(function(result) {
+            $mdToast.show($mdToast.simple().content(result.message));
+        });
+        archMarkerBugService.error(function(err) {
+          $log.error(err);
+          $mdToast.show($mdToast.simple().content(err.message));
+        });
+        archMarkerBugService.refresher(function(result) {
+          _bugsLayer.addData(result.value);
+        });
 
         // endregion
 

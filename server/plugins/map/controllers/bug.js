@@ -35,6 +35,25 @@ module.exports = function(bugService) {
                 .catch(function(err) {
                     next(err);
                 });
+        },
+        ws: {
+            save: function(socket, bugNamespace) {
+                return function(bug) {
+                    bugService.save(bug)
+                        .then(function(savedBug) {
+                            socket.emit('save', {
+                                message: 'BUG_SAVED'
+                            });
+                            bugNamespace.emit('newBug', {
+                                message: 'NEW_BUG',
+                                value: savedBug
+                            });
+                        })
+                        .catch(function(err) {
+                            bugNamespace.emit('error', err);
+                        });
+                }
+            }
         }
     };
 

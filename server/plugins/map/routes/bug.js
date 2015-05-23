@@ -1,4 +1,4 @@
-module.exports = function(bugController, bugRouter, bugValidatorMiddleware, validationGateMiddleware) {
+module.exports = function(bugController, bugRouter, bugValidatorMiddleware, validationGateMiddleware, bugSocket) {
 
     bugRouter.route('/')
         .get(bugController.getBugList)
@@ -7,4 +7,7 @@ module.exports = function(bugController, bugRouter, bugValidatorMiddleware, vali
     bugRouter.route('/:id')
         .get(bugValidatorMiddleware.validateGetBug, validationGateMiddleware, bugController.getBug);
 
+    bugSocket({
+        save: bugController.ws.save
+    });
 };

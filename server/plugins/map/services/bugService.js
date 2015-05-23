@@ -41,7 +41,7 @@ module.exports = function(Bug, bugStatusService) {
                 });
             return deferred.promise;
         },
-        saveBug: function(rawBug) {
+        save: function(rawBug) {
             var deferred = Q.defer();
             if (rawBug._id) {
                 var id = rawBug._id;

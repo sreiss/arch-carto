@@ -2,6 +2,9 @@
   "http": {
     "port": "3022"
   },
+  "websocket": {
+    "port": "3032"
+  },
   "db": {
     "url": "mongodb://localhost/archCarto"
   }

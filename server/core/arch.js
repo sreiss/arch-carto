@@ -14,6 +14,7 @@ var path = require('path'),
     auditEventService = require(path.join(__dirname, 'lib', 'audit', 'auditEventService')),
     servicesLoader = require(path.join(__dirname, 'lib', 'loaders', 'servicesLoader')),
     pluginLoader = require(path.join(__dirname, 'lib', 'loaders', 'pluginLoader')),
+    ioServer = require(path.join(__dirname, 'lib', 'ioServer')),
     errorLoader = require(path.join(__dirname, 'lib', 'loaders', 'errorsLoader'));
 
 exports.name = 'arch';
@@ -34,6 +35,7 @@ exports.attach = function(opts) {
     app.use(pluginLoader);
     app.use(expressApp);
     app.use(server);
+    app.use(ioServer);
     app.use(modelsLoader);
     app.use(servicesLoader);
     app.use(middlewaresLoader);
@@ -48,7 +50,10 @@ exports.init = function(done) {
     var config = app.arch.config;
     var port = config.get('http:port');
 
-    app.arch.server.listen(port);
-
-    return done();
+    app.arch.server.listen(port, function() {
+        var address = app.arch.server.address();
+        var port = address.port || '80';
+        console.log('Listening to port ' + port);
+        return done();
+    });
 };

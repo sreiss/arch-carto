@@ -9,5 +9,5 @@ app.init(function (err) {
     if (err)
         throw err;
 
-    console.log(app)
+    console.log('App started successfully.');
 });

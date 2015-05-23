@@ -22,6 +22,10 @@ angular.module('archCarto')
 
               scope.save = function(bug) {
                 var geoJson = archMarkerBugService.toGeoJson(bug);
+
+                archMarkerBugService.save(geoJson);
+
+                /*
                 archMarkerBugService.save(geoJson)
                   .then(function (result) {
                     archMap.getBugsLayer()
@@ -41,6 +45,7 @@ angular.module('archCarto')
                           });
                       });
                   });
+                  */
               };
 
               scope.$watch('bugForm.$valid', function(valid) {

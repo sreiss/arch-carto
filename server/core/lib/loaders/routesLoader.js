@@ -17,6 +17,7 @@ exports.init = function(done) {
     var pluginsDir = app.arch.config.get('pluginsDir');
     var plugins = app.arch.plugins;
     var expressApp = app.arch.expressApp;
+    var ioServer = app.arch.ioServer;
     var utils = app.arch.utils;
 
     for (var pluginName in plugins) {
@@ -43,10 +44,22 @@ exports.init = function(done) {
                     .substring(routeSignature.indexOf('(') + 1, routeSignature.indexOf(')'))
                     .split(',');
 
+                var fullRoute = '/' + utils.slugify(pluginName) + '/' + utils.slugify(routeName);
+
                 for (var i = 2; i < dependencyNames.length; i++) {
                     var dependencyName = dependencyNames[i].trim();
                     if (dependencyName != '') {
-                        if (plugin.middlewares[dependencyName]) {
+                        if (dependencyName == routeName + 'Socket') {
+                            args.push(function(handlers) {
+                                var socketNamespace = ioServer
+                                    .of(fullRoute)
+                                    .on('connection', function (socket) {
+                                        for (var handler in handlers) {
+                                            socket.on(handler, handlers[handler](socket, socketNamespace));
+                                        }
+                                    });
+                            });
+                        } else if (plugin.middlewares[dependencyName]) {
                             args.push(plugin.middlewares[dependencyName]);
                         } else if (pluginDependencies.length > 0) {
                             pluginDependencies.forEach(function (otherPluginName) {
@@ -69,9 +82,10 @@ exports.init = function(done) {
 
                 // Now we apply the args to the route
                 routeRequire.apply(this, args);
-                expressApp.use('/' + utils.slugify(pluginName) + '/' + utils.slugify(routeName), router);
+                expressApp.use(fullRoute, router);
             } catch (err) {
                 console.error('No controller attached to ' + routeName + ' route in ' + pluginName + ' plugin');
+                console.error(err);
             }
         }
     }
