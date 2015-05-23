@@ -4,21 +4,22 @@ module.exports = function(Types, auditEventService) {
 
     return {
         schema: {
-            type: {type: String, required: true},
+            type: {type: String, require: true},
             properties: {
-                auditEvents: [{type: Types.ObjectId, ref: 'AuditEvent'}],
-                coating: {type: Types.ObjectId, ref: 'Coating'},
-                medias: [{type: Types.ObjectId, ref: 'Media'}]
+                author: {type: Types.ObjectId},
+                commentary: {type: String},
+                difficulty: {type: String},
+                public: {type: Boolean, required: true},
+                auditEvents: [{type: Types.ObjectId, ref: 'AuditEvent'}]
             },
-            geometry: {
-                type: {type: String, required: true},
-                coordinates: [Types.Mixed]
-            }
+            features: [
+                {type: Types.ObjectId, ref: 'Path'}
+            ]
         },
         onSchemaReady: function(schema) {
             var addAuditEvent = function(eventType, model, next) {
-                model.type = "Feature";
-                model.geometry.type = "LineString";
+                model.type = "FeatureCollection";
+                model.properties.public = model.properties.public || false;
                 model.validate(function(err) {
                     if (err) {
                         return next(err);
@@ -26,7 +27,7 @@ module.exports = function(Types, auditEventService) {
 
                     var auditEvent = {
                         type: eventType,
-                        entity: "PATH",
+                        entity: 'COURSE',
                         entityId: model._id,
                         pendingChanges: deepcopy(model._doc)
                     };
@@ -49,7 +50,23 @@ module.exports = function(Types, auditEventService) {
                 addAuditEvent('AWAITING_UPDATE', this, next);
             });
         },
-        priority: 1
-    };
+        onModelReady: function(Course) {
+            var populateLastEvent = function(model, next) {
+                Course.populate(model, {
+                    path: 'properties.auditEvents',
+                    limit: 1
+                }, function(err, course) {
+                    return next(course);
+                });
+            };
 
+            Course.schema.post('save', function(model, next) {
+                populateLastEvent(model, next);
+            });
+
+            Course.schema.post('update', function(model, next) {
+                populateLastEvent(model, next);
+            });
+        }
+    }
 };

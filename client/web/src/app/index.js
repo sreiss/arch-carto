@@ -85,6 +85,19 @@ angular.module('archCarto', [
         url: '/media/:type/:id',
         template: '<arch-marker-media></arch-marker-media>'
       })
+      .state('map.course', {
+        url: '/course',
+        abstract: true,
+        views: {
+          mapRight: {
+            template: '<arch-course></arch-course>'
+          }
+        }
+      })
+      .state('map.course.draw', {
+        url: '',
+        template: '<arch-course-draw></arch-course-draw>'
+      })
       /*
       .state('map.center', {
         url: '/center',
@@ -98,26 +111,6 @@ angular.module('archCarto', [
         }
       })
       */
-      .state('map.poi', {
-        url: '/poi',
-        views: {
-          mapPlugin: {
-            template: '<arch-poi></arch-poi>'
-          },
-          sideNavRight: {
-            template: '<arch-map-side-nav-poi-right></arch-map-side-nav-poi-right>'
-          }
-        }
-      })
-      .state('map.bug', {
-        url: '/bug',
-        views: {
-          "sideNavRight": {
-            //controller: 'ArchBugController',
-            template: '<arch-map-side-nav-bug-right></arch-map-side-nav-bug-right>'
-          }
-        }
-      })
       .state('map.gpx', {
         url: '/gpx',
         views: {
@@ -125,7 +118,8 @@ angular.module('archCarto', [
             template: '<arch-gpx-upload-form></arch-gpx-upload-form>'
           }
         }
-      }).state('subscribe', {
+      })
+      .state('subscribe', {
         url: '/subscribe',
         views: {
           main: {
