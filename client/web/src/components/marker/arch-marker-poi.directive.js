@@ -47,7 +47,8 @@ angular.module('archCarto')
                 for(var i = 0; i < scope.medias.length; i += 1) {
                   geoJson.properties.medias.push(scope.medias[i].data._id);
                 }
-                archMarkerPoiService.save(geoJson)
+                archMarkerPoiService.save(geoJson);
+                /*
                   .then(function (result) {
                     archMap.getPoisLayer()
                       .then(function(layer) {
@@ -66,6 +67,7 @@ angular.module('archCarto')
                           });
                       });
                   });
+                  */
               };
 
               scope.$watch('poiForm.$valid', function(valid) {

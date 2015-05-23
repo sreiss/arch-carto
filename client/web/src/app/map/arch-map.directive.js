@@ -3,7 +3,7 @@ angular.module('archCarto')
   .directive('archMap', function(
     geolocation, $q, $log, $compile,
     $translate, $mdSidenav, $mdDialog, $mdToast,
-    $state, archUtilsService, leafletData,
+    $state, archUtilsService, leafletData, archLayerService,
     archMapControlService, archMarkerBugService, archMarkerPoiService,
     archPathJunctionService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT,
     ARCH_LAYER_TYPES) {
@@ -36,88 +36,38 @@ angular.module('archCarto')
         // TODO: Refactor !
         leafletData.getMap()
           .then(function(map) {
-            _poisLayer = L.geoJson(null, {
-              onEachFeature: function(feature, layer) {
-                var iconOptions = {
-                  icon: 'heart'
-                };
+            var poiOptions = {
+              popupDirective: 'arch-marker-poi-popup',
+              icon: 'heart'
+            };
+            var bugOptions = {
+              popupDirective: 'arch-marker-bug-popup',
+              icon: 'bug'
+            };
+            var pathOptions = {
+              popupDirective: 'arch-path-details-popup'
+            };
+            var junctionOptions = {
+              icon: 'arrows'
+            };
 
-                if (feature.properties.auditEvents[0].type == 'AWAITING_ADDITION') {
-                  iconOptions.markerColor = 'purple';
-                } else {
-                  iconOptions.markerColor = 'blue';
-                }
+            _poisLayer = archLayerService.initLayer('poi', poiOptions).addTo(map);
+            _bugsLayer = archLayerService.initLayer('bug', bugOptions).addTo(map);
+            _pathLayer = archLayerService.initLayer('path', pathOptions).addTo(map);
+            _junctionsLayer = archLayerService.initLayer('junctions', junctionOptions).addTo(map);
 
-                layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
 
-                if (feature.properties) {
-                  var html = angular.element('<arch-marker-poi-popup></arch-marker-poi-popup>');
-                  layer.bindPopup(html[0], {poiId: feature._id, maxWidth: 600, minWidth: 600, className: 'arch-popup'});
-                }
-              }
-            }).addTo(map);
-
-            _bugsLayer = L.geoJson(null, {
-              onEachFeature: function(feature, layer) {
-                var iconOptions = {
-                  icon: 'bug'
-                };
-
-                //if (feature.properties.auditEvents[0].type == 'AWAITING_ADDITION') {
-                iconOptions.markerColor = 'red';
-                //}
-
-                layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
-                if (feature.properties) {
-                  var html = angular.element('<arch-marker-bug-popup></arch-marker-bug-popup>');
-                  layer.bindPopup(html[0], {bugId: feature._id, maxWidth: 600, minWidth: 600, className: 'arch-popup'});
-                }
-              }
-            }).addTo(map);
-
-            _pathLayer = L.geoJson(null, {
-              onEachFeature: function(feature, layer) {
-                if (feature.properties) {
-                  var html = angular.element('<arch-path-details-popup></arch-path-details-popup>');
-                  layer.bindPopup(html[0], {pathId: feature._id, maxWidth: 600, minWidth: 600, className: 'arch-popup'});
-                }
-              }
-            }).addTo(map);
-
-            _junctionsLayer = L.geoJson(null, {
-              onEachFeature: function(feature, layer) {
-                var iconOptions = {
-                  icon: 'arrows'
-                };
-
-                //if (feature.properties.auditEvents[0].type == 'AWAITING_ADDITION') {
-                iconOptions.markerColor = 'red';
-                //}
-
-                layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
-              }
-            }).addTo(map);
+            // Websocket handlers
+            // This handles error, refresh on new and save messages.
+            archMarkerBugService.useDefaultHandlers(_bugsLayer);
+            archMarkerPoiService.useDefaultHandlers(_poisLayer);
 
 
             map.on('popupopen', function(event) {
-              var popupScope = $scope.$new();
-              var hasDirective = false;
-              if (event.popup.options.poiId) {
-                popupScope.poiId = event.popup.options.poiId;
-                hasDirective = true;
-              }
-              if (event.popup.options.bugId) {
-                popupScope.bugId = event.popup.options.bugId;
-                hasDirective = true;
-              }
-              if (event.popup.options.pathId) {
-                popupScope.pathId = event.popup.options.pathId;
-                hasDirective = true;
-              }
-              if (hasDirective) {
+              if (event.popup.options.archFeature && event.popup.options.archFeature.id) {
+                var popupScope = $scope.$new();
+                popupScope.id = event.popup.options.archFeature.id;
                 $compile(event.popup._content)(popupScope);
-              } else {
-                popupScope.$destroy();
               }
             });
 
@@ -359,21 +309,6 @@ angular.module('archCarto')
         };
 
         // endregion
-
-        // endregion
-
-        // region refresh bug
-
-        archMarkerBugService.messages(function(result) {
-            $mdToast.show($mdToast.simple().content(result.message));
-        });
-        archMarkerBugService.error(function(err) {
-          $log.error(err);
-          $mdToast.show($mdToast.simple().content(err.message));
-        });
-        archMarkerBugService.refresher(function(result) {
-          _bugsLayer.addData(result.value);
-        });
 
         // endregion
 

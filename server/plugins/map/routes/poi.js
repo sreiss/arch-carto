@@ -1,4 +1,4 @@
-module.exports = function(poiController, poiRouter, poiValidationMiddleware, validationGateMiddleware) {
+module.exports = function(poiController, poiRouter, poiValidationMiddleware, validationGateMiddleware, poiSocket) {
 
     poiRouter.route('/')
         .get(poiController.getPoi)
@@ -8,4 +8,7 @@ module.exports = function(poiController, poiRouter, poiValidationMiddleware, val
         .get(poiController.getPoi)
         .delete(poiController.deletePoi);
 
+    poiSocket({
+        save: poiController.ws.save
+    });
 };

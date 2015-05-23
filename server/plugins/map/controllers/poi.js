@@ -44,6 +44,25 @@ module.exports = function (poiService) {
                 }, function(err) {
                     next(err);
                 });
+        },
+        ws: {
+            save: function(socket, namespace) {
+                return function(poi) {
+                    poiService.save(poi)
+                        .then(function(savedPoi) {
+                            socket.emit('save', {
+                                message: 'POI_SAVED'
+                            });
+                            namespace.emit('new', {
+                                message: 'NEW_POI',
+                                value: savedPoi
+                            });
+                        })
+                        .catch(function(err) {
+                            namespace.emit('error', err);
+                        });
+                }
+            }
         }
     };
 

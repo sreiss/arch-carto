@@ -25,7 +25,7 @@ module.exports = function(bugService) {
                 });
         },
         saveBug: function(req, res, next) {
-            bugService.saveBug(req.body)
+            bugService.save(req.body)
                 .then(function(savedBug) {
                     res.json({
                         message: 'BUG_REPORTED',
@@ -42,9 +42,9 @@ module.exports = function(bugService) {
                     bugService.save(bug)
                         .then(function(savedBug) {
                             socket.emit('save', {
-                                message: 'BUG_SAVED'
+                                message: 'BUG_REPORTED'
                             });
-                            bugNamespace.emit('newBug', {
+                            bugNamespace.emit('new', {
                                 message: 'NEW_BUG',
                                 value: savedBug
                             });

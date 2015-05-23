@@ -8,7 +8,7 @@ angular.module('archCarto')
         scope.apiUrl = httpConstant.cartoServerUrl;
 
         var refresh = function() {
-          archPathService.get(scope.pathId)
+          archPathService.get(scope.id)
             .then(function (result) {
               scope.path = result.value;
             });

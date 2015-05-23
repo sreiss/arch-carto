@@ -8,7 +8,7 @@ angular.module('archCarto')
         scope.apiUrl = httpConstant.cartoServerUrl;
 
         var refreshPoi = function() {
-          archMarkerPoiService.get(scope.poiId)
+          archMarkerPoiService.get(scope.id)
             .then(function (poi) {
               scope.poi = poi;
             });

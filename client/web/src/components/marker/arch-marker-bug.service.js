@@ -4,7 +4,7 @@ angular.module('archCarto')
     var _socket = archSocketService.openSocket('/map/bug');
     var _bugUrl = httpConstant.cartoServerUrl + '/map/bug';
 
-    return {
+    var service = {
       toGeoJson: function(bug) {
         return {
           properties: {
@@ -16,19 +16,6 @@ angular.module('archCarto')
           }
         }
       },
-      /* socket */
-      save: function(bug) {
-        _socket.emit('save', bug);
-      },
-      messages: function(callback) {
-        _socket.on('save', callback);
-      },
-      error: function(callback) {
-        _socket.on('error', callback);
-      },
-      refresher: function(callback) {
-        _socket.on('newBug', callback);
-      },
       /* http */
       //save: function(bug) {
       //  return archHttpService.post(_bugUrl, bug);
@@ -39,5 +26,7 @@ angular.module('archCarto')
       get : function(id) {
         return archHttpService.get(_bugUrl + '/' + id);
       }
-    }
+    };
+
+    return archSocketService.initService(service, '/map/bug');
   });

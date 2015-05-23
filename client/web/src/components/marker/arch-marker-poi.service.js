@@ -1,9 +1,10 @@
 'use strict'
 angular.module('archCarto')
-  .service('archMarkerPoiService', function(archHttpService, $q, httpConstant) {
+  .service('archMarkerPoiService', function(archHttpService, archSocketService, $q, httpConstant) {
+    var _socket = archSocketService.openSocket('/map/poi');
     var poiUrl = httpConstant.cartoServerUrl + '/map/poi';
 
-    return {
+    var service = {
       toGeoJson: function(poi) {
         return {
           properties: {
@@ -24,10 +25,13 @@ angular.module('archCarto')
         return archHttpService.get(poiUrl + '/' + poiId, {
           params: options
         });
-      },
+      }
+      /*
       save: function(poi) {
         return archHttpService.post(poiUrl, poi);
       }
+      */
     };
 
+    return archSocketService.initService(service, '/map/poi');
   });
