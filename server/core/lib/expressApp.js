@@ -15,22 +15,7 @@ exports.attach = function(opts) {
 
     var expressApp = app.arch.expressApp = express();
     var utils = app.arch.utils;
-
-    var customValidators = {};
-    try {
-        var validatorFiles = fs.readdirSync(path.join(__dirname, 'validators'));
-        validatorFiles.forEach(function (validatorFile) {
-            var requireName = path.join(__dirname, 'validators', path.basename(validatorFile, '.js'));
-            var validator = require(requireName);
-            utils.extend(customValidators, validator);
-        });
-    } catch(err) {
-        if (err.code == 'ENOENT') {
-            console.log('No custom validators added.');
-        } else {
-            throw err;
-        }
-    }
+    var validators = app.arch.validators;
 
     //expressApp.set('views', path.join(__dirname, '..', 'views'));
     //expressApp.set('view engine', 'jade');
@@ -38,7 +23,7 @@ exports.attach = function(opts) {
     expressApp.use(bodyParser.json());
     expressApp.use(bodyParser.urlencoded({extended: false}));
     expressApp.use(expressValidator({
-        customValidators: customValidators
+        customValidators: validators
     }));
     expressApp.post('/map/gpx/',multer({ dest: './uploads/',
         rename: function (fieldname, filename) {

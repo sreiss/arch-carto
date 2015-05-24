@@ -1,16 +1,29 @@
 'use strict'
 angular.module('archCarto')
   .service('archLayerService', function() {
+    var _options = {};
     var _layers = {};
 
     return {
-      initLayer: function(name, options) {
+      initOptions: function(name, options) {
         options = options || {};
         options.withIcon = options.withIcon || true;
         options.markerColors = options.markerColors || {};
         options.popupDirective = options.popupDirective || false;
 
-        _layers[name] = L.geoJson(null, {
+        _options[name] = options;
+      },
+      initLayer: function(name) {
+        _layers[name] = L.featureGroup();
+
+        return _layers[name];
+      },
+      addLayers: function(layerName, optionsName, layers, optionsOverrides) {
+        var options = _options[optionsName];
+        if (optionsOverrides) {
+          var options = angular.extend(options, optionsOverrides);
+        }
+        L.geoJson(layers, {
           onEachFeature: function(feature, layer) {
             if (options.icon) {
               var iconOptions = {
@@ -44,10 +57,10 @@ angular.module('archCarto')
                 className: 'arch-popup'
               });
             }
+
+            _layers[layerName].addLayer(layer);
           }
         });
-
-        return _layers[name];
       }
-    }
+    };
   });

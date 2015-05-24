@@ -1,13 +1,12 @@
 var Q = require('q');
 var ArchError = GLOBAL.ArchError;
 
-module.exports = function(Bug, bugStatusService) {
+module.exports = function(Bug, bugStatusService, formatterService, auditEventService) {
 
     return {
         get: function(id) {
             var deferred = Q.defer();
             Bug.findById(id)
-                .populate('properties.status')
                 .populate({
                     path: 'properties.auditEvents',
                     limit: 1
@@ -27,7 +26,6 @@ module.exports = function(Bug, bugStatusService) {
             var deferred = Q.defer();
             criteria = criteria || {};
             Bug.find(criteria)
-                .populate('properties.status')
                 .populate({
                     path: 'properties.auditEvents',
                     limit: 1
@@ -44,24 +42,30 @@ module.exports = function(Bug, bugStatusService) {
         save: function(rawBug) {
             var deferred = Q.defer();
             if (rawBug._id) {
-                var id = rawBug._id;
-                delete rawBug._id;
-                Bug.findByIdAndUpdate(id, rawBug, function(err, bug) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(bug);
-                    }
-                });
+                auditEventService.canUpdate(rawBug)
+                    .then(function() {
+                        var id = rawBug._id;
+                        delete rawBug._id;
+                        Bug.findOneAndUpdate({_id: id}, {$set: rawBug}, function (err, bug) {
+                            if (err) {
+                                deferred.reject(err);
+                            } else {
+                                deferred.resolve(bug);
+                            }
+                        });
+                    })
+                    .catch(function(err) {
+                       deferred.reject(err);
+                    });
             } else {
-                bugStatusService.findOneBugStatus({name: 'REPORTED'})
+                /*bugStatusService.findOneBugStatus({name: 'REPORTED'})
                     .catch(function(err) {
                         return bugStatusService.saveBugStatus({
                             name: 'REPORTED',
                             description: 'A_NEWLY_REPORTED_BUG'
                         });
                     })
-                    .then(function(bugStatus) {
+                    .then(function(bugStatus) {*/
                         var bug = new Bug({
                             properties: {
                                 // TODO: Get the user ID
@@ -69,7 +73,6 @@ module.exports = function(Bug, bugStatusService) {
                                 // TODO: Get the point altitude
                                 altitude: rawBug.properties.altitude,
                                 description: rawBug.properties.description,
-                                status: bugStatus._id,
                                 entity: 'Bug'
                             },
                             geometry: {
@@ -83,7 +86,7 @@ module.exports = function(Bug, bugStatusService) {
                                 deferred.resolve(bug);
                             }
                         });
-                    });
+                    /*});*/
             }
             return deferred.promise;
         }

@@ -1,5 +1,7 @@
 var mongoose = require('mongoose'),
-    Q = require('q');
+    Q = require('q'),
+    moment = require('moment'),
+    ArchError = GLOBAL.ArchError;
 
 exports.name = 'arch-audit-auditEventService';
 
@@ -9,8 +11,9 @@ exports.attach = function(opts) {
     app.arch.audit = app.arch.audit || {};
 
     var AuditEvent = app.arch.audit.AuditEvent;
+    var validators = app.arch.validators;
 
-    app.arch.audit.auditEventService = {
+    var auditEventService = app.arch.audit.auditEventService = {
         getAuditEvents: function(criteria) {
             var deferred = Q.defer();
             criteria = criteria || {};
@@ -21,6 +24,45 @@ exports.attach = function(opts) {
                     deferred.resolve(auditEvents);
                 }
             });
+            return deferred.promise;
+        },
+        getLastEvent: function(auditEvents) {
+            var deferred = Q.defer();
+            var lastAuditEvent = auditEvents[auditEvents.length - 1];
+            if (validators.isObjectId(lastAuditEvent)) {
+                AuditEvent.findOne({_id: lastAuditEvent}, function(err, lastEvent) {
+                   if (err) {
+                       deferred.reject(err);
+                   } else {
+                       deferred.resolve(lastEvent);
+                   }
+                });
+            } else {
+                deferred.resolve(lastAuditEvent);
+            }
+            return deferred.promise;
+        },
+        canUpdate: function(model) {
+            var deferred = Q.defer();
+
+            var auditEvents = model.auditEvents || model.properties.auditEvents;
+            if (!auditEvents) {
+                deferred.reject(new ArchError('AUDIT_EVENTS_NOT_FOUND'));
+            } else {
+                auditEventService.getLastEvent(auditEvents)
+                    .then(function(lastAuditEvent) {
+                        var canNotUdpate = ['AWAITING_UPDATE', 'AWAITING_ADDITION', 'AWAITING_DELETE', 'DELETED'];
+                        if (canNotUdpate.indexOf(lastAuditEvent.type) > -1) {
+                            deferred.reject(new Error('CANNOT_UPDATE_BECAUSE_' + lastAuditEvent.type));
+                        } else {
+                            deferred.resolve(true);
+                        }
+                    })
+                    .catch(function(err) {
+                       deferred.reject(err);
+                    });
+            }
+
             return deferred.promise;
         },
         /**
@@ -39,7 +81,8 @@ exports.attach = function(opts) {
                 entityId: rawAuditEvent.entityId,
                 entity: rawAuditEvent.entity,
                 userId: rawAuditEvent.userId,
-                pendingChanges: rawAuditEvent.pendingChanges || {}
+                pendingChanges: rawAuditEvent.pendingChanges || {},
+                date: moment().toDate()
             });
             auditEvent.save(function(err, savedAuditEvent) {
                 if (err) {

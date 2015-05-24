@@ -11,6 +11,7 @@ exports.attach = function(opts) {
 
     var pluginsDir = app.arch.config.get('pluginsDir');
     var plugins = app.arch.plugins;
+    var formatters = app.arch.formatters;
 
     for (var pluginName in plugins) {
         var plugin = plugins[pluginName];
@@ -33,7 +34,9 @@ exports.attach = function(opts) {
             dependencyNames.forEach(function(dependencyName) {
                 dependencyName = dependencyName.trim();
                 if (dependencyName != '') {
-                    if (plugin.services[dependencyName]) {
+                    if (dependencyName === 'formatterService') {
+                        args.push(formatters);
+                    } else if (plugin.services[dependencyName]) {
                         args.push(plugin.services[dependencyName]);
                     } else if (pluginDependencies.length > 0) {
                         pluginDependencies.forEach(function (otherPluginName) {

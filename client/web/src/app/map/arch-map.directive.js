@@ -17,10 +17,7 @@ angular.module('archCarto')
 
         var _controls = {};
         var _featureGroups = {};
-        var _poisLayer = null;
-        var _bugsLayer = null;
-        var _pathLayer = null;
-        var _junctionsLayer = null;
+        var _layers = {};
 
         // endregion
 
@@ -30,37 +27,39 @@ angular.module('archCarto')
         $scope.map.defaults = ARCH_MAP_DEFAULTS;
         $scope.map.center = {};
         $scope.map.layers = {};
+        $scope.map.layers.baselayers = {};
+
+        $scope.layersReady = false;
 
         // region layers
 
         // TODO: Refactor !
         leafletData.getMap()
           .then(function(map) {
-            var poiOptions = {
+            archLayerService.initOptions('poi', {
               popupDirective: 'arch-marker-poi-popup',
               icon: 'heart'
-            };
-            var bugOptions = {
+            });
+            archLayerService.initOptions('bug', {
               popupDirective: 'arch-marker-bug-popup',
               icon: 'bug'
-            };
-            var pathOptions = {
+            });
+            archLayerService.initOptions('path', {
               popupDirective: 'arch-path-details-popup'
-            };
-            var junctionOptions = {
-              icon: 'arrows'
-            };
+            });
+            archLayerService.initOptions('junction', {
+                icon: 'arrows'
+            });
 
-            _poisLayer = archLayerService.initLayer('poi', poiOptions).addTo(map);
-            _bugsLayer = archLayerService.initLayer('bug', bugOptions).addTo(map);
-            _pathLayer = archLayerService.initLayer('path', pathOptions).addTo(map);
-            _junctionsLayer = archLayerService.initLayer('junctions', junctionOptions).addTo(map);
+            _layers['marker'] = archLayerService.initLayer('marker').addTo(map);
+            _layers['path'] = archLayerService.initLayer('path').addTo(map);
+            $scope.layersReady = true;
 
 
             // Websocket handlers
             // This handles error, refresh on new and save messages.
-            archMarkerBugService.useDefaultHandlers(_bugsLayer);
-            archMarkerPoiService.useDefaultHandlers(_poisLayer);
+            archMarkerPoiService.useDefaultHandlers(_layers['poi']);
+            archMarkerBugService.useDefaultHandlers(_layers['bug']);
 
 
             map.on('popupopen', function(event) {
@@ -80,78 +79,44 @@ angular.module('archCarto')
 
             archMarkerBugService.getList()
               .then(function(result) {
-                result.value.forEach(function(feature) {
-                  _bugsLayer.addData(feature);
-                });
+                archLayerService.addLayers('marker', 'bug', result.value);
               });
 
             archMarkerPoiService.getList()
               .then(function(result) {
-                result.value.forEach(function(feature) {
-                  _poisLayer.addData(feature);
-                });
+                archLayerService.addLayers('marker', 'poi', result.value);
               });
 
             archPathJunctionService.getList()
               .then(function(result) {
+                archLayerService.addLayers('path', 'junction', result.value);
                 result.value.forEach(function(junction) {
-                  var mouseOverHook = function(e) {
-                    e.layer.setIcon(L.AwesomeMarkers.icon({
-                      icon: 'arrows',
-                      markerColor: 'green'
-                    }));
-                  };
-                  _junctionsLayer.on('mouseover', mouseOverHook);
-
-                  var mouseOutHook = function(e) {
-                    e.layer.setIcon(L.AwesomeMarkers.icon({
-                      icon: 'arrows',
-                      markerColor: 'red'
-                    }));
-                  };
-                  _junctionsLayer.on('mouseout', mouseOutHook);
-
-                  $scope.$on('$destroy', function() {
-                    _junctionsLayer.off('mouseover', mouseOverHook);
-                    _junctionsLayer.off('mouseout', mouseOutHook);
-                  });
-
-                  _junctionsLayer.addData(junction);
-                  junction.properties.paths.forEach(function(path) {
-                    _pathLayer.addData(path);
-                  });
+                  archLayerService.addLayers('path', 'path', junction.properties.paths);
                 });
               });
-
           });
 
-        this.getPoisLayer = function() {
-          return $q.when(_poisLayer);
-        };
-
-        this.getBugsLayer = function() {
-          return $q.when(_bugsLayer);
-        };
-
-        this.getPathLayer = function() {
-          return $q.when(_pathLayer);
-        };
-
-        this.getJunctionsLayer = function() {
-          return $q.when(_junctionsLayer);
-        };
-
-        Object.keys(ARCH_LAYER_TYPES)
-          .map(function(key) {
-            $scope.map.layers[ARCH_LAYER_TYPES[key]] = {};
+        this.getLayer = function(name) {
+          var deferred = $q.defer();
+          $scope.$watch('layersReady', function(layersReady) {
+            if (layersReady) {
+              if (_layers[name]) {
+                deferred.resolve(_layers[name]);
+              } else {
+                deferred.reject('Layer ' + name + ' is not registered.');
+              }
+            }
           });
+          return deferred.promise;
+        };
 
         // endregion
 
         var stopInitWatch = $scope.$watch('map', function(map) {
           var isInit = false;
           var initChecks = {
-            center: false
+            center: false,
+            layers: false
           };
 
           if (map.center.lat && map.center.lng) {
@@ -265,8 +230,12 @@ angular.module('archCarto')
             .then(function (map) {
               options = options || {};
               _featureGroups[name] = new L.FeatureGroup();
-              map.addLayer(_featureGroups[name]);
-              deferred.resolve(_featureGroups[name]);
+              if (options.events) {
+                for (var event in options.events) {
+                  _featureGroups[name].on(event, options.events[event]);
+                }
+              }
+              deferred.resolve(_featureGroups[name].addTo(map));
             });
           return deferred.promise;
         };
@@ -344,6 +313,14 @@ angular.module('archCarto')
             archMap.addControl('goToArchTrace', pathControlClass, {
               clickFn: function() {
                 $state.go('map.gpx');
+              }
+            })
+          })
+          .then(function() {
+            var courseControlClass = archMapControlService.createControlClass('GoToArchCourse', 'arch-course', 'space-shuttle');
+            archMap.addControl('goToArchCourse', courseControlClass, {
+              clickFn: function() {
+                $state.go('map.course.draw');
               }
             })
           })

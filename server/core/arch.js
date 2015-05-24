@@ -15,6 +15,8 @@ var path = require('path'),
     servicesLoader = require(path.join(__dirname, 'lib', 'loaders', 'servicesLoader')),
     pluginLoader = require(path.join(__dirname, 'lib', 'loaders', 'pluginLoader')),
     ioServer = require(path.join(__dirname, 'lib', 'ioServer')),
+    validators = require(path.join(__dirname, 'lib', 'validators')),
+    formatters = require(path.join(__dirname, 'lib', 'formatters')),
     errorLoader = require(path.join(__dirname, 'lib', 'loaders', 'errorsLoader'));
 
 exports.name = 'arch';
@@ -30,12 +32,14 @@ exports.attach = function(opts) {
     app.use(errorLoader);
     app.use(db);
     app.use(types);
+    app.use(validators);
     app.use(auditEvent);
     app.use(auditEventService);
     app.use(pluginLoader);
     app.use(expressApp);
     app.use(server);
     app.use(ioServer);
+    app.use(formatters);
     app.use(modelsLoader);
     app.use(servicesLoader);
     app.use(middlewaresLoader);

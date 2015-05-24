@@ -1,10 +1,11 @@
-module.exports = function() {
+var Q = require('q');
+
+module.exports = function(formatterService) {
 
   return {
       validateGetBug: function(req, res, next) {
           req.checkParams('id', 'ID_MUST_BE_OBJECT_ID')
-              .notEmpty()
-              .isObjectId();
+              .notEmpty();
 
           return next();
       },
@@ -22,8 +23,7 @@ module.exports = function() {
 
           req.checkBody('properties.status', 'VALID_STATUS_REQUIRED')
               .optional()
-              .notEmpty()
-              .isObjectId();
+              .notEmpty();
 
           req.checkBody('geometry', 'GEOMETRY_REQUIRED')
               .notEmpty();

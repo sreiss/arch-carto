@@ -12,7 +12,7 @@ exports.attach = function(opts) {
     var pluginsDir = app.arch.config.get('pluginsDir');
     var plugins = app.arch.plugins;
 
-    for (pluginName in plugins) {
+    for (var pluginName in plugins) {
         var plugin = plugins[pluginName];
         var controllers = plugin.controllers = {};
         var controllersPath = path.join(pluginsDir, pluginName, 'controllers');

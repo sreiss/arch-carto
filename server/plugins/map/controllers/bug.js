@@ -17,6 +17,7 @@ module.exports = function(bugService) {
             bugService.getBugList(req.query)
                 .then(function(bugList) {
                     res.json({
+                        message: 'BUG_LIST',
                         value: bugList
                     });
                 })
@@ -41,8 +42,9 @@ module.exports = function(bugService) {
                 return function(bug) {
                     bugService.save(bug)
                         .then(function(savedBug) {
+                            var lastEvent = savedBug.properties.auditEvents[savedBug.properties.auditEvents.length - 1];
                             socket.emit('save', {
-                                message: 'BUG_REPORTED'
+                                message: 'BUG_' + lastEvent.type
                             });
                             bugNamespace.emit('new', {
                                 message: 'NEW_BUG',

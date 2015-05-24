@@ -40,6 +40,7 @@ angular.module('archCarto')
                 };
 
                 scope.save = function(path) {
+                  /*
                   var junctionLayers = currentJunctionsLayer.getLayers();
                   junctionLayers.forEach(function(layer) {
                     var pathGeoJson = archPathService.toGeoJson(path);
@@ -65,6 +66,7 @@ angular.module('archCarto')
                           })
                       });
                   });
+                  */
                 };
               });
           } else if (scope.id) {

@@ -17,6 +17,14 @@ angular.module('archCarto')
 
             controller.cleanCurrentLayer = angular.noop;
 
+            map.on('draw:edited', function(e) {
+              var layers = e.layers;
+              layers.eachLayer(function(layer) {
+                var geoJson = layer.toGeoJSON();
+                archMarkerBugService.save(geoJson);
+              });
+            });
+
             map.on('draw:created', function (e) {
               if (_currentLayer !== false) {
                 map.removeLayer(_currentLayer);
@@ -56,15 +64,8 @@ angular.module('archCarto')
       },
       link: function(scope, element, attributes, archMap) {
 
-        archMap.hasFeatureGroup('edit')
-          .then(function(hasFeatureGroup) {
-            if (hasFeatureGroup) {
-              return archMap.getFeatureGroup('edit');
-            } else {
-              return archMap.addFeatureGroup('edit', {});
-            }
-          })
-          .then(function(featureGroup) {
+        archMap.getLayer('marker')
+          .then(function(layer) {
             archMap.addControl('draw', L.Control.Draw, {
               draw: {
                 polyline: false,
@@ -73,7 +74,7 @@ angular.module('archCarto')
                 polygon: false
               },
               edit: {
-                featureGroup: featureGroup
+                featureGroup: layer
               }
             });
           })

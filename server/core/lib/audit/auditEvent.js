@@ -1,5 +1,4 @@
-var mongoose = require('mongoose'),
-    moment = require('moment');
+var mongoose = require('mongoose');
 
 exports.name = 'arch-audit-auditEvent';
 
@@ -15,11 +14,6 @@ exports.attach = function(opts) {
         pendingChanges: {type: mongoose.Schema.Types.Mixed},
         userId: {type: mongoose.Schema.Types.ObjectId, required: true},
         date: {type: Date, required: true}
-    });
-
-    auditEventSchema.pre('save', function(next) {
-        this.date = moment().toDate();
-        next();
     });
 
     var AuditEvent = app.arch.audit.AuditEvent = mongoose.model('AuditEvent', auditEventSchema);

@@ -15,6 +15,8 @@ exports.attach = function(opts) {
     var plugins = app.arch.plugins;
     var Types = app.arch.db.Types;
     var auditEventService = app.arch.audit.auditEventService;
+    var formatters = app.arch.formatters;
+    var validators = app.arch.validators;
 
     for (var pluginName in plugins)
     {
@@ -61,12 +63,12 @@ exports.attach = function(opts) {
                 }
                 if(schemaObj.onSchemaReady)
                 {
-                    schemaObj.onSchemaReady(schema);
+                    schemaObj.onSchemaReady(schema, formatters, validators);
                 }
                 models[schemaObj.modelName] = mongoose.model(schemaObj.modelName, schema);
                 if (schemaObj.onModelReady)
                 {
-                    schemaObj.onModelReady(models[schemaObj.modelName]);
+                    schemaObj.onModelReady(models[schemaObj.modelName], formatters, validators);
                 }
             /*
             }

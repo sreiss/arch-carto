@@ -51,8 +51,10 @@ exports.init = function(done) {
                     if (dependencyName != '') {
                         if (dependencyName == routeName + 'Socket') {
                             args.push(function(handlers) {
-                                var socketNamespace = ioServer
-                                    .of(fullRoute)
+                                var _socketNamespace = ioServer
+                                    .of(fullRoute);
+
+                                var socketNamespace = _socketNamespace
                                     .on('connection', function (socket) {
                                         for (var handler in handlers) {
                                             socket.on(handler, handlers[handler](socket, socketNamespace));

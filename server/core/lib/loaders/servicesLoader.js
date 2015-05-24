@@ -9,6 +9,8 @@ exports.attach = function(opts) {
     var plugins = app.arch.plugins;
     var config = app.arch.config;
     var utils = app.arch.utils;
+    var formatters = app.arch.formatters;
+    var auditEventService = app.arch.audit.auditEventService;
 
     for (var pluginName in plugins) {
         var plugin = plugins[pluginName];
@@ -45,8 +47,11 @@ exports.attach = function(opts) {
                 if (dependencyName != '') {
                     if(dependencyName == 'config') {
                         serviceArgs.push(config);
-                    }
-                    else if (plugin.models[dependencyName]) {
+                    } else if (dependencyName == 'auditEventService') {
+                        serviceArgs.push(auditEventService);
+                    } else if (dependencyName == 'formatterService') {
+                        serviceArgs.push(formatters);
+                    } else if (plugin.models[dependencyName]) {
                         serviceArgs.push(plugin.models[dependencyName]);
                     } else if (plugin.services[dependencyName]) {
                         serviceArgs.push(plugin.services[dependencyName]);
