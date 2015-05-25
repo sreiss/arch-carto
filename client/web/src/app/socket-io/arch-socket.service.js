@@ -1,6 +1,6 @@
 'use strict';
 angular.module('archCarto')
-  .factory('archSocketService', function(socketFactory, archSocketConstant, $q, $mdToast, $mdSidenav, $log) {
+  .factory('archSocketService', function(socketFactory, archSocketConstant, $q, $mdToast, $mdSidenav, $log, archLayerService) {
     var _sockets = [];
 
     return {
@@ -32,13 +32,13 @@ angular.module('archCarto')
             error: function (callback) {
               _sockets[path].on('error', callback);
             },
-            refresher: function (callback) {
+            onUpdate: function (callback) {
               _sockets[path].on('new', callback);
             }
           });
 
           // If the socket you use has no custom logic.
-          socketService.useDefaultHandlers = function(layer) {
+          socketService.useDefaultHandlers = function(layerName, optionName) {
             socketService.messages(function(result) {
               $mdToast.show($mdToast.simple().content(result.message));
               $mdSidenav('right').close();
@@ -47,8 +47,8 @@ angular.module('archCarto')
               $log.error(err);
               $mdToast.show($mdToast.simple().content(err.message));
             });
-            socketService.refresher(function(result) {
-              layer.addData(result.value);
+            socketService.onUpdate(function(result) {
+              archLayerService.addLayers(layerName, optionName, result.value);
             });
           };
 

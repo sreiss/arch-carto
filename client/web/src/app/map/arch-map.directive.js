@@ -58,8 +58,8 @@ angular.module('archCarto')
 
             // Websocket handlers
             // This handles error, refresh on new and save messages.
-            archMarkerPoiService.useDefaultHandlers(_layers['poi']);
-            archMarkerBugService.useDefaultHandlers(_layers['bug']);
+            archMarkerPoiService.useDefaultHandlers('marker', 'poi');
+            archMarkerBugService.useDefaultHandlers('marker', 'bug');
 
 
             map.on('popupopen', function(event) {

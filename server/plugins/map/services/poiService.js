@@ -1,6 +1,6 @@
 var Q = require('q');
 
-module.exports = function(Poi, poiTypeService) {
+module.exports = function(Poi, poiTypeService, auditService) {
 
     return {
         getPoi: function(id, options) {
@@ -59,15 +59,21 @@ module.exports = function(Poi, poiTypeService) {
         save: function(rawPoi) {
             var deferred = Q.defer();
             if (rawPoi._id) {
-                var id = rawPoi._id;
-                delete rawPoi._id;
-                Poi.findByIdAndUpdate(id, rawPoi, function(err, poi) {
-                    if (err) {
+                auditService.canUpdate(rawPoi)
+                    .then(function() {
+                        var id = rawPoi._id;
+                        delete rawPoi._id;
+                        Poi.findByIdAndUpdate(id, rawPoi, function (err, poi) {
+                            if (err) {
+                                deferred.reject(err);
+                            } else {
+                                deferred.resolve(poi);
+                            }
+                        });
+                    })
+                    .catch(function(err) {
                         deferred.reject(err);
-                    } else {
-                        deferred.resolve(poi);
-                    }
-                });
+                    });
             } else {
                 var poi = new Poi({
                     properties: {
