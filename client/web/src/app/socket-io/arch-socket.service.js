@@ -12,8 +12,6 @@ angular.module('archCarto')
             ioSocket: ioSocket
           });
 
-          _sockets[path].forward('error');
-
           return _sockets[path];
         }
         else {

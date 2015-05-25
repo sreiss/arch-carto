@@ -3,6 +3,7 @@ angular.module('archCarto')
   .service('archLayerService', function() {
     var _options = {};
     var _layers = {};
+    var _layerItems = {};
 
     return {
       initOptions: function(name, options) {
@@ -15,6 +16,7 @@ angular.module('archCarto')
       },
       initLayer: function(name) {
         _layers[name] = L.featureGroup();
+        _layerItems[name] = {};
 
         return _layers[name];
       },
@@ -25,6 +27,12 @@ angular.module('archCarto')
         }
         L.geoJson(layers, {
           onEachFeature: function(feature, layer) {
+            if (feature._id) {
+              var currentLayer = _layers[layerName];
+              if (_layerItems[layerName][optionsName] && _layerItems[layerName][optionsName][currentLayer._id]) {
+                debugger;
+              }
+            }
             if (options.icon) {
               var iconOptions = {
                 icon: options.icon
@@ -58,7 +66,8 @@ angular.module('archCarto')
               });
             }
 
-            _layers[layerName].addLayer(layer);
+            _layerItems[layerName][optionsName] = _layerItems[layerName][optionsName] || {};
+            _layerItems[layerName][optionsName][feature._id] = _layers[layerName].addLayer(layer);
           }
         });
       }

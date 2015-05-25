@@ -1,6 +1,6 @@
 var Q = require('q');
 
-module.exports = function(Poi, poiTypeService, auditService) {
+module.exports = function(Poi, poiTypeService, auditEventService) {
 
     return {
         getPoi: function(id, options) {
@@ -59,7 +59,7 @@ module.exports = function(Poi, poiTypeService, auditService) {
         save: function(rawPoi) {
             var deferred = Q.defer();
             if (rawPoi._id) {
-                auditService.canUpdate(rawPoi)
+                auditEventService.canUpdate(rawPoi)
                     .then(function() {
                         var id = rawPoi._id;
                         delete rawPoi._id;
