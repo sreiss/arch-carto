@@ -52,7 +52,7 @@ module.exports = function(bugService) {
                             });
                         })
                         .catch(function(err) {
-                            bugNamespace.emit('error', err);
+                            socket.emit('error', err);
                         });
                 }
             }

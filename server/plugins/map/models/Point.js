@@ -16,9 +16,13 @@ module.exports = function(Types, auditEventService) {
             }
         },
         onSchemaReady: function(schema) {
+            schema.pre('validate', function(next) {
+                this.type = 'Feature';
+                this.geometry.type = 'Point';
+                return next();
+            });
+
             var addAuditEvent = function(eventType, model, next) {
-                model.type = "Feature";
-                model.geometry.type = "Point";
                 var auditEvent = {
                     type: eventType,
                     entity: model.properties.entity,
