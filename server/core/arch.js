@@ -57,7 +57,7 @@ exports.init = function(done) {
     app.arch.server.listen(port, function() {
         var address = app.arch.server.address();
         var port = address.port || '80';
-        console.log('Listening to port ' + port);
+        console.log('[' + (new Date()) + '] Listening to port ' + port);
         return done();
     });
 };

@@ -52,7 +52,9 @@ module.exports = function(bugService) {
                             });
                         })
                         .catch(function(err) {
-                            socket.emit('error', err);
+                            socket.emit('archError', {
+                                message: err.message
+                            });
                         });
                 }
             }

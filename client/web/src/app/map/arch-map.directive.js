@@ -12,6 +12,7 @@ angular.module('archCarto')
       require: ['^archMap'],
       templateUrl: 'app/map/arch-map.html',
       controller: function($scope) {
+        var controller = this;
 
         // region private
 
@@ -51,8 +52,17 @@ angular.module('archCarto')
                 icon: 'arrows'
             });
 
-            _layers['marker'] = archLayerService.initLayer('marker').addTo(map);
-            _layers['path'] = archLayerService.initLayer('path').addTo(map);
+            _layers.marker = archLayerService.initLayer('marker');
+            _layers.path = archLayerService.initLayer('path');
+
+            var addToMap = controller.addToMap = function(layerName) {
+              _layers[layerName].editable.addTo(map);
+              _layers[layerName].notEditable.addTo(map);
+            };
+
+            addToMap('marker');
+            addToMap('path');
+
             $scope.layersReady = true;
 
 
@@ -98,13 +108,14 @@ angular.module('archCarto')
 
         this.getLayer = function(name) {
           var deferred = $q.defer();
-          $scope.$watch('layersReady', function(layersReady) {
+          var unregister = $scope.$watch('layersReady', function(layersReady) {
             if (layersReady) {
               if (_layers[name]) {
                 deferred.resolve(_layers[name]);
               } else {
                 deferred.reject('Layer ' + name + ' is not registered.');
               }
+              unregister();
             }
           });
           return deferred.promise;

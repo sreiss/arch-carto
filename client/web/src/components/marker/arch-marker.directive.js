@@ -64,7 +64,7 @@ angular.module('archCarto')
       },
       link: function(scope, element, attributes, archMap) {
 
-        archMap.getLayer('marker')
+        archMap.getLayer('marker', 'editable')
           .then(function(layer) {
             archMap.addControl('draw', L.Control.Draw, {
               draw: {
@@ -74,7 +74,7 @@ angular.module('archCarto')
                 polygon: false
               },
               edit: {
-                featureGroup: layer
+                featureGroup: layer.editable
               }
             });
           })

@@ -59,7 +59,9 @@ module.exports = function (poiService) {
                             });
                         })
                         .catch(function(err) {
-                            namespace.emit('error', err);
+                            namespace.emit('error', {
+                                err: err.message
+                            });
                         });
                 }
             }

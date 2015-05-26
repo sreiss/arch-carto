@@ -1,6 +1,6 @@
 'use strict';
 angular.module('archCarto')
-  .factory('archSocketService', function(socketFactory, archSocketConstant, $q, $mdToast, $mdSidenav, $log, archLayerService) {
+  .factory('archSocketService', function(socketFactory, archSocketConstant, $q, $mdToast, $mdSidenav, $log, archLayerService, archTranslateService) {
     var _sockets = [];
 
     return {
@@ -28,7 +28,7 @@ angular.module('archCarto')
               _sockets[path].on('save', callback);
             },
             error: function (callback) {
-              _sockets[path].on('error', callback);
+              _sockets[path].on('archError', callback);
             },
             onUpdate: function (callback) {
               _sockets[path].on('new', callback);
@@ -43,7 +43,14 @@ angular.module('archCarto')
             });
             socketService.error(function(err) {
               $log.error(err);
-              $mdToast.show($mdToast.simple().content(err.message));
+              archTranslateService(err.message)
+                .then(function (translation) {
+                  return $mdToast.show({
+                    template: '<md-toast class="md-toast arch-toast-error">' + translation + '</md-toast>',
+                    hideDelay: 3000,
+                    position: 'bottom left'
+                  });
+                });
             });
             socketService.onUpdate(function(result) {
               archLayerService.addLayers(layerName, optionName, result.value);

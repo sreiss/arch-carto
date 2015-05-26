@@ -5,6 +5,10 @@ angular.module('archCarto')
     var _layers = {};
     var _layerItems = {};
 
+    var _editable = [
+      'ADDED', 'UPDATED'
+    ];
+
     return {
       initOptions: function(name, options) {
         options = options || {};
@@ -15,7 +19,9 @@ angular.module('archCarto')
         _options[name] = options;
       },
       initLayer: function(name) {
-        _layers[name] = L.featureGroup();
+        _layers[name] = {};
+        _layers[name].editable = L.featureGroup();
+        _layers[name].notEditable = L.featureGroup();
         _layerItems[name] = {};
 
         return _layers[name];
@@ -27,6 +33,12 @@ angular.module('archCarto')
         }
         L.geoJson(layers, {
           onEachFeature: function(feature, layer) {
+            var type;
+            if (feature.properties.auditEvents.length > 0) {
+              type = feature.properties.auditEvents[0].type || '';
+            } else {
+              type = '';
+            }
             if (feature._id) {
               var currentLayer = _layers[layerName];
               if (_layerItems[layerName][optionsName] && _layerItems[layerName][optionsName][currentLayer._id]) {
@@ -38,15 +50,15 @@ angular.module('archCarto')
                 icon: options.icon
               };
 
-              if (feature.properties.auditEvents[0].type == 'AWAITING_ADDITION') {
+              if (type == 'AWAITING_ADDITION') {
                 iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type] || 'purple';
-              } else if (feature.properties.auditEvents[0].type == 'AWAITING_UPDATE') {
+              } else if (type == 'AWAITING_UPDATE') {
                 iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type] || 'blue';
-              } else if (feature.properties.auditEvents[0].type == 'AWAITING_DELETE') {
+              } else if (type == 'AWAITING_DELETE') {
                 iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type] || 'red';
-              } else if (feature.properties.auditEvents[0].type == 'ADDED') {
+              } else if (type == 'ADDED') {
                 iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type] || 'green';
-              } else if (feature.properties.auditEvents[0].type == 'UPDATED') {
+              } else if (type == 'UPDATED') {
                 iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type] || 'green';
               }
 
@@ -67,7 +79,11 @@ angular.module('archCarto')
             }
 
             _layerItems[layerName][optionsName] = _layerItems[layerName][optionsName] || {};
-            _layerItems[layerName][optionsName][feature._id] = _layers[layerName].addLayer(layer);
+            if (_editable.indexOf(type) > -1) {
+              _layerItems[layerName][optionsName][feature._id] = _layers[layerName].editable.addLayer(layer);
+            } else {
+              _layerItems[layerName][optionsName][feature._id] = _layers[layerName].notEditable.addLayer(layer);
+            }
           }
         });
       }
