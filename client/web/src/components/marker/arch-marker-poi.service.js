@@ -1,7 +1,7 @@
 'use strict'
 angular.module('archCarto')
   .service('archMarkerPoiService', function(archHttpService, archSocketService, $q, httpConstant) {
-    var _socket = archSocketService.openSocket('/map/poi');
+    var _socket = archSocketService.openSocket('poi', '/map/poi');
     var poiUrl = httpConstant.cartoServerUrl + '/map/poi';
 
     var service = {
@@ -33,5 +33,5 @@ angular.module('archCarto')
       */
     };
 
-    return archSocketService.initService(service, '/map/poi');
+    return archSocketService.initService('poi', service);
   });

@@ -1,13 +1,21 @@
 <md-content layout="column" layout-fill>
+  <!--<arch-navbar-wrapper></arch-navbar-wrapper>-->
   <navbar class="arch-navbar">
       <!--<md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>-->
       <span layout="row" layout-align="begin center" flex>
-        <div flex="40">
+        <div flex>
+
+        </div>
+        <div flex="80">
           <arch-map-center-search></arch-map-center-search>
         </div>
+        <!--
         <div flex></div>
         <div class="smaller" flex="30">
           <arch-map-coordinates-indicator></arch-map-coordinates-indicator>
+        </div>
+        -->
+        <div flex>
         </div>
       </span>
       <!--</md-toolbar>-->
@@ -23,6 +31,8 @@
                class="arch-map-leaflet"></leaflet>
     </span>
 
-    <md-sidenav ui-view="mapRight" class="arch-sidenav-large md-sidenav-right" layout="column" md-component-id="right"></md-sidenav>
+    <md-sidenav ui-view="mapRight" class="arch-sidenav-large md-sidenav-right"
+                layout="column" md-component-id="right"
+                ng-class="{'arch-sidenav-extra-large': displayOptions.mapRight.width == 'extra'}"></md-sidenav>
   </section>
 </md-content>

@@ -15,7 +15,7 @@ angular.module('archCarto', [
 
     $mdThemingProvider.theme('default')
       .primaryPalette('green')
-      .accentPalette('lime');
+      .accentPalette('blue-grey');
 
     $mdThemingProvider.theme('pathDrawer')
       .primaryPalette('teal')
@@ -40,7 +40,8 @@ angular.module('archCarto', [
         }
       })
       .state('map.home', {
-        url: ''
+        url: '',
+        template: ''
       })
       .state('map.path', {
         url: '/path',
@@ -97,6 +98,19 @@ angular.module('archCarto', [
       .state('map.course.draw', {
         url: '',
         template: '<arch-course-draw></arch-course-draw>'
+      })
+      .state('map.memberSpace', {
+        url: '/member-space',
+        abstract: true,
+        views: {
+          mapRight: {
+            template: '<arch-member-space></arch-member-space>'
+          }
+        }
+      })
+      .state('map.memberSpace.home', {
+        url: '',
+        template: '<arch-member-space-home></arch-member-space-home>'
       })
       /*
       .state('map.center', {

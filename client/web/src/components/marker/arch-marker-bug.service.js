@@ -1,7 +1,7 @@
 'use strict'
 angular.module('archCarto')
   .factory('archMarkerBugService', function(archSocketService, httpConstant, archHttpService, $q) {
-    var _socket = archSocketService.openSocket('/map/bug');
+    archSocketService.openSocket('bug', '/map/bug');
     var _bugUrl = httpConstant.cartoServerUrl + '/map/bug';
 
     var service = {
@@ -28,5 +28,5 @@ angular.module('archCarto')
       }
     };
 
-    return archSocketService.initService(service, '/map/bug');
+    return archSocketService.initService('bug', service);
   });

@@ -2,7 +2,7 @@
 angular.module('archCarto')
   .directive('archMap', function(
     geolocation, $q, $log, $compile,
-    $translate, $mdSidenav, $mdDialog, $mdToast,
+    $translate, $mdSidenav, $mdDialog, $mdToast, archCourseService,
     $state, archUtilsService, leafletData, archLayerService,
     archMapControlService, archMarkerBugService, archMarkerPoiService,
     archPathJunctionService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT,
@@ -51,9 +51,13 @@ angular.module('archCarto')
             archLayerService.initOptions('junction', {
                 icon: 'arrows'
             });
+            archLayerService.initOptions('course', {
+              popupDirective: 'arch-course-details-popup'
+            });
 
             _layers.marker = archLayerService.initLayer('marker');
             _layers.path = archLayerService.initLayer('path');
+            _layers.course = archLayerService.initLayer('course');
 
             var addToMap = controller.addToMap = function(layerName) {
               _layers[layerName].editable.addTo(map);
@@ -62,6 +66,7 @@ angular.module('archCarto')
 
             addToMap('marker');
             addToMap('path');
+            addToMap('course');
 
             $scope.layersReady = true;
 
@@ -70,6 +75,7 @@ angular.module('archCarto')
             // This handles error, refresh on new and save messages.
             archMarkerPoiService.useDefaultHandlers('marker', 'poi');
             archMarkerBugService.useDefaultHandlers('marker', 'bug');
+            archCourseService.useDefaultHandlers('course', 'course');
 
 
             map.on('popupopen', function(event) {
@@ -104,6 +110,12 @@ angular.module('archCarto')
                   archLayerService.addLayers('path', 'path', junction.properties.paths);
                 });
               });
+
+            archCourseService.getList()
+              .then(function(result) {
+                archLayerService.addLayers('course', 'course', result.value);
+              });
+
           });
 
         this.getLayer = function(name) {
@@ -290,6 +302,23 @@ angular.module('archCarto')
 
         // endregion
 
+        // region display options
+
+        var defaultDisplayOptions = {
+          mapRight: {
+            width: 'normal'
+          }
+        };
+
+        $scope.displayOptions = angular.copy(defaultDisplayOptions);
+
+        this.setDisplayOptions = function(options) {
+          options = options || {};
+          $scope.displayOptions = angular.extend(angular.copy(defaultDisplayOptions), options);
+        };
+
+        // endregion
+
         // endregion
 
       },
@@ -409,6 +438,14 @@ angular.module('archCarto')
           .catch(function(err) {
             $log.error(err);
           });
+
+        // region event handlers
+
+        scope.$on('$stateChangeSuccess', function() {
+          archMap.setDisplayOptions();
+        });
+
+        // endregion
       }
     }
   });

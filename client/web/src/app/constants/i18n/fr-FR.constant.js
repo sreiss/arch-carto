@@ -105,5 +105,10 @@ angular.module('archCarto')
     SELECT_A_COATING: "Selectionner un revêtement",
     PATH_DETAILS: "Détails du tronçon",
     ROAD: "Route",
-    DIRT_ROAD: "Chemin de terre"
+    DIRT_ROAD: "Chemin de terre",
+
+    COURSE_DETAILS: "Détails de l'itinéraire",
+    COMMENTARY: "Commentaire",
+    PUBLIC: "Public",
+    DIFFICULTY: "Difficulté"
   });

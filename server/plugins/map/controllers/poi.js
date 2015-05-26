@@ -59,7 +59,7 @@ module.exports = function (poiService) {
                             });
                         })
                         .catch(function(err) {
-                            namespace.emit('error', {
+                            socket.emit('archError', {
                                 err: err.message
                             });
                         });

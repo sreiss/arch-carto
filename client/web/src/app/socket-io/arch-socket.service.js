@@ -4,34 +4,38 @@ angular.module('archCarto')
     var _sockets = [];
 
     return {
-      openSocket: function(path, service) {
+      openSocket: function(name, path) {
         if (io) {
           var ioSocket = io.connect(archSocketConstant.url + path);
 
-          _sockets[path] = socketFactory({
+          _sockets[name] = socketFactory({
             ioSocket: ioSocket
           });
 
-          return _sockets[path];
+          return _sockets[name];
         }
         else {
           throw new Error('Unable to intiate socket with ' + archSocketConstant.url);
         }
       },
-      initService: function(service, path) {
-        if (_sockets[path]) {
+      initService: function(name, service) {
+        if (_sockets[name]) {
           var socketService = angular.extend(service, {
             save: function (entity) {
-              _sockets[path].emit('save', entity);
+              _sockets[name].emit('save', entity);
             },
             messages: function (callback) {
-              _sockets[path].on('save', callback);
+              _sockets[name].on('save', callback);
             },
             error: function (callback) {
-              _sockets[path].on('archError', callback);
+              _sockets[name].on('archError', callback);
+              _sockets[name].on('error', callback);
             },
-            onUpdate: function (callback) {
-              _sockets[path].on('new', callback);
+            onNew: function (callback) {
+              _sockets[name].on('new', callback);
+            },
+            onUpdate: function(callback) {
+              _sockets[name].on('update', callback);
             }
           });
 
@@ -52,14 +56,14 @@ angular.module('archCarto')
                   });
                 });
             });
-            socketService.onUpdate(function(result) {
+            socketService.onNew(function(result) {
               archLayerService.addLayers(layerName, optionName, result.value);
             });
           };
 
           return socketService;
         } else {
-          throw new Error('Socket for "' + path + '" not found');
+          throw new Error('Socket for "' + name + '" not found');
         }
       }
      }

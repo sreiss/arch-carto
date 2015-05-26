@@ -41,6 +41,7 @@ module.exports = function(courseService) {
         io: {
             save: function(socket, namespace) {
                 return function(course) {
+                    var isUpdate = !!course._id;
                     courseService.save(course)
                         .then(function(savedCourse) {
                             var lastAuditEvent = savedCourse.properties.auditEvents[savedCourse.properties.auditEvents - 1];
@@ -48,19 +49,35 @@ module.exports = function(courseService) {
                                 message: 'COURSE_' + lastAuditEvent.name
                             });
                             if (savedCourse.properties.public === true) {
-                                namespace.emit('new', {
-                                    message: 'NEW_COURSE',
-                                    value: savedCourse
-                                });
+                                if (isUpdate) {
+                                    namespace.emit('update', {
+                                        message: 'COURSE_UDPATED',
+                                        value: savedCourse
+                                    });
+                                } else {
+                                    namespace.emit('new', {
+                                        message: 'NEW_COURSE',
+                                        value: savedCourse
+                                    });
+                                }
                             } else {
-                                socket.emit('new', {
-                                    message: 'NEW_COURSE',
-                                    value: savedCourse
-                                });
+                                if (isUpdate) {
+                                    socket.emit('update', {
+                                        message: 'COURSE_UPDATED',
+                                        value: savedCourse
+                                    });
+                                } else {
+                                    socket.emit('new', {
+                                        message: 'NEW_COURSE',
+                                        value: savedCourse
+                                    });
+                                }
                             }
                         })
                         .catch(function(err) {
-                            namespace.emit('error', err);
+                            socket.emit('archError', {
+                                message: err.message
+                            });
                         });
                 }
             }
