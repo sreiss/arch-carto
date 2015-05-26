@@ -14,6 +14,7 @@
     "Leaflet.awesome-markers": "~2.0.2",
     "Leaflet.draw": "https://github.com/Leaflet/Leaflet.draw.git",
     "Leaflet.Routing": "https://github.com/Turistforeningen/leaflet-routing.git",
+    "togpx": "https://github.com/tyrasd/togpx.git",
     "angular-leaflet-directive": "~0.7.15",
     "angular": "~1.3.4",
     "angular-translate": "~2.6.0",
@@ -37,6 +38,11 @@
     "leafletKnn": {
       "main": [
         "leaflet-knn.js"
+      ]
+    },
+    "togpx": {
+      "main": [
+        "togpx.js"
       ]
     },
     "GeoLib": {

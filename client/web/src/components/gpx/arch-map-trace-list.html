@@ -7,11 +7,12 @@
   </span>
   <span ng-if="traces">
   <md-content class="md-padding">
-    <arch-content-dropdown ng-repeat="trace in traces | filter:filterOptions" title="trace.features[0].properties.name" >
-      <p>{{'TYPE' | translate}}: {{trace.features[0]}}</p>
+    <arch-content-dropdown ng-repeat="trace in traces | filter:filterOptions" title="trace.features[0].properties.name" ng-click="linkDownload(trace)">
+      <p>{{'TYPE' | translate}}: {{trace.features[0].properties.name}}</p>
       <md-button class="md-primary" ng-click="displayTrace(trace)">Display</md-button>
       <md-button class="md-primary" ng-click="editTrace(trace)">Edit</md-button>
-
+      <!--<md-button class="md-primary" ng-click="getGpx(trace)">Edit</md-button>-->
+      <a download="content.gpx" ng-href="{{ url }}">download</a>
     </arch-content-dropdown>
   </md-content>
   </span>
