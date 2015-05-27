@@ -110,5 +110,11 @@ angular.module('archCarto')
     COURSE_DETAILS: "Détails de l'itinéraire",
     COMMENTARY: "Commentaire",
     PUBLIC: "Public",
-    DIFFICULTY: "Difficulté"
+    DIFFICULTY: "Difficulté",
+    NONE: "Aucun",
+    NOT_COMMUNICATED_M: "Non communiqué",
+    NOT_COMMUNICATED_F: "Non communiquée",
+    YES: "Oui",
+    NO: "Non",
+    AUTHOR: "Auteur"
   });

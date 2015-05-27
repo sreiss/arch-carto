@@ -55,11 +55,7 @@ angular.module('archCarto', [
       .state('map.path.draw', {
         url: '/:id',
         template: '<arch-path-draw></arch-path-draw>',
-        controller: function($scope, $stateParams) {
-          if ($stateParams.id != '') {
-            $scope.id = $stateParams.id;
-          }
-        }
+        controller: 'ArchIdInjectorController'
       })
       .state('map.marker', {
         url: '/marker',
@@ -96,8 +92,9 @@ angular.module('archCarto', [
         }
       })
       .state('map.course.draw', {
-        url: '',
-        template: '<arch-course-draw></arch-course-draw>'
+        url: '/:id',
+        template: '<arch-course-draw></arch-course-draw>',
+        controller: 'ArchIdInjectorController'
       })
       .state('map.memberSpace', {
         url: '/member-space',

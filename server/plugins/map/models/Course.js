@@ -12,13 +12,23 @@ module.exports = function(Types, auditEventService) {
                 public: {type: Boolean, required: true},
                 auditEvents: [{type: Types.ObjectId, ref: 'AuditEvent'}]
             },
-            features: [
-                {type: Types.ObjectId, ref: 'Path'}
-            ]
+            geometry: {
+                type: {type: String, required: true},
+                coordinates: [{type: Types.Mixed, required: true}]
+            }
+            //features: [
+                //{type: Types.ObjectId, ref: 'Path'}
+            //]
         },
         onSchemaReady: function(schema) {
+            schema.pre('validate', function(next) {
+                this.type = 'Feature';
+                this.geometry.type = 'LineString';
+                return next();
+            });
+
             var addAuditEvent = function(eventType, model, next) {
-                model.type = "FeatureCollection";
+                //model.type = "FeatureCollection";
                 model.properties.public = model.properties.public || false;
                 model.validate(function(err) {
                     if (err) {
@@ -42,12 +52,12 @@ module.exports = function(Types, auditEventService) {
                 });
             };
 
-            schema.pre('save', function(next) {
-                addAuditEvent('AWAITING_ADDITION', this, next);
+            schema.post('save', function(model, next) {
+                addAuditEvent('AWAITING_ADDITION', model, next);
             });
 
-            schema.pre('update', function(next) {
-                addAuditEvent('AWAITING_UPDATE', this, next);
+            schema.post('update', function(model, next) {
+                addAuditEvent('AWAITING_UPDATE', model, next);
             });
         },
         onModelReady: function(Course) {

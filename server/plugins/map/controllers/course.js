@@ -44,31 +44,31 @@ module.exports = function(courseService) {
                     var isUpdate = !!course._id;
                     courseService.save(course)
                         .then(function(savedCourse) {
-                            var lastAuditEvent = savedCourse.properties.auditEvents[savedCourse.properties.auditEvents - 1];
+                            var lastAuditEvent = savedCourse.properties.auditEvents[savedCourse.properties.auditEvents.length - 1];
                             socket.emit('save', {
-                                message: 'COURSE_' + lastAuditEvent.name
+                                message: 'COURSE_' + lastAuditEvent.type
                             });
                             if (savedCourse.properties.public === true) {
-                                if (isUpdate) {
-                                    namespace.emit('update', {
-                                        message: 'COURSE_UDPATED',
-                                        value: savedCourse
-                                    });
-                                } else {
+                                if (!isUpdate) {
                                     namespace.emit('new', {
                                         message: 'NEW_COURSE',
                                         value: savedCourse
                                     });
+                                } else {
+                                    namespace.emit('update', {
+                                        message: 'COURSE_UDPATED',
+                                        value: savedCourse
+                                    });
                                 }
                             } else {
-                                if (isUpdate) {
-                                    socket.emit('update', {
-                                        message: 'COURSE_UPDATED',
+                                if (!isUpdate) {
+                                    socket.emit('new', {
+                                        message: 'NEW_COURSE',
                                         value: savedCourse
                                     });
                                 } else {
-                                    socket.emit('new', {
-                                        message: 'NEW_COURSE',
+                                    socket.emit('update', {
+                                        message: 'COURSE_UPDATED',
                                         value: savedCourse
                                     });
                                 }

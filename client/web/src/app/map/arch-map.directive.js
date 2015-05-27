@@ -113,6 +113,7 @@ angular.module('archCarto')
 
             archCourseService.getList()
               .then(function(result) {
+                debugger;
                 archLayerService.addLayers('course', 'course', result.value);
               });
 

@@ -145,7 +145,7 @@ angular.module('archCarto')
                 circle: false
               },
               edit: {
-                featureGroup: layer
+                featureGroup: layer.editable
               }
             });
           })

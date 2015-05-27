@@ -55,7 +55,10 @@ module.exports = function(Course) {
                         public: rawCourse.properties.public,
                         difficulty: rawCourse.properties.difficulty
                     },
-                    features: rawCourse.properties.features || []
+                    geometry: {
+                        coordinates: rawCourse.geometry.coordinates
+                    }
+                    //features: rawCourse.properties.features || []
                 });
                 course.save(function(err, savedCourse) {
                    if (err) {

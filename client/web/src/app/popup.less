@@ -1,5 +1,26 @@
 .arch-popup {
   .leaflet-popup-content {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
     width: 600px;
   }
+
+  .leaflet-popup-content-wrapper {
+    padding: 0 !important;
+  }
+
+  .leaflet-popup-close-button {
+    z-index: 250;
+  }
+
+  .arch-popup-content {
+    max-height: 400px;
+  }
+}
+
+a.leaflet-popup-close-button {
+  color: #ffffff !important;
+  padding: 13px 13px 0 0 !important;
 }

@@ -1,13 +1,9 @@
 'use strict'
 angular.module('archCarto')
-  .service('archLayerService', function() {
+  .service('archLayerService', function(archAuditService) {
     var _options = {};
     var _layers = {};
     var _layerItems = {};
-
-    var _editable = [
-      'ADDED', 'UPDATED'
-    ];
 
     return {
       initOptions: function(name, options) {
@@ -37,7 +33,7 @@ angular.module('archCarto')
             if (feature.properties.auditEvents.length > 0) {
               type = feature.properties.auditEvents[0].type || '';
             } else {
-              type = '';
+              type = 'AWAITING_ADDITION';
             }
             if (feature._id) {
               var currentLayer = _layers[layerName];
@@ -50,17 +46,8 @@ angular.module('archCarto')
                 icon: options.icon
               };
 
-              if (type == 'AWAITING_ADDITION') {
-                iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type] || 'purple';
-              } else if (type == 'AWAITING_UPDATE') {
-                iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type] || 'blue';
-              } else if (type == 'AWAITING_DELETE') {
-                iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type] || 'red';
-              } else if (type == 'ADDED') {
-                iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type] || 'green';
-              } else if (type == 'UPDATED') {
-                iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type] || 'green';
-              }
+              iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type]
+                || archAuditService.getColor(type);
 
               layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
             }
@@ -79,7 +66,7 @@ angular.module('archCarto')
             }
 
             _layerItems[layerName][optionsName] = _layerItems[layerName][optionsName] || {};
-            if (_editable.indexOf(type) > -1) {
+            if (archAuditService.isEditable(type)) {
               _layerItems[layerName][optionsName][feature._id] = _layers[layerName].editable.addLayer(layer);
             } else {
               _layerItems[layerName][optionsName][feature._id] = _layers[layerName].notEditable.addLayer(layer);

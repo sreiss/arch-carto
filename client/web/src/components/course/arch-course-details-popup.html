@@ -1,0 +1,57 @@
+<md-toolbar class="md-theme-indigo">
+  <h1 class="md-toolbar-tools">{{'COURSE_DETAILS' | translate}}</h1>
+</md-toolbar>
+<div class="arch-popup-content">
+  <md-content class="md-padding">
+    <div ng-switch="course">
+      <div ng-switch-when="false">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      </div>
+      <div ng-switch-when="null">
+        {{'NO_DATA_FOUND' | translate}}
+      </div>
+      <div ng-switch-default layout="row">
+        <div flex>
+          <md-list>
+            <md-list-item class="md-2-line">
+              <div class="md-list-item-text">
+                <h3>{{'COMMENTARY' | translate}}</h3>
+                <p>{{course.properties.commentary || 'NONE' | translate}}</p>
+              </div>
+            </md-list-item>
+            <md-list-item class="md-2-line">
+              <div class="md-list-item-text">
+                <h3>{{'DIFFICULTY' | translate}}</h3>
+                <p>{{course.properties.difficulty || 'NOT_COMMUNICATED_F' | translate}}</p>
+              </div>
+            </md-list-item>
+          </md-list>
+        </div>
+        <div flex>
+        <md-list>
+          <md-list-item class="md-2-line">
+            <div class="md-list-item-text">
+              <h3>{{'AUTHOR' | translate}}</h3>
+              <p>{{course.properties.author.name || 'NONE' | translate}}</p>
+            </div>
+          </md-list-item>
+          <md-list-item class="md-2-line">
+            <div class="md-list-item-text">
+              <h3>{{'PUBLIC' | translate}}</h3>
+              <p ng-if="course.properties.public">
+                {{'YES' | translate}}
+              </p>
+              <p ng-if="!course.properties.public">
+                {{'NO' | translate}}
+              </p>
+            </div>
+          </md-list-item>
+        </md-list>
+        </div>
+      </div>
+    </div>
+    <md-button class="md-raised md-primary" ui-sref="map.course.draw({id: course._id})">
+      {{'EDIT' | translate}}
+    </md-button>
+  </md-content>
+</div>

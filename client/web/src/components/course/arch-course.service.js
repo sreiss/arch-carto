@@ -11,6 +11,9 @@ angular.module('archCarto')
             description: '',
             difficulty: '',
             public: false
+          },
+          geometry: {
+            coordinates: []
           }
         });
       },
