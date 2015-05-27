@@ -1,11 +1,21 @@
-<md-content>
-  <h2>{{'BUG' | translate}}</h2>
-  <arch-audit-events audit-events="bug.properties.auditEvents"></arch-audit-events>
-  <div ng-if="!bug">
-    <md-progress-circular md-diameter="20" md-mode="indeterminate"></md-progress-circular>
-  </div>
-  <div ng-if="bug">
-    <p>{{bug.properties.description}}</p>
-    <p>{{bug.properties.status.name | translate}}</p>
-  </div>
-</md-content>
+<md-toolbar class="md-theme-indigo">
+  <h1 class="md-toolbar-tools">{{'BUG' | translate}}</h1>
+</md-toolbar>
+<div class="arch-popup-content">
+  <md-content class="md-padding">
+    <arch-audit-events audit-events="bug.properties.auditEvents"></arch-audit-events>
+    <div ng-if="!bug">
+      <md-progress-circular md-diameter="20" md-mode="indeterminate"></md-progress-circular>
+    </div>
+    <div ng-if="bug">
+      <md-list>
+        <md-list-item class="md-2-line">
+          <div class="md-list-item-text">
+            <h3>{{'DESCRIPTION' | translate}}</h3>
+            <p>{{bug.properties.description}}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+    </div>
+  </md-content>
+</div>
