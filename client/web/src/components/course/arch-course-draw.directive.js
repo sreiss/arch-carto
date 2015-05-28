@@ -1,13 +1,13 @@
 'use strict';
 angular.module('archCarto')
-  .directive('archCourseDraw', function($mdSidenav, archCourseService, $state, leafletData, $log, archAccountService) {
+  .directive('archCourseDraw', function($mdSidenav, archCourseService, $state, leafletData, $log) {
     return {
       restrict: 'E',
       require: ['^archMap', '^archCourseDraw'],
       templateUrl: 'components/course/arch-course-draw.html',
       controller: function($scope) {
         var _currentLayer;
-        
+
         $scope.course = false;
 
         $scope.cancel = angular.noop;
@@ -34,6 +34,9 @@ angular.module('archCarto')
                 }
 
                 $mdSidenav('right').open();
+                archInfoService.getDistance($scope.course).then(function(distance){
+                  $scope.course.properties.length = distance;
+                });
 
                 $scope.cancel = function () {
                   map.removeLayer(_currentLayer);
@@ -57,6 +60,9 @@ angular.module('archCarto')
           archCourseService.get($scope.id)
             .then(function(result) {
               $scope.course = result.value;
+              archInfoService.getDistance($scope.course).then(function(distance){
+                $scope.course.properties.length = distance;
+              });
             })
             .catch(function(err) {
               $log.error(err);
@@ -68,6 +74,7 @@ angular.module('archCarto')
         var archCourse = controllers[1];
 
         scope.save = function(course) {
+          console.log(course);
           archCourseService.save(course);
         };
 

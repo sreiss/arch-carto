@@ -10,6 +10,7 @@ angular.module('archCarto')
           properties: {
             description: '',
             difficulty: '',
+            length: '',
             public: false
           },
           geometry: {

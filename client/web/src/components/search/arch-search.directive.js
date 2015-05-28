@@ -13,39 +13,16 @@ angular.module('archCarto')
         $mdSidenav('right').toggle();
         $mdSidenav('right').open();
         $scope.search = function() {
-          //more complex
           var name = $scope.keywords;
           var filter = {name: name};
-          archSearchService.postSearch(filter);
+          archSearchService.postSearch(filter).then(function(searchedValue){
+            $scope.result = searchedValue;
+          });
 
-
-          // easy way
-          //archGpxService.getTrace()
-          //  .then(function (traces) {
-          //    for(var i = 0; i<traces.length; i++)
-          //    {
-          //      var name = traces[i].features[0].properties.name;
-          //      var search = $scope.keywords;
-          //      if(name == search)
-          //      {
-          //        $scope.result = traces[i].features[0].properties.name;
-          //        debugger;
-          //
-          //      }
-          //      else
-          //      {
-          //        debugger;
-          //
-          //      }
-          //    }
-          //  });
         }
       },
       link: function(scope, element, attrs) {
-        //second version
-        //scope.i
-        //console.log(attrs.$normalize);
-        //scope.upload = archGpxUploadSer
+
 
       }
 

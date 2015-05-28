@@ -5,8 +5,15 @@ angular.module('archCarto')
 
     return {
       postSearch: function(filter) {
-
-        return archHttpService.post(_searchUrl, filter);
+        var deferred = $q.defer();
+        $http.post(_searchUrl, filter)
+          .success(function(data,status,headers, config){
+            deferred.resolve(data);
+          })
+          .error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+        return deferred.promise;
       }
     };
   });
