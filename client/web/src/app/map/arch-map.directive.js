@@ -113,7 +113,7 @@ angular.module('archCarto')
 
             archCourseService.getList()
               .then(function(result) {
-                debugger;
+                //debugger;
                 archLayerService.addLayers('course', 'course', result.value);
               });
 
@@ -365,6 +365,14 @@ angular.module('archCarto')
               }
             })
           })
+          .then(function() {
+            var searchControlClass = archMapControlService.createControlClass('GoToArchSearch', 'arch-search', 'search');
+            archMap.addControl('goToArchSearch', searchControlClass, {
+              clickFn: function() {
+                $state.go('map.search');
+              }
+            })
+          })
           .catch(function(err) {
             $log.error(err);
           });
@@ -460,7 +468,6 @@ angular.module('archCarto')
 //      templateUrl: 'app/map/arch-map.html',
 //      controller: function($scope) {
 //        leafletData.getGeoJSON().then(function(lObjs){
-//          debugger;
 //          window.leafletDataGeoJSON = lObjs;
 //        });
 //

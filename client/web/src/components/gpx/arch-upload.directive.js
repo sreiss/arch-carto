@@ -286,5 +286,5 @@ angular.module('archCarto')
         }
       }
     };
-  });;
+  });
 
