@@ -130,6 +130,14 @@ angular.module('archCarto', [
           }
         }
       })
+      .state('map.search', {
+        url: '/search',
+        views: {
+          "mapRight": {
+            template: '<arch-search-form></arch-search-form>'
+          }
+        }
+      })
       .state('subscribe', {
         url: '/subscribe',
         views: {
