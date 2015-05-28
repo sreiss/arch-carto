@@ -13,9 +13,9 @@ module.exports = function(formatterService) {
           req.checkBody('properties', 'PROPERTIES_REQUIRED')
               .notEmpty();
 
-          req.checkBody('properties.altitude', 'ALTITUDE_MUST_BE_NUMERIC')
+          /*req.checkBody('properties.altitude', 'ALTITUDE_MUST_BE_NUMERIC')
               .notEmpty()
-              .isNumeric();
+              .isNumeric();*/
 
           req.checkBody('properties.description', 'DESCRIPTION_MUST_BE_STRING')
               .notEmpty()
