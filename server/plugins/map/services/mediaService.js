@@ -50,6 +50,7 @@ module.exports = function(Media) {
                                     });
                                 } catch(err) {
                                     fs.unlinkSync(filePath);
+                                    deferred.reject(err);
                                 }
                             }
                         });
