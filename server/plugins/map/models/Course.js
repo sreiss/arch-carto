@@ -9,6 +9,7 @@ module.exports = function(Types, auditEventService) {
                 author: {type: Types.ObjectId},
                 commentary: {type: String},
                 difficulty: {type: String},
+                length: {type: String},
                 public: {type: Boolean, required: true},
                 auditEvents: [{type: Types.ObjectId, ref: 'AuditEvent'}]
             },
@@ -17,7 +18,7 @@ module.exports = function(Types, auditEventService) {
                 coordinates: [{type: Types.Mixed, required: true}]
             }
             //features: [
-                //{type: Types.ObjectId, ref: 'Path'}
+            //{type: Types.ObjectId, ref: 'Path'}
             //]
         },
         onSchemaReady: function(schema) {

@@ -1,27 +1,23 @@
 var Q = require('q');
 
-module.exports = function (Trace) {
+module.exports = function (Course) {
     return {
         makeResearch: function (filter){
             var deferred = Q.defer();
             if(filter.name)
             {
                 var name = filter.name;
-                Trace.find({ 'features.properties.name' : name}).lean().exec(options, function(err, trace){
+
+                Course.find({ 'properties.commentary' : name}, function(err, trace){
                     if (err) {
-                        console.log('coucou');
                         deferred.reject(err);
                     } else {
-                        console.log(trace);
-                        console.log('coucou');
                         deferred.resolve(trace);
                     }
 
-                return deferred.promise;
-
-                })
+                });
             }
-
+            return deferred.promise;
         }
     };
 };
