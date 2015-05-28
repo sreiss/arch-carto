@@ -13,7 +13,8 @@ angular.module('archCarto')
     casServerUrl: 'http://localhost:3020',
     cartoClientUrl: 'http://localhost:3012',
     cartoServerUrl: 'http://localhost:3022',
-    clientRedirectUri : 'http://localhost:3012/#/map', */
+    clientRedirectUri : 'http://localhost:3012/#/map',
+    */
 
     signupType: {
       name: 'CARTO',
