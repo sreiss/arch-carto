@@ -27,28 +27,34 @@
                   <p>{{course.properties.difficulty || 'NOT_COMMUNICATED_F' | translate}}</p>
                 </div>
               </md-list-item>
+              <md-list-item class="md-2-line">
+                <div class="md-list-item-text">
+                  <h3>{{'AVERAGE_RATING' | translate}}</h3>
+                  <p><arch-ratings-average></arch-ratings-average></p>
+                </div>
+              </md-list-item>
             </md-list>
           </div>
           <div flex>
-          <md-list>
-            <md-list-item class="md-2-line">
-              <div class="md-list-item-text">
-                <h3>{{'AUTHOR' | translate}}</h3>
-                <p>{{course.properties.author.name || 'NONE' | translate}}</p>
-              </div>
-            </md-list-item>
-            <md-list-item class="md-2-line">
-              <div class="md-list-item-text">
-                <h3>{{'PUBLIC' | translate}}</h3>
-                <p ng-if="course.properties.public">
-                  {{'YES' | translate}}
-                </p>
-                <p ng-if="!course.properties.public">
-                  {{'NO' | translate}}
-                </p>
-              </div>
-            </md-list-item>
-          </md-list>
+            <md-list>
+              <md-list-item class="md-2-line">
+                <div class="md-list-item-text">
+                  <h3>{{'AUTHOR' | translate}}</h3>
+                  <p>{{course.properties.author.name || 'NONE' | translate}}</p>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-2-line">
+                <div class="md-list-item-text">
+                  <h3>{{'PUBLIC' | translate}}</h3>
+                  <p ng-if="course.properties.public">
+                    {{'YES' | translate}}
+                  </p>
+                  <p ng-if="!course.properties.public">
+                    {{'NO' | translate}}
+                  </p>
+                </div>
+              </md-list-item>
+            </md-list>
           </div>
         </div>
       </div>

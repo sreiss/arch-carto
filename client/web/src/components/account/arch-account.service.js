@@ -3,6 +3,23 @@ angular.module('archCarto')
   .factory('archAccountService', function(archHttpService, $q, httpConstant, $cookieStore, $base64) {
     var casUrl = httpConstant.casServerUrl + '/oauth';
 
+    var _roles = {
+      AUTHENTICATED: ['AUTHENTICATED'],
+      MEMBER: ['AUTHENTICATED', 'MEMBER'],
+      CARTOGRAPHER: ['CARTOGRAPHER'],
+      ADMIN: ['AUTHENTICATED', 'MEMBER', 'CARTOGRAPHER', 'ADMIN']
+    };
+
+    var _is = function(roleName) {
+      var currentUser = this.getCurrentUser();
+      var role;
+      if (currentUser && currentUser.profil && (role = currentUser.profil.role)) {
+        return _roles[roleName].indexOf(role.name) > -1;
+      } else {
+        return false;
+      }
+    };
+
     return {
       saveClient: function()
       {
@@ -10,7 +27,7 @@ angular.module('archCarto')
         {
           "name" : httpConstant.clientName,
           "redirect_uri" : httpConstant.clientRedirectUri
-        }
+        };
 
         var deferred = $q.defer();
 
@@ -47,9 +64,30 @@ angular.module('archCarto')
       getCurrentUser: function()
       {
         var token = this.getCurrentToken();
-        var currentUser = token.user || null;
+        var currentUser;
+        if (token) {
+          currentUser = token.user || null;
+        } else {
+          currentUser = null;
+        }
 
         return currentUser;
+      },
+
+      isCartographer: function() {
+        return _is('CARTOGRAPHER');
+      },
+
+      isAuthenticated: function() {
+        return _is('AUTHENTICATED');
+      },
+
+      isMember: function() {
+        return _is('MEMBER');
+      },
+
+      isAdmin: function() {
+        return _is('ADMIN');
       },
 
       isCurrentUserAdmin: function()

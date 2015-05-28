@@ -116,5 +116,7 @@ angular.module('archCarto')
     NOT_COMMUNICATED_F: "Non communiquée",
     YES: "Oui",
     NO: "Non",
-    AUTHOR: "Auteur"
+    AUTHOR: "Auteur",
+    RATING: "Note",
+    AVERAGE_RATING: "Note moyenne"
   });

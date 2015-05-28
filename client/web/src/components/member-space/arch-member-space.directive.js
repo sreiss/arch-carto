@@ -1,6 +1,6 @@
 'use strict';
 angular.module('archCarto')
-  .directive('archMemberSpace', function($mdSidenav) {
+  .directive('archMemberSpace', function($mdSidenav, $state) {
     return {
       restrict: 'E',
       require: '^archMap',
@@ -11,7 +11,15 @@ angular.module('archCarto')
             width: 'extra'
           }
         });
+
         $mdSidenav('right').open();
+
+        scope.cancel = function() {
+          $mdSidenav('right').close()
+            .then(function() {
+              $state.go('map.home');
+            });
+        }
       }
     }
   });

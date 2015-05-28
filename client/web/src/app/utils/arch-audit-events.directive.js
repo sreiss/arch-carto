@@ -1,14 +1,13 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archAuditEvents', function() {
+  .directive('archAuditEvents', function(archAuditService) {
     return {
       restrict: 'E',
       scope: {
         auditEvents: '='
       },
       templateUrl: 'app/utils/arch-audit-events.html',
-      link: function(scope, element, attributes) {
-
+      controller: function($scope) {
       }
     }
   });

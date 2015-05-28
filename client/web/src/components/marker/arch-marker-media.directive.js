@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 angular.module('archCarto')
   .directive('archMarkerMedia', function($state, $mdSidenav, $mdToast, archMarkerPoiService, httpConstant, archTranslateService) {
     return {
@@ -29,7 +29,9 @@ angular.module('archCarto')
                           $scope.marker.properties.medias.push(medias[i].data._id);
                         }
 
-                        archMarkerPoiService.save($scope.marker)
+                        archMarkerPoiService.save($scope.marker);
+
+                        /*
                           .then(function (savedPoi) {
                             $scope.$emit('poiMediaAttached', $scope.marker);
                             archTranslateService('MEDIAS_SAVED_FOR_POI')
@@ -40,6 +42,7 @@ angular.module('archCarto')
                                 });
                               });
                           });
+                          */
                       }
                     }, true);
                   });

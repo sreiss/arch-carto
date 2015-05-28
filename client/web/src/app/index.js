@@ -35,7 +35,15 @@ angular.module('archCarto', [
         abstract: true,
         views: {
           main: {
-            template: '<arch-map class="arch-map"></arch-map>'
+            template: '<arch-map class="arch-map"></arch-map>',
+            resolve: {
+              currentUser: function(archAccountService) {
+                return archAccountService.getCurrentUser();
+              }
+            },
+            controller: function($scope, currentUser) {
+              $scope.currentUser = currentUser;
+            }
           }
         }
       })

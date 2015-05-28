@@ -1,13 +1,13 @@
 'use strict';
 angular.module('archCarto')
-  .directive('archCourseDraw', function($mdSidenav, archCourseService, $state, leafletData, $log) {
+  .directive('archCourseDraw', function($mdSidenav, archCourseService, $state, leafletData, $log, archAccountService) {
     return {
       restrict: 'E',
       require: ['^archMap', '^archCourseDraw'],
       templateUrl: 'components/course/arch-course-draw.html',
       controller: function($scope) {
         var _currentLayer;
-
+        
         $scope.course = false;
 
         $scope.cancel = angular.noop;
