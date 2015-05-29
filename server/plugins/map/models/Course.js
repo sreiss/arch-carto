@@ -9,7 +9,7 @@ module.exports = function(Types, auditEventService) {
                 author: {type: Types.ObjectId},
                 commentary: {type: String},
                 difficulty: {type: String},
-                length: {type: String},
+                length: {type: Number},
                 public: {type: Boolean, required: true},
                 auditEvents: [{type: Types.ObjectId, ref: 'AuditEvent'}]
             },

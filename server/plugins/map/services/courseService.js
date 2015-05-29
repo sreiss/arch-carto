@@ -5,7 +5,7 @@ module.exports = function(Course) {
     return {
         get: function(id) {
             var deferred = Q.defer();
-            Course.findOne(id)
+            Course.findOne({_id: id})
                 .populate({
                     path: 'properties.auditEvents',
                     limit: 1
@@ -53,7 +53,8 @@ module.exports = function(Course) {
                     properties: {
                         commentary: rawCourse.properties.commentary,
                         public: rawCourse.properties.public,
-                        difficulty: rawCourse.properties.difficulty
+                        difficulty: rawCourse.properties.difficulty,
+                        length: rawCourse.properties.length
                     },
                     geometry: {
                         coordinates: rawCourse.geometry.coordinates
