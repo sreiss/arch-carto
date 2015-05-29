@@ -13,10 +13,20 @@ angular.module('archCarto')
         $mdSidenav('right').toggle();
         $mdSidenav('right').open();
         $scope.search = function() {
-          var name = $scope.keywords;
-          var filter = {name: name};
+          var commentary = $scope.commentary;
+          var difficulty = $scope.difficulty;
+          var filter = { 'properties': {}};
+          if(commentary)
+          {
+            filter.properties.commentary = commentary;
+          }
+          if(difficulty)
+          {
+            filter.properties.difficulty = difficulty;
+          }
+          console.log(filter);
           archSearchService.postSearch(filter).then(function(searchedValue){
-            $scope.result = searchedValue;
+            $scope.result = searchedValue.value;
           });
 
         }

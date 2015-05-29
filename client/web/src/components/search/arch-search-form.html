@@ -5,8 +5,10 @@
   <arch-back-button back-state="map.home" layout-fill></arch-back-button>
   <md-content class="md-theme-default md-padding">
     <form class="well form-search">
-      <label>Search:</label>
-      <input type="text" ng-model="keywords" class="input-medium search-query" placeholder="Keywords...">
+      <label>Commentaire</label>
+      <input type="text" ng-model="commentary" class="input-medium search-query" placeholder="Keywords...">
+      <label>Difficulté</label>
+      <input type="text" ng-model="difficulty" class="input-medium search-query" placeholder="Keywords...">
       <button type="submit" class="btn" ng-click="search()">Search</button>
     </form>
     <pre ng-model="result">
