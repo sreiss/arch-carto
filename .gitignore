@@ -27,3 +27,6 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 .idea
+client/web/src/app/constants/arch-socket.constant.js
+client/web/src/app/constants/http.constant.js
+client/web/src/index.html

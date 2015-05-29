@@ -31,9 +31,10 @@ module.exports = function (Course) {
             }
             referred = referred.concat('}');
 
-            var requete = JSON.parse(JSON.stringify(referred));
-            console.log(requete);
-            Course.find(requete, function(err, trace){
+            //var requete = referred.replace(/["]+/g, '');
+            var txt = eval ("(" + referred + ")");
+            console.log(txt);
+            Course.find(txt, function(err, trace){
                 if (err) {
                     console.log('error');
                     deferred.reject(err);

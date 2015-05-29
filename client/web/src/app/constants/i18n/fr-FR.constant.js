@@ -81,6 +81,7 @@ angular.module('archCarto')
     PLEASE_INDICATE_THE_TYPE_OF_MARKER_YOU_WANT_TO_ADD: "Veuillez indiquer le type de marqueur que vous souhaitez ajouter à la carte.",
     POINT_OF_INTEREST: "Point d'intérêt",
     BUG: "Anomalie",
+    SEARCH: "Recherche",
 
     SINCE: "depuis",
     AWAITING_ADDITION: "En attente d'ajout",

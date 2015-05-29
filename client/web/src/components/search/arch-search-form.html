@@ -5,11 +5,17 @@
   <arch-back-button back-state="map.home" layout-fill></arch-back-button>
   <md-content class="md-theme-default md-padding">
     <form class="well form-search">
-      <label>Commentaire</label>
-      <input type="text" ng-model="commentary" class="input-medium search-query" placeholder="Keywords...">
-      <label>Difficulté</label>
-      <input type="text" ng-model="difficulty" class="input-medium search-query" placeholder="Keywords...">
-      <button type="submit" class="btn" ng-click="search()">Search</button>
+      <md-input-container flex>
+        <label>{{'COMMENTARY' | translate}}</label>
+        <textarea ng-model="commentary"></textarea>
+      </md-input-container>
+      <md-input-container flex>
+        <label>{{'DIFFICULTY' | translate}}</label>
+        <textarea ng-model="difficuty"></textarea>
+      </md-input-container>
+      <md-button ng-click="search()">
+        {{'SEARCH' | translate}}
+      </md-button>
     </form>
     <pre ng-model="result">
 {{result}}
