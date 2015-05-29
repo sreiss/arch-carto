@@ -1,6 +1,6 @@
 'use strict';
 angular.module('archCarto')
-  .directive('archCourseDraw', function($mdSidenav, archCourseService, $state, leafletData, $log) {
+  .directive('archCourseDraw', function($mdSidenav, archCourseService, archInfoService, $state, leafletData, $log) {
     return {
       restrict: 'E',
       require: ['^archMap', '^archCourseDraw'],
