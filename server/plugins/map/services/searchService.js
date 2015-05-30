@@ -14,7 +14,7 @@ module.exports = function (Course) {
                     count++;
                 }
             }
-            console.log(count);
+            //console.log(count);
             var referred = "{";
             if(filter.properties.commentary)
             {
@@ -56,12 +56,12 @@ module.exports = function (Course) {
                 }
             }
             referred = referred.concat('}');
-            console.log(referred);
+            //console.log(referred);
             //var requete = referred.replace(/["]+/g, '');
             var txt = eval ("(" + referred + ")");
-            console.log('test');
+            //console.log('test');
 
-            console.log(txt);
+            //console.log(txt);
             Course.find(txt, function(err, trace){
                 if (err) {
                     console.log('error');

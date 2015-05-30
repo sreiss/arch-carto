@@ -12,6 +12,10 @@ angular.module('archCarto')
       controller: function ($scope, httpConstant, archGpxService, archHttpService, $mdSidenav,archSearchService) {
         $mdSidenav('right').toggle();
         $mdSidenav('right').open();
+        //$scope.myValue = false;
+        $scope.hide = function() {
+          $scope.myValue = !$scope.myValue;
+        };
 
         // doit etre initialise
         $scope.maxLength = 0;
@@ -65,9 +69,10 @@ angular.module('archCarto')
           {
             filter.properties.maxLength = maxLength * 1000;
           }
-          console.log(filter);
+          //console.log(filter);
           archSearchService.postSearch(filter).then(function(searchedValue){
-            $scope.result = searchedValue.value;
+            $scope.results = searchedValue.value;
+            $scope.myValue = true;
           });
 
         }

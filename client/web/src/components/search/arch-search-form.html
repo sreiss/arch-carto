@@ -1,6 +1,8 @@
 <md-toolbar class="md-theme-indigo">
   <h1 class="md-toolbar-tools">{{'SEARCH' | translate}}</h1>
 </md-toolbar>
+<md-button class="md-primary" ng-click="hide()">Cacher</md-button>
+<div ng-hide="myValue" class="ng-hide">
 <md-content class="md-theme-default" layout="column">
   <arch-back-button back-state="map.home" layout-fill></arch-back-button>
   <md-content class="md-theme-default md-padding">
@@ -35,9 +37,24 @@
         </md-slider>
         </div>
         <md-button class="md-primary" ng-click="search()">Recherche</md-button>
+
       </ng-form>
-    <pre ng-model="result">
-{{result}}
-</pre>
+    <!--<pre ng-model="results" ng-if="results">-->
+<!--{{result}}-->
+<!--</pre>-->
+
   </md-content>
 </md-content>
+</div>
+<span ng-if="results">
+    <md-list-item class="md-3-line" ng-repeat="item in results">
+      <img ng-src="http://i61.tinypic.com/2czbsls.png" class="md-avatar" />
+      <div class="md-list-item-text">
+        <!--<h3>{{ item.who }}</h3>-->
+        <h4>{{ item.properties.commentary }}</h4>
+        <p>{{ item.properties.length }}</p>
+      </div>
+    </md-list-item>
+    </span>
+
+
