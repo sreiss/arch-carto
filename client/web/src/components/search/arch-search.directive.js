@@ -23,8 +23,6 @@ angular.module('archCarto')
             return $scope.minLength;
           },
           function(newValue, oldValue) {
-            $mdToast.show($mdToast.simple().content("Slider=" + newValue).position("top right").hideDelay(50));
-            console.log($scope.maxLength);
             if($scope.maxLength < newValue)
             {
               $scope.maxLength = newValue;
@@ -37,7 +35,6 @@ angular.module('archCarto')
             return $scope.maxLength;
           },
           function(newValue, oldValue) {
-            console.log($scope.maxLength);
             if(newValue < $scope.minLength)
             {
               $scope.maxLength = $scope.minLength;
@@ -62,11 +59,11 @@ angular.module('archCarto')
           }
           if(minLength)
           {
-            filter.properties.minLength = minLength;
+            filter.properties.minLength = minLength *1000;
           }
           if(maxLength)
           {
-            filter.properties.maxLength = maxLength;
+            filter.properties.maxLength = maxLength * 1000;
           }
           console.log(filter);
           archSearchService.postSearch(filter).then(function(searchedValue){

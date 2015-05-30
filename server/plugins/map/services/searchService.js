@@ -6,13 +6,15 @@ module.exports = function (Course) {
             var deferred = Q.defer();
             var key, count = 0;
             var i = 1;
+            //console.log(filter);
+
             // know how many properties are here
             for(key in filter.properties) {
                 if(filter.properties.hasOwnProperty(key)) {
                     count++;
                 }
             }
-
+            console.log(count);
             var referred = "{";
             if(filter.properties.commentary)
             {
@@ -37,21 +39,16 @@ module.exports = function (Course) {
                 }
             }
 
-            if(filter.properties.minLength)
-            {
-                var km = filter.properties.minLength * 1000;
-                var minLength = "'properties.length': {$gte :"+km+"}"
-                if(i != count)
-                {
-                    referred = referred.concat(',');
-                    i ++;
-                }
-            }
 
-            if(filter.properties.maxLength)
+            if(filter.properties.maxLength && filter.properties.minLength)
             {
-                var km = filter.properties.maxLength * 1000;
-                var minLength = "'properties.length': {$lte :"+km+"}"
+                var and = "$and :["
+                var minLength = "{'properties.length': {$gte :"+filter.properties.minLength+"}},";
+                var maxLength = "{'properties.length': {$lte : "+filter.properties.maxLength+"}}]";
+                referred = referred.concat(and);
+                referred = referred.concat(minLength);
+                referred = referred.concat(maxLength);
+                i ++;
                 if(i != count)
                 {
                     referred = referred.concat(',');
@@ -59,10 +56,11 @@ module.exports = function (Course) {
                 }
             }
             referred = referred.concat('}');
-
+            console.log(referred);
             //var requete = referred.replace(/["]+/g, '');
             var txt = eval ("(" + referred + ")");
-            console.log(filter);
+            console.log('test');
+
             console.log(txt);
             Course.find(txt, function(err, trace){
                 if (err) {
