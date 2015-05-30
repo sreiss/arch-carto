@@ -108,6 +108,7 @@ exports.init = function(done) {
                 // Now we apply the args to the route
                 routeRequire.apply(this, args);
                 expressApp.use(fullRoute, router);
+                plugin.router = router;
             } catch (err) {
                 console.error('No controller attached to ' + routeName + ' route in ' + pluginName + ' plugin');
                 console.error(err);

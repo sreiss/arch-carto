@@ -23,6 +23,9 @@ angular.module('archCarto')
       },
       get: function(id) {
         return archHttpService.get(_courseUrl + '/' + id);
+      },
+      save: function(course) {
+        return archHttpService.post(_courseUrl, course);
       }
     };
 

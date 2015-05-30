@@ -18,7 +18,9 @@ var path = require('path'),
     ioServer = require(path.join(__dirname, 'lib', 'ioServer')),
     validators = require(path.join(__dirname, 'lib', 'validators')),
     formatters = require(path.join(__dirname, 'lib', 'formatters')),
-    errorLoader = require(path.join(__dirname, 'lib', 'loaders', 'errorsLoader'));
+    errorLoader = require(path.join(__dirname, 'lib', 'loaders', 'errorsLoader')),
+    userService = require(path.join(__dirname, 'lib', 'user', 'userService')),
+    userCleaner = require(path.join(__dirname, 'lib', 'user', 'userCleaner'));
 
 exports.name = 'arch';
 
@@ -37,6 +39,7 @@ exports.attach = function(opts) {
     app.use(auditEvent);
     app.use(auditEventService);
     app.use(pluginLoader);
+    app.use(userService);
     app.use(expressApp);
     app.use(server);
     app.use(ioServer);
@@ -47,6 +50,7 @@ exports.attach = function(opts) {
     app.use(crudControllerFactory);
     app.use(controllersLoader);
     app.use(routesLoader);
+    app.use(userCleaner);
     //app.use(pluginsLoader);
 };
 
