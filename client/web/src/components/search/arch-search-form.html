@@ -4,19 +4,38 @@
 <md-content class="md-theme-default" layout="column">
   <arch-back-button back-state="map.home" layout-fill></arch-back-button>
   <md-content class="md-theme-default md-padding">
-    <form class="well form-search">
-      <md-input-container flex>
-        <label>{{'COMMENTARY' | translate}}</label>
-        <textarea ng-model="commentary"></textarea>
-      </md-input-container>
-      <md-input-container flex>
+      <ng-form name="searchForm">
+        <md-input-container flex>
+          <label>{{'COMMENTARY' | translate}}</label>
+          <textarea ng-model="commentary"></textarea>
+        </md-input-container>
         <label>{{'DIFFICULTY' | translate}}</label>
-        <textarea ng-model="difficuty"></textarea>
-      </md-input-container>
-      <md-button ng-click="search()">
-        {{'SEARCH' | translate}}
-      </md-button>
-    </form>
+        <md-input-container flex>
+          <md-select placeholder="Choisir" ng-model="difficulty">
+            <md-option value="1">Très facile</md-option>
+            <md-option value="2">Facile</md-option>
+            <md-option value="3">Modéré</md-option>
+            <md-option value="4">Difficile</md-option>
+            <md-option value="5">Très difficile</md-option>
+          </md-select>
+        </md-input-container>
+        <label>{{'LENGTH' | translate}}</label>
+        <div layout>
+        <div flex="10" layout layout-align="center center">
+          <span class="md-body-1">Min</span>
+        </div>
+        <md-slider md-discrete flex class="md-primary" ng-model="minLength" step="1" min="0" max="200">
+        </md-slider>
+        </div>
+        <div layout>
+          <div flex="10" layout layout-align="center center">
+            <span class="md-body-1">Max</span>
+          </div>
+        <md-slider md-discrete flex class="md-primary" ng-model="maxLength" step="1" min={{minMax}} max="200">
+        </md-slider>
+        </div>
+        <md-button class="md-primary" ng-click="search()">Recherche</md-button>
+      </ng-form>
     <pre ng-model="result">
 {{result}}
 </pre>

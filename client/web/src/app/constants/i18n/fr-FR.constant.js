@@ -112,6 +112,7 @@ angular.module('archCarto')
     COMMENTARY: "Commentaire",
     PUBLIC: "Public",
     DIFFICULTY: "Difficulté",
+    LENGTH: "Longueur",
     NONE: "Aucun",
     NOT_COMMUNICATED_M: "Non communiqué",
     NOT_COMMUNICATED_F: "Non communiquée",
