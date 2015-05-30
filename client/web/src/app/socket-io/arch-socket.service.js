@@ -21,12 +21,9 @@ angular.module('archCarto')
       initService: function(name, service) {
         if (_sockets[name]) {
           var socketService = angular.extend(service, {
-            save: function (entity) {
+            /*save: function (entity) {
               _sockets[name].emit('save', entity);
-            },
-            messages: function (callback) {
-              _sockets[name].on('save', callback);
-            },
+            },*/
             error: function (callback) {
               _sockets[name].on('archError', callback);
               _sockets[name].on('error', callback);
@@ -41,10 +38,6 @@ angular.module('archCarto')
 
           // If the socket you use has no custom logic.
           socketService.useDefaultHandlers = function(layerName, optionName) {
-            socketService.messages(function(result) {
-              $mdToast.show($mdToast.simple().content(result.message));
-              $mdSidenav('right').close();
-            });
             socketService.error(function(err) {
               $log.error(err);
               archTranslateService(err.message)

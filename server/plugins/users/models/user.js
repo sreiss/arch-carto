@@ -14,7 +14,8 @@ module.exports = function(Types) {
             birthdate: {type: Date},
             phone: {type: String},
             avatar: {type: String},
-            firstconnexion: {type: Boolean, default: true}
+            firstconnexion: {type: Boolean, default: true},
+            favoriteCourses: [{type: Types.ObjectId, ref: 'Course'}]
         },
         priority: 1
     };

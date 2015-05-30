@@ -13,6 +13,15 @@ exports.attach = function(opts) {
     var AuditEvent = app.arch.audit.AuditEvent;
     var validators = app.arch.validators;
 
+    var _events = {
+        awaitingAddition: 'AWAITING_ADDITION',
+        awaitingUpdate: 'AWAITING_UPDATE',
+        awaitingDeletion: 'AWAITING_DELETION',
+        added: 'ADDED',
+        updated: 'UDPATED',
+        deleted: 'DELETED'
+    };
+
     var auditEventService = app.arch.audit.auditEventService = {
         getAuditEvents: function(criteria) {
             var deferred = Q.defer();
@@ -94,6 +103,19 @@ exports.attach = function(opts) {
             return deferred.promise;
         }
     };
+
+    // adding a shorcut handler for each audit event.
+    for (var eventName in _events) {
+        auditEventService[eventName] = function(entity, model) {
+            var displayName = _events[eventName];
+            var auditEvent = new AuditEvent({
+                type: displayName,
+                entityId: model._id,
+
+
+            });
+        };
+    }
 };
 
 exports.init = function(done) {

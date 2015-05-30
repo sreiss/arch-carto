@@ -46,6 +46,20 @@ module.exports = function(Types, auditEventService) {
             schema.post('findOneAndUpdate', function(model, next) {
                 addAuditEvent('AWAITING_UPDATE', model, next);
             });
+
+            schema.methods.delete = function() {
+                var model = this;
+                var auditEvent = {
+                    type: 'DELETED',
+                    entity: model.properties.entity,
+                    entityId: model._id,
+                    pendingChanges: deepcopy(model._doc)
+                };
+                return auditEventService.saveAuditEvent(auditEvent)
+                    .then(function(auditEventId) {
+                        model.properties.auditEvents.push(auditEventId);
+                    });
+            };
         },
         onModelReady: function(Point) {
             var populateLastEvent = function(model, next) {

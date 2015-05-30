@@ -8,14 +8,12 @@
     {{'MEMBER_SPACE' | translate}}
   </h3>
   <md-tabs md-dynamic-height md-border-bottom>
-    <md-tab label="{{'MY_COURSES'}}">
-      <md-content class="md-padding">
-      </md-content>
-    </md-tab>
-    <md-tab label="{{'MY_FAVORITE_COURSES'}}">
-      <md-content class="md-padding">
-      </md-content>
-    </md-tab>
+    <!--
+    <md-tab label="{{'COURSES_I_RATED' | translate}}" ui-sref="map.memberSpace.ratedCourses"></md-tab>
+    <md-tab label="{{'MY_COURSES' | translate}}" ui-sref="map.memberSpace.courses"></md-tab>
+    <md-tab label="{{'MY_FAVORITE_COURSES' | translate}}"></md-tab>
+    -->
+    <md-tab label="{{tab.label | translate}}" md-on-select="go(tab)" ng-repeat="tab in tabs"></md-tab>
     <!--
     <md-tab label="two">
       <md-content class="md-padding">
@@ -23,4 +21,7 @@
     </md-tab>
     -->
   </md-tabs>
+  <md-content class="md-padding">
+    <div ui-view></div>
+  </md-content>
 </md-content>

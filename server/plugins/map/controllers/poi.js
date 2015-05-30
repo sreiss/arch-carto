@@ -25,12 +25,15 @@ module.exports = function (poiService) {
                     });
             }
         },
-        savePoi: function(req, res) {
+        savePoi: function(req, res, next) {
             poiService.save(req.body)
-                .then(function(poi) {
+                .then(function(savedPoi) {
+                    req.archIo.namespace.emit('new', {
+                        message: 'NEW_POI',
+                        value: savedPoi
+                    });
                     res.json({
-                        message: 'POI_SAVED',
-                        value: poi
+                        message: 'POI_SAVED'
                     });
                 })
                 .catch(function(err) {
@@ -44,7 +47,7 @@ module.exports = function (poiService) {
                 }, function(err) {
                     next(err);
                 });
-        },
+        }/*,
         io: {
             save: function(socket, namespace) {
                 return function(poi) {
@@ -66,6 +69,7 @@ module.exports = function (poiService) {
                 }
             }
         }
+        */
     };
 
 };

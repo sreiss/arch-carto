@@ -1,5 +1,7 @@
-module.exports = function(bugService) {
+module.exports = function(bugService, crudControllerFactory) {
 
+    return crudControllerFactory('BUG', bugService);
+    /*
     return {
         getBug: function(req, res, next) {
             bugService.get(req.params.id)
@@ -26,17 +28,32 @@ module.exports = function(bugService) {
                 });
         },
         saveBug: function(req, res, next) {
+            var isUpdate = !!req.body._id;
             bugService.save(req.body)
                 .then(function(savedBug) {
-                    res.json({
-                        message: 'BUG_REPORTED',
-                        value: savedBug
-                    });
+                    if (!isUpdate) {
+                        req.archIo.namespace.emit('new', {
+                            message: 'NEW_BUG',
+                            value: savedBug
+                        });
+                        res.json({
+                            message: 'BUG_REPORTED'
+                        });
+                    } else {
+                        req.archIo.namespace.emit('update', {
+                            message: 'BUG_UPDATE',
+                            value: savedBug
+                        });
+                        res.json({
+                            message: 'BUG_UPDATED'
+                        })
+                    }
                 })
                 .catch(function(err) {
                     next(err);
                 });
-        },
+        }
+        /*
         io: {
             save: function(socket, bugNamespace) {
                 return function(bug) {
@@ -59,6 +76,6 @@ module.exports = function(bugService) {
                 }
             }
         }
-    };
+    };*/
 
 };

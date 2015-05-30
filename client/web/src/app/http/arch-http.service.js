@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 angular.module('archCarto')
   .factory('archHttpService', function($http, $q) {
     return {

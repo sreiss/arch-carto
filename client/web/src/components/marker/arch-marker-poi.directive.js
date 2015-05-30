@@ -47,10 +47,10 @@ angular.module('archCarto')
                 for(var i = 0; i < scope.medias.length; i += 1) {
                   geoJson.properties.medias.push(scope.medias[i].data._id);
                 }
-                console.log('save clicked');
-                archMarkerPoiService.save(geoJson);
-                /*
+                archMarkerPoiService.save(geoJson)
                   .then(function (result) {
+                    debugger;
+                    /*
                     archMap.getPoisLayer()
                       .then(function(layer) {
                         return layer.addData(result.value);
@@ -67,8 +67,8 @@ angular.module('archCarto')
                             $mdToast.show($mdToast.simple().content(translation));
                           });
                       });
+                      */
                   });
-                  */
               };
 
               scope.$watch('poiForm.$valid', function(valid) {

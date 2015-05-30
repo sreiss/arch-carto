@@ -1,4 +1,4 @@
-module.exports = function(ratingController, ratingRouter, ratingSocket) {
+module.exports = function(ratingController, ratingRouter) {
 
     ratingRouter.route('/')
         .get(ratingController.getList)
@@ -7,8 +7,10 @@ module.exports = function(ratingController, ratingRouter, ratingSocket) {
     ratingRouter.route('/:id')
         .get(ratingController.get);
 
+    /*
     ratingSocket({
         save: ratingController.io.save
     });
+    */
 
 };

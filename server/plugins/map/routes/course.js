@@ -1,4 +1,4 @@
-module.exports = function(courseController, courseRouter, courseSocket) {
+module.exports = function(courseController, courseRouter) {
 
     courseRouter.route('/')
         .post(courseController.save)
@@ -7,9 +7,11 @@ module.exports = function(courseController, courseRouter, courseSocket) {
     courseRouter.route('/:id')
         .get(courseController.get);
 
+    /*
     courseSocket({
        save: courseController.io.save
     });
+    */
 
 };
 

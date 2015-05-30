@@ -11,6 +11,7 @@ exports.attach = function(opts) {
 
     var pluginsDir = app.arch.config.get('pluginsDir');
     var plugins = app.arch.plugins;
+    var crudControllerFactory = app.arch.factories.crudControllerFactory;
 
     for (var pluginName in plugins) {
         var plugin = plugins[pluginName];
@@ -31,7 +32,7 @@ exports.attach = function(opts) {
                 service = plugin.services[serviceName];
             }
 
-            controllers[controllerName] = require(controllerPath)(service);
+            controllers[controllerName] = require(controllerPath)(service, crudControllerFactory);
         }
     }
 

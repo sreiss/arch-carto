@@ -22,7 +22,7 @@ module.exports = function(Bug, bugStatusService, formatterService, auditEventSer
                 });
             return deferred.promise;
         },
-        getBugList: function(criteria) {
+        getList: function(criteria) {
             var deferred = Q.defer();
             criteria = criteria || {};
             Bug.find(criteria)
@@ -88,6 +88,25 @@ module.exports = function(Bug, bugStatusService, formatterService, auditEventSer
                         });
                     /*});*/
             }
+            return deferred.promise;
+        },
+        delete: function(id) {
+            var deferred = Q.defer();
+            Bug.findOne({_id: id}, function(err, bug) {
+                if (err) {
+                    deferred.reject(err);
+                } else if (bug !== null) {
+                    bug.delete()
+                        .then(function(deletedBug) {
+                            deferred.resolve(deletedBug);
+                        })
+                        .catch(function(err) {
+                            deferred.reject(err);
+                        })
+                } else {
+                    deferred.reject(new ArchError('THE_SPECIEFIED_BUG_DOES_NOT_EXISTS', 404));
+                }
+            });
             return deferred.promise;
         }
     };

@@ -1,5 +1,7 @@
-module.exports = function(courseService) {
+module.exports = function(courseService, crudControllerFactory) {
 
+    return crudControllerFactory('COURSE', courseService);
+    /*
     return {
         get: function(req, res, next) {
             courseService.get(req.params.id)
@@ -26,6 +28,7 @@ module.exports = function(courseService) {
                });
         },
         save: function(req, res, next) {
+            var isUpdate = !!req.body._id;
             courseService.save(req.body)
                 .then(function(savedCourse) {
                     var lastAuditEvent = savedCourse.properties.auditEvents[savedCourse.properties.auditEvents.length - 1];
@@ -33,11 +36,22 @@ module.exports = function(courseService) {
                         message: 'COURSE_' + lastAuditEvent.type,
                         value: savedCourse
                     });
+                    if (!isUpdate) {
+                        req.archIo.namespace.emit('save', {
+                            message: 'NEW_COURSE',
+                            value: savedCourse
+                        });
+                    } else {
+                        req.archIo.namespace.emit('update', {
+                            message: 'COURSE_UPDATE',
+                            value: savedCourse
+                        });
+                    }
                 })
                 .catch(function(err) {
                    next(err);
                 });
-        },
+        }/*,
         io: {
             save: function(socket, namespace) {
                 return function(course) {
@@ -82,6 +96,6 @@ module.exports = function(courseService) {
                 }
             }
         }
-    };
+    };*/
 
 };

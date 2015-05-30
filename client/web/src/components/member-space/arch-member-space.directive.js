@@ -6,11 +6,15 @@ angular.module('archCarto')
       require: '^archMap',
       templateUrl: 'components/member-space/arch-member-space.html',
       link: function(scope, element, attributes, archMap) {
-        archMap.setDisplayOptions({
-          mapRight: {
-            width: 'extra'
-          }
-        });
+        scope.tabs = [
+          {label: 'COURSES_I_RATED', state: 'map.memberSpace.ratedCourses'},
+          {label: 'MY_COURSES', state: 'map.memberSpace.courses'},
+          {label: 'MY_FAVORITE_COURSES', state: 'map.memberSpace.favoriteCourses'}
+        ];
+
+        scope.go = function(tab) {
+          $state.go(tab.state);
+        };
 
         $mdSidenav('right').open();
 

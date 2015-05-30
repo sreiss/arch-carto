@@ -113,9 +113,17 @@ angular.module('archCarto', [
           }
         }
       })
-      .state('map.memberSpace.home', {
-        url: '',
-        template: '<arch-member-space-home></arch-member-space-home>'
+      .state('map.memberSpace.ratedCourses', {
+        url: '/rated-courses',
+        template: '<arch-member-space-rated-courses></arch-member-space-rated-courses>'
+      })
+      .state('map.memberSpace.courses', {
+        url: '/courses',
+        template: '<arch-member-space-courses></arch-member-space-courses>'
+      })
+      .state('map.memberSpace.favoriteCourses', {
+        url: '/favorite-courses',
+        template: '<arch-member-space-favorite-courses></arch-member-space-favorite-courses>'
       })
       /*
       .state('map.center', {

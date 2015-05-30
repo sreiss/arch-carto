@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 angular.module('archCarto')
   .constant('i18nfrFRConstant', {
     CUSTOMER_NAME: "ArchCarto",
@@ -120,5 +120,9 @@ angular.module('archCarto')
     NO: "Non",
     AUTHOR: "Auteur",
     RATING: "Note",
-    AVERAGE_RATING: "Note moyenne"
+    AVERAGE_RATING: "Note moyenne",
+    MEMBER_SPACE: "Espace membre",
+    COURSES_I_RATED: "Itinéraires que j'ai noté",
+    MY_COURSES: "Mes itinéraires",
+    MY_FAVORITE_COURSES: "Mes itinéraires favoris"
   });

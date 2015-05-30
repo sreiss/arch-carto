@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 angular.module('archCarto')
   .factory('archMarkerBugService', function(archSocketService, httpConstant, archHttpService, $q) {
     archSocketService.openSocket('bug', '/map/bug');
@@ -16,10 +16,9 @@ angular.module('archCarto')
           }
         }
       },
-      /* http */
-      //save: function(bug) {
-      //  return archHttpService.post(_bugUrl, bug);
-      //},
+      save: function(bug) {
+        return archHttpService.post(_bugUrl, bug);
+      },
       getList: function() {
         return archHttpService.get(_bugUrl);
       },

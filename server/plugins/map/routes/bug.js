@@ -1,13 +1,16 @@
-module.exports = function(bugController, bugRouter, bugValidatorMiddleware, validationGateMiddleware, bugSocket) {
+module.exports = function(bugController, bugRouter, bugValidatorMiddleware, validationGateMiddleware) {
 
     bugRouter.route('/')
-        .get(bugController.getBugList)
-        .post(bugValidatorMiddleware.validateSaveBug, validationGateMiddleware, bugController.saveBug);
+        .get(bugController.getList)
+        .post(bugValidatorMiddleware.validateSaveBug, validationGateMiddleware, bugController.save);
 
     bugRouter.route('/:id')
-        .get(bugValidatorMiddleware.validateGetBug, validationGateMiddleware, bugController.getBug);
+        .delete(bugController.delete)
+        .get(bugValidatorMiddleware.validateGetBug, validationGateMiddleware, bugController.get);
 
+    /*
     bugSocket({
         save: bugController.io.save
     });
+    */
 };

@@ -47,11 +47,11 @@ exports.attach = function(opts) {
                             if (otherPlugin.services[dependencyName]) {
                                 args.push(otherPlugin.services[dependencyName]);
                             } else {
-                                throw new Error(dependencyName + ' not found in ' + pluginName + ' plugin for service ' + serviceName);
+                                throw new Error(dependencyName + ' not found in ' + pluginName + ' plugin for service ' + dependencyName);
                             }
                         });
                     } else {
-                        throw new Error(dependencyName + ' not found in ' + pluginName + ' plugin for service ' + serviceName);
+                        throw new Error(dependencyName + ' not found in ' + pluginName + ' plugin for service ' + dependencyName);
                     }
                 }
             });

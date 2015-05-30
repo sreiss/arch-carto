@@ -35,6 +35,7 @@ exports.init = function(done) {
             try {
                 var controller = controllers[routeName];
                 var router = routes[routeName] = express.Router();
+
                 var args = [controller, router];
 
                 var routeRequire = require(routePath);
@@ -46,11 +47,32 @@ exports.init = function(done) {
 
                 var fullRoute = '/' + utils.slugify(pluginName) + '/' + utils.slugify(routeName);
 
+                (function(router, ioServer) {
+                    var _socketNamespace = ioServer
+                        .of(fullRoute);
+
+                    var archIo = {};
+
+                    var socketNamespace = _socketNamespace
+                        .on('connection', function (socket) {
+                            // Adding websocket support
+                            archIo.socket = socket;
+                            archIo.namespace = socketNamespace;
+                        });
+
+                    router.use(function (req, res, next) {
+                        req.archIo = archIo;
+                        return next();
+                    });
+                })(router, ioServer);
+
                 for (var i = 2; i < dependencyNames.length; i++) {
                     var dependencyName = dependencyNames[i].trim();
                     if (dependencyName != '') {
+                        /*
                         if (dependencyName == routeName + 'Socket') {
-                            args.push(function(handlers) {
+                            return function() {};
+                            /*args.push(function(handlers) {
                                 var _socketNamespace = ioServer
                                     .of(fullRoute);
 
@@ -60,8 +82,9 @@ exports.init = function(done) {
                                             socket.on(handler, handlers[handler](socket, socketNamespace));
                                         }
                                     });
-                            });
-                        } else if (plugin.middlewares[dependencyName]) {
+                            })
+                            }*/
+                        if (plugin.middlewares[dependencyName]) {
                             args.push(plugin.middlewares[dependencyName]);
                         } else if (pluginDependencies.length > 0) {
                             pluginDependencies.forEach(function (otherPluginName) {
