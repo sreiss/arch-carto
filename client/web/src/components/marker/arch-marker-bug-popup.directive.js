@@ -12,6 +12,10 @@ angular.module('archCarto')
             });
         };
         refreshBug();
+
+        scope.delete = function(bug) {
+          archBugService.delete(bug);
+        };
       }
     }
   });

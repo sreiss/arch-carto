@@ -22,6 +22,57 @@ module.exports = function(Types, auditEventService) {
                 return next();
             });
 
+            schema.pre('save', function(next) {
+                var model = this;
+                var entityName = model.properties.entity;
+                if (model.isNew) {
+                    auditEventService.awaitingAddition(entityName, model, false)
+                        .then(function(auditEventId) {
+                            model.properties.auditEvents.unshift(auditEventId);
+                            next();
+                        })
+                        .catch(function(err) {
+                            next(err);
+                        });
+                } else {
+                    auditEventService.awaitingUpdate(entityName, model, false)
+                        .then(function(auditEventId) {
+                            model.properties.auditEvents.unshift(auditEventId);
+                            next();
+                        })
+                        .catch(function(err) {
+                            next(err);
+                        });
+                }
+            });
+
+            schema.methods.delete = function() {
+                var model = this;
+                var entityName = model.properties.entity;
+                return auditEventService.awaitingDeletion(entityName, model, false);
+            };
+
+            /*
+            schema.post('save', function(model, next) {
+                if (model === null) {
+                    next(new Error('CANNOT_ATTACH_AUDIT_EVENT_TO_EMPTY_MODEL'));
+                } else {
+                    var entityName = model.properties.entity;
+                    auditEventService.awaitingAddition(entityName, model, false);
+                }
+            });
+
+            schema.post('findOneAndUpdate', function(model, next) {
+                if (model === null) {
+                    next(new Error('CANNOT_ATTACH_AUDIT_EVENT_TO_EMPTY_MODEL'));
+                } else {
+                    var entityName = model.properties.entity;
+                    auditEventService.awaitingUpdate(entityName, model, false);
+                }
+            });
+            */
+
+            /*
             var addAuditEvent = function(eventType, model, next) {
                 var auditEvent = {
                     type: eventType,
@@ -60,6 +111,7 @@ module.exports = function(Types, auditEventService) {
                         model.properties.auditEvents.push(auditEventId);
                     });
             };
+            */
         },
         onModelReady: function(Point) {
             var populateLastEvent = function(model, next) {

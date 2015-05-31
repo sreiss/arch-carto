@@ -1,4 +1,5 @@
 var mongoose = require('mongoose'),
+    deepcopy = require('deepcopy'),
     Q = require('q'),
     moment = require('moment'),
     ArchError = GLOBAL.ArchError;
@@ -106,14 +107,28 @@ exports.attach = function(opts) {
 
     // adding a shorcut handler for each audit event.
     for (var eventName in _events) {
-        auditEventService[eventName] = function(entity, model) {
+        auditEventService[eventName] = function(entityName, model, userId) {
+            userId = userId || '55140dd309800aa60b882a59';
+
+            var deferred = Q.defer();
+
             var displayName = _events[eventName];
             var auditEvent = new AuditEvent({
                 type: displayName,
-                entityId: model._id,
-
-
+                entity: model._id,
+                entityName: entityName,
+                userId: userId,
+                pendingChanges: deepcopy(model._doc) || {},
+                date: moment().toDate()
             });
+            auditEvent.save(function(err, savedAuditEvent) {
+                if (err) {
+                    deferred.reject(err);
+                } else {
+                    deferred.resolve(savedAuditEvent._id);
+                }
+            });
+            return deferred.promise;
         };
     }
 };

@@ -128,7 +128,9 @@ exports.init = function(done) {
     if (expressApp.get('env') === 'development') {
         expressApp.use(function (err, req, res, next) {
             res.status(err.status || 500)
-                .send(err);
+                .json({
+                    message: err.message
+                });
         });
     }
 
@@ -136,7 +138,7 @@ exports.init = function(done) {
     // no stacktraces leaked to user
     expressApp.use(function (err, req, res, next) {
         res.status(err.status || 500)
-            .send(err);
+            .end();
     });
 
     return done();

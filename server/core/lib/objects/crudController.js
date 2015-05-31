@@ -1,3 +1,5 @@
+var camelCase = require('camel-case');
+
 module.exports = (function(entityName, service) {
     var _entityName = entityName;
     var _service = service;
@@ -16,7 +18,13 @@ module.exports = (function(entityName, service) {
                 });
         },
         getList: function (req, res, next) {
-            _service.getList(req.query)
+            var criterias = {};
+            for (var paramName in req.query) {
+                var normilizedName = camelCase(paramName);
+                var value = req.query[paramName];
+                criterias[normilizedName] = value;
+            };
+            _service.getList(criterias)
                 .then(function (list) {
                     res.json({
                         message: _entityName + '_LIST',

@@ -1,8 +1,10 @@
-module.exports = function(archRatingService) {
+module.exports = function(ratingService, crudControllerFactory) {
 
+    return crudControllerFactory('RATING', ratingService);
+    /*
     return {
         get: function(req, res, next) {
-            archRatingService.get(req.params.id)
+            ratingService.get(req.params.id)
                 .then(function(rating) {
                     res.json({
                         message: 'RATING_RETRIEVED',
@@ -14,7 +16,7 @@ module.exports = function(archRatingService) {
                 });
         },
         getList: function(req, res, next) {
-            archRatingService.getList({
+            ratingService.getList({
                     courseId: req.query['course-id'] || null,
                     userId: req.query['user-id'] || null
                 })
@@ -30,7 +32,7 @@ module.exports = function(archRatingService) {
         },
         save: function(req, res, next) {
             var isUpdate = !!req.body._id;
-            archRatingService.save(req.body)
+            ratingService.save(req.body)
                 .then(function(savedRating) {
                     if (isUpdate) {
                         res.json({
@@ -81,5 +83,6 @@ module.exports = function(archRatingService) {
             }
         }
     };
+    */
 
 };

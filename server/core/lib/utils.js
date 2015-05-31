@@ -37,6 +37,13 @@ exports.attach = function(opts) {
             return '-' + s.toLowerCase();
         });
     };
+
+    utils.camelify = function(str) {
+        return str.replace(/[\-][a-z1-2]/g, function(s) {
+            return s[s.lastIndex].toUpperCase();
+        });
+    };
+
 };
 
 exports.init = function(done) {

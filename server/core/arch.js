@@ -5,6 +5,7 @@ var path = require('path'),
     expressApp = require(path.join(__dirname, 'lib', 'expressApp')),
     server = require(path.join(__dirname, 'lib', 'server')),
     crudControllerFactory = require(path.join(__dirname, 'lib', 'factories', 'crudControllerFactory')),
+    crudServiceFactory = require(path.join(__dirname, 'lib', 'factories', 'crudServiceFactory')),
     controllersLoader = require(path.join(__dirname, 'lib', 'loaders', 'controllersLoader')),
     routesLoader = require(path.join(__dirname, 'lib', 'loaders', 'routesLoader')),
     modelsLoader = require(path.join(__dirname, 'lib', 'loaders', 'modelsLoader')),
@@ -45,6 +46,7 @@ exports.attach = function(opts) {
     app.use(ioServer);
     app.use(formatters);
     app.use(modelsLoader);
+    app.use(crudServiceFactory);
     app.use(servicesLoader);
     app.use(middlewaresLoader);
     app.use(crudControllerFactory);

@@ -1,8 +1,22 @@
-var Q = require('q');
-var ArchError = GLOBAL.ArchError;
+var Q = require('q'),
+    extend = require('extend'),
+    ArchError = GLOBAL.ArchError;
 
-module.exports = function(Bug, bugStatusService, formatterService, auditEventService) {
+module.exports = function(Bug, bugStatusService, formatterService, auditEventService, crudServiceFactory) {
 
+    return crudServiceFactory.init('BUG', Bug, {
+        get: {
+            path: 'properties.auditEvents',
+            limit: 1
+        },
+        getList: [
+            {
+                path: 'properties.auditEvents',
+                limit: 1
+            }
+        ]
+    });
+    /*
     return {
         get: function(id) {
             var deferred = Q.defer();
@@ -42,21 +56,43 @@ module.exports = function(Bug, bugStatusService, formatterService, auditEventSer
         save: function(rawBug) {
             var deferred = Q.defer();
             if (rawBug._id) {
-                auditEventService.canUpdate(rawBug)
-                    .then(function() {
-                        var id = rawBug._id;
-                        delete rawBug._id;
-                        Bug.findOneAndUpdate({_id: id}, {$set: rawBug}, function (err, bug) {
+                var id = rawBug._id;
+                delete rawBug._id;
+                //auditEventService.canUpdate(rawBug)
+                //    .then(function() {
+                Bug.findOne({_id: id}, function(err, bug) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else if (!bug) {
+                        deferred.reject(new ArchError('BUG_NOT_FOUND', 404));
+                    } else {
+                        extend(true, bug, rawBug);
+                        bug.save(function (err, savedBug) {
                             if (err) {
                                 deferred.reject(err);
+                            } else {
+                                deferred.resolve(savedBug);
+                            }
+                        });
+                    }
+                });
+
+                /*
+                auditEventService.awaitingUpdate()
+                        var id = rawBug._id;
+                        delete rawBug._id;
+                        Bug.findOneAndUpdate({_id: id}, {$set: rawBug}, function (updatedBug) {
+                            if (!updatedBug) {
+                                deferred.reject(new ArchError('BUG_NOT_FOUND'), 404);
                             } else {
                                 deferred.resolve(bug);
                             }
                         });
-                    })
-                    .catch(function(err) {
-                       deferred.reject(err);
-                    });
+                //    })
+                //    .catch(function(err) {
+                //       deferred.reject(err);
+                //    });
+
             } else {
                 /*bugStatusService.findOneBugStatus({name: 'REPORTED'})
                     .catch(function(err) {
@@ -65,7 +101,7 @@ module.exports = function(Bug, bugStatusService, formatterService, auditEventSer
                             description: 'A_NEWLY_REPORTED_BUG'
                         });
                     })
-                    .then(function(bugStatus) {*/
+                    .then(function(bugStatus) {
                         var bug = new Bug({
                             properties: {
                                 // TODO: Get the user ID
@@ -86,7 +122,7 @@ module.exports = function(Bug, bugStatusService, formatterService, auditEventSer
                                 deferred.resolve(bug);
                             }
                         });
-                    /*});*/
+                    /*});
             }
             return deferred.promise;
         },
@@ -109,6 +145,6 @@ module.exports = function(Bug, bugStatusService, formatterService, auditEventSer
             });
             return deferred.promise;
         }
-    };
+    };*/
 
 };

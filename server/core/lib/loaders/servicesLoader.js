@@ -11,6 +11,7 @@ exports.attach = function(opts) {
     var utils = app.arch.utils;
     var formatters = app.arch.formatters;
     var auditEventService = app.arch.audit.auditEventService;
+    var crudServiceFactory = app.arch.factories.crudServiceFactory;
 
     for (var pluginName in plugins) {
         var plugin = plugins[pluginName];
@@ -47,6 +48,8 @@ exports.attach = function(opts) {
                 if (dependencyName != '') {
                     if(dependencyName == 'config') {
                         serviceArgs.push(config);
+                    } else if (dependencyName == 'crudServiceFactory') {
+                        serviceArgs.push(crudServiceFactory);
                     } else if (dependencyName == 'auditEventService') {
                         serviceArgs.push(auditEventService);
                     } else if (dependencyName == 'formatterService') {
