@@ -26,14 +26,14 @@
         <div flex="10" layout layout-align="center center">
           <span class="md-body-1">Min</span>
         </div>
-        <md-slider md-discrete flex class="md-primary" ng-model="minLength" step="1" min="0" max="200">
+        <md-slider aria-label="minSlider" md-discrete flex class="md-primary" ng-model="minLength" step="1" min="0" max="200">
         </md-slider>
         </div>
         <div layout>
           <div flex="10" layout layout-align="center center">
             <span class="md-body-1">Max</span>
           </div>
-        <md-slider md-discrete flex class="md-primary" ng-model="maxLength" step="1" min={{minMax}} max="200">
+        <md-slider aria-label="maxSlider" md-discrete flex class="md-primary" ng-model="maxLength" step="1" min={{minMax}} max="200">
         </md-slider>
         </div>
         <md-button class="md-primary" ng-click="search()">Recherche</md-button>

@@ -6,7 +6,7 @@ module.exports = function (Course) {
             var deferred = Q.defer();
             var key, count = 0;
             var i = 1;
-            //console.log(filter);
+            console.log(filter);
 
             // know how many properties are here
             for(key in filter.properties) {
@@ -14,8 +14,28 @@ module.exports = function (Course) {
                     count++;
                 }
             }
-            //console.log(count);
             var referred = "{";
+
+            var latNW = filter.properties.NW.lat;
+            var longNW = filter.properties.NW.lng;
+            var latNE = filter.properties.NE.lat;
+            var longNE = filter.properties.NE.lng;
+            var latSW = filter.properties.SW.lat;
+            var longSW = filter.properties.SW.lng;
+            var latSE = filter.properties.SE.lat;
+            var longSE = filter.properties.SE.lng;
+
+            var mapBounds =  " 'geometry' : { $geoWithin : { $geometry: { type: 'Polygon', coordinates: [[ ["+longNW+","+latNW+"], ["+longNE+","+latNE+"], ["+longSE+","+latSE+"], ["+longSW+","+latSW+"],["+longNW+","+latNW+"] ]] }}}";
+            referred = referred.concat(mapBounds);
+
+            // minus 4 for the map bound because they will always be there
+
+            count -= 4;
+            if(count != 0)
+            {
+                referred = referred.concat(',');
+            }
+
             if(filter.properties.commentary)
             {
                 var name = "'properties.commentary': '"+filter.properties.commentary+"'";
@@ -56,22 +76,44 @@ module.exports = function (Course) {
                 }
             }
             referred = referred.concat('}');
-            //console.log(referred);
+            console.log(referred);
             //var requete = referred.replace(/["]+/g, '');
+            //fonction qui a tendance a coincer
             var txt = eval ("(" + referred + ")");
-            //console.log('test');
+            //
+            console.log(txt);
 
-            //console.log(txt);
-            Course.find(txt, function(err, trace){
+
+            //Course.schema.index({ 'geometry': '2dsphere' });
+            console.log('test');
+           Course.find(txt,function(err, traces) {
                 if (err) {
-                    console.log('error');
                     deferred.reject(err);
                 } else {
-                    //console.log('success'+trace);
-                    deferred.resolve(trace);
-                }
+                    //console.log(traces[0].geometry.coordinates[0]);
+                    //var test = traces[0].geometry.coordinates[0];
+                    deferred.resolve(traces);
 
-            });
+                }});
+
+
+
+            //only geo
+            //Course.find( { 'geometry' :
+            //{ $geoWithin
+            //    : { $geometry:
+            //{ type: 'Polygon', coordinates: [[ [longNW,latNW], [longNE,latNE], [longSE,latSE], [longSW,latSW],[longNW,latNW] ]] } } }}, function(err, trace){
+            //    if (err) {
+            //        console.log('error: '+err);
+            //        deferred.reject(err);
+            //    } else {
+            //        console.log('success');
+            //        console.log(trace);
+            //
+            //        deferred.resolve(trace);
+            //    }
+            //
+            //});
 
             return deferred.promise;
         }

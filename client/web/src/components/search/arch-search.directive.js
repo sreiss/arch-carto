@@ -1,21 +1,25 @@
 'use strict'
 
 angular.module('archCarto')
-  .directive('archSearchForm', function($mdToast, $translate, $mdSidenav) {
+  .directive('archSearchForm', function($mdToast, $translate, $mdSidenav,leafletData) {
     return {
       restrict: 'E',
+      require: '^archMap',
       scope: {
         poi: '=?',
         formValid: '='
       },
       templateUrl: 'components/search/arch-search-form.html',
-      controller: function ($scope, httpConstant, archGpxService, archHttpService, $mdSidenav,archSearchService) {
+      controller: function ($scope, httpConstant, archGpxService, archHttpService, $mdSidenav,archSearchService, leafletData) {
         $mdSidenav('right').toggle();
         $mdSidenav('right').open();
         //$scope.myValue = false;
         $scope.hide = function() {
           $scope.myValue = !$scope.myValue;
         };
+
+        var filter = { 'properties': {}};
+
 
         // doit etre initialise
         $scope.maxLength = 0;
@@ -46,13 +50,21 @@ angular.module('archCarto')
 
           });
         $scope.search = function() {
+          leafletData.getMap().then(function (map) {
+            var bounds = map.getBounds();
+            console.log(bounds.toBBoxString());
+            filter.properties.NE = bounds.getNorthEast();
+            filter.properties.NW = bounds.getNorthWest();
+            filter.properties.SE = bounds.getSouthEast();
+            filter.properties.SW = bounds.getSouthWest();
+            console.log(filter);
+          });
           var commentary = $scope.commentary;
           var difficulty = $scope.difficulty;
           var minLength = $scope.minLength;
           var maxLength = $scope.maxLength;
 
 
-          var filter = { 'properties': {}};
           if(commentary)
           {
             filter.properties.commentary = commentary;
@@ -78,7 +90,6 @@ angular.module('archCarto')
         }
       },
       link: function(scope, element, attrs) {
-
 
 
 
