@@ -1,6 +1,6 @@
 module.exports = function(bugService, crudControllerFactory) {
 
-    return crudControllerFactory('BUG', bugService);
+    return crudControllerFactory.init('BUG', bugService);
     /*
     return {
         getBug: function(req, res, next) {

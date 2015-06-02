@@ -6,6 +6,5 @@
  */
 
 module.exports = {
-    dependencies: ['map'],
     priority: 2
 };

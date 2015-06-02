@@ -1,6 +1,6 @@
 module.exports = function(ratingService, crudControllerFactory) {
 
-    return crudControllerFactory('RATING', ratingService);
+    return crudControllerFactory.init('RATING', ratingService);
     /*
     return {
         get: function(req, res, next) {
