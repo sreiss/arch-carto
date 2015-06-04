@@ -37,10 +37,10 @@ angular.module('archCarto')
         scope.displayTrace = function(geoJson){
           //debugger;
 
-          archInfoService.getD(geoJson).then(function(distance){
+          archInfoService.getDGeoJ(geoJson).then(function(distance){
             console.log(distance);
           });
-          archInfoService.getDistance(geoJson).then(function(distance){
+          archInfoService.getDistanceGeoJ(geoJson).then(function(distance){
             console.log(distance);
           });
           //archInfoService.getD
