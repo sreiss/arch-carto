@@ -27,6 +27,8 @@ angular.module('archCarto')
         if (optionsOverrides) {
           var options = angular.extend(options, optionsOverrides);
         }
+        optionsOverrides = optionsOverrides || {};
+        
         L.geoJson(layers, {
           onEachFeature: function(feature, layer) {
             var type;
