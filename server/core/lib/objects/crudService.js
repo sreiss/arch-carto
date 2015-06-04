@@ -1,5 +1,5 @@
 var extend = require('extend'),
-    Q = require('Q'),
+    Q = require('q'),
     ArchError = GLOBAL.ArchError;
 
 module.exports = (function(entityName, Model, auditEventService, populates) {

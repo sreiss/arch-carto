@@ -62,6 +62,7 @@ angular.module('archCarto')
         var denivele;
         var dPlus = 0;
         var dMinus = 0;
+        debugger;
         for (var i = 0; i+1 < course.geometry.coordinates.length; i++) {
           oldValue = course.geometry.coordinates[i][2];
           newValue = course.geometry.coordinates[i+1][2];
