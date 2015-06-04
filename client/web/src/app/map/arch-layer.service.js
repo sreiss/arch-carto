@@ -71,6 +71,10 @@ angular.module('archCarto')
             } else {
               _layerItems[layerName][optionsName][feature._id] = _layers[layerName].notEditable.addLayer(layer);
             }
+
+            if (optionsOverrides.onEachFeature) {
+              optionsOverrides.onEachFeature(feature, layer);
+            }
           }
         });
       }
