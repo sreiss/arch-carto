@@ -16,9 +16,13 @@ module.exports = function(Types, auditEventService) {
             }
         },
         onSchemaReady: function(schema) {
+            schema.pre('validate', function(next) {
+                this.type = "Feature";
+                this.geometry.type = "LineString";
+                return next();
+            });
+            /*
             var addAuditEvent = function(eventType, model, next) {
-                model.type = "Feature";
-                model.geometry.type = "LineString";
                 model.validate(function(err) {
                     if (err) {
                         return next(err);
@@ -48,6 +52,7 @@ module.exports = function(Types, auditEventService) {
             schema.pre('update', function(next) {
                 addAuditEvent('AWAITING_UPDATE', this, next);
             });
+            */
         },
         priority: 1
     };

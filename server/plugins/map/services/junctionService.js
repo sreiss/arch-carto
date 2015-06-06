@@ -34,7 +34,7 @@ module.exports = function(Junction, pathService) {
             } else {
                 var junction = new Junction({
                     properties: {
-                        paths: []
+                        paths: rawJunction.properties.paths || []
                     },
                     geometry: {
                         coordinates: rawJunction.geometry.coordinates

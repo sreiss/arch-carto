@@ -27,6 +27,7 @@ module.exports = function(Types, auditEventService) {
                 this.geometry.type = 'LineString';
                 return next();
             });
+            /*
 
             var addAuditEvent = function(eventType, model, next) {
                 //model.type = "FeatureCollection";
@@ -60,6 +61,7 @@ module.exports = function(Types, auditEventService) {
             schema.post('update', function(model, next) {
                 addAuditEvent('AWAITING_UPDATE', model, next);
             });
+            */
         },
         onModelReady: function(Course) {
             var populateLastEvent = function(model, next) {

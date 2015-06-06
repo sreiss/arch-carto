@@ -63,8 +63,8 @@ module.exports = function(Path) {
                 try {
                     var path = new Path({
                         properties: {
-                            coating: rawPath.properties.coating || '',
-                            medias: rawPath.properties.medias
+                            coating: rawPath.properties.coating || null,
+                            medias: rawPath.properties.medias || []
                         },
                         geometry: {
                             coordinates: rawPath.geometry.coordinates

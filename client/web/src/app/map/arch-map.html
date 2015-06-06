@@ -4,7 +4,12 @@
       <!--<md-toolbar class="background-transition" md-theme="{{currentTheme}}" md-theme-watch>-->
       <span layout="row" layout-align="begin center" flex>
         <div flex>
-
+          <span ng-if="!map.isInit">
+            <md-progress-circular md-mode="indeterminate"
+                                  layout="row"
+                                  layout-align="center center"
+                                  md-diameter="30"></md-progress-circular>
+          </span>
         </div>
         <div flex="80">
           <arch-map-center-search></arch-map-center-search>
@@ -23,9 +28,6 @@
   </navbar>
 
   <section flex layout="row">
-    <span ng-if="!map.isInit">
-      <md-progress-circular md-mode="indeterminate" layout="row" layout-align="center center"></md-progress-circular>
-    </span>
     <span ng-if="map.isInit" flex>
       <leaflet defaults="map.defaults"
                center="map.center"

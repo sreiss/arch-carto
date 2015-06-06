@@ -1,9 +1,10 @@
 'use strict';
 angular.module('archCarto')
-  .factory('archPathJunctionService', function(archHttpService, httpConstant) {
+  .factory('archPathJunctionService', function(archHttpService, httpConstant, archSocketService) {
+    archSocketService.openSocket('junction', '/map/junction');
     var _junctionUrl = httpConstant.cartoServerUrl + '/map/junction';
 
-    return {
+    return archSocketService.initService('junction', {
       toGeoJson: function(junction) {
         return {
           properties: {
@@ -20,5 +21,5 @@ angular.module('archCarto')
       getList: function() {
         return archHttpService.get(_junctionUrl);
       }
-    }
+    });
   });

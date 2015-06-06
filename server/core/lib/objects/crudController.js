@@ -45,7 +45,7 @@ module.exports = (function(entityName, service) {
                             value: savedEntity
                         });
                         res.json({
-                            message: _entityName + 'REPORTED'
+                            message: _entityName + '_ADDED'
                         });
                     } else {
                         req.archIo.namespace.emit('update', {

@@ -23,12 +23,12 @@ angular.module('archCarto')
         return _layers[name];
       },
       addLayers: function(layerName, optionsName, layers, optionsOverrides) {
-        var options = _options[optionsName];
+        var options = angular.copy(_options[optionsName]);
         if (optionsOverrides) {
           var options = angular.extend(options, optionsOverrides);
         }
         optionsOverrides = optionsOverrides || {};
-        
+
         L.geoJson(layers, {
           onEachFeature: function(feature, layer) {
             var type;
@@ -48,8 +48,12 @@ angular.module('archCarto')
                 icon: options.icon
               };
 
-              iconOptions.markerColor = options.markerColors[feature.properties.auditEvents[0].type]
-                || archAuditService.getColor(type);
+              var lastAuditEvent = null;
+              if (feature.properties && feature.properties.auditEvents && feature.properties.auditEvents.length > 0) {
+                lastAuditEvent = feature.properties.auditEvents[0];
+                iconOptions.markerColor = options.markerColors[lastAuditEvent.type];
+              }
+              iconOptions.markerColor = iconOptions.markerColor || archAuditService.getColor(type);
 
               layer.options.icon = L.AwesomeMarkers.icon(iconOptions);
             }
@@ -68,14 +72,16 @@ angular.module('archCarto')
             }
 
             _layerItems[layerName][optionsName] = _layerItems[layerName][optionsName] || {};
-            if (archAuditService.isEditable(type)) {
-              _layerItems[layerName][optionsName][feature._id] = _layers[layerName].editable.addLayer(layer);
-            } else {
-              _layerItems[layerName][optionsName][feature._id] = _layers[layerName].notEditable.addLayer(layer);
+            if (!_layerItems[layerName][optionsName][feature._id]) {
+              if (archAuditService.isEditable(type)) {
+                _layerItems[layerName][optionsName][feature._id] = _layers[layerName].editable.addLayer(layer);
+              } else {
+                _layerItems[layerName][optionsName][feature._id] = _layers[layerName].notEditable.addLayer(layer);
+              }
             }
 
             if (optionsOverrides.onEachFeature) {
-              optionsOverrides.onEachFeature(feature, layer);
+              optionsOverrides.onEachFeature(feature, layer, _layers[layerName]);
             }
           }
         });

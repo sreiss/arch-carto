@@ -35,11 +35,39 @@ angular.module('archCarto')
                 $mdSidenav('right').open();
 
                 scope.path = {
-                  coordinates: pathCoordinates,
                   properties: {}
                 };
 
                 scope.save = function(path) {
+                  var pathGeoJson = currentLayer.toGeoJSON();
+                  var junctionFeatureCollection = currentJunctionsLayer.toGeoJSON();
+                  var junctionGeoJsons = junctionFeatureCollection.features;
+
+                  pathGeoJson.properties = path.properties;
+
+                  archPathService.save(pathGeoJson)
+                    .then(function(result) {
+                      var junctionsFn = [];
+                      for (var i = 0; i < junctionGeoJsons.length; i += 1) {
+                        junctionGeoJsons[i].properties.paths = junctionGeoJsons[i].properties.paths || [];
+                        junctionGeoJsons[i].properties.paths.push(result.value._id);
+                        junctionsFn.push(function() {
+                          return archPathJunctionService.save(junctionGeoJsons[i]);
+                        }());
+                      }
+                      return $q.all(junctionsFn);
+                    })
+                    .then(function(result) {
+
+                    });
+
+
+                  /*
+                  archPathService.save(path)
+                    .then(function(result) {
+
+                    });
+                    */
                   /*
                   var junctionLayers = currentJunctionsLayer.getLayers();
                   junctionLayers.forEach(function(layer) {

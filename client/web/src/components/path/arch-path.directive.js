@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 angular.module('archCarto')
   .directive('archPath', function(leafletData, $log, $mdSidenav, $q, archPathService, archPathJunctionService, $compile, $state, archElevationService) {
     return {
@@ -64,7 +64,22 @@ angular.module('archCarto')
                     $state.go('map.path.draw');
                   });
               };
+
             });
+
+            /*
+             var junctionClickedHandler = null;
+             map.on('draw:drawstart', function(e) {
+                 junctionClickedHandler = $scope.$on('arch:junctionclicked', function(e, feature, layer) {
+                     debugger;
+                 });
+             });
+
+             map.on('draw:drawstop', function(e) {
+               junctionClickedHandler();
+               junctionClickedHandler = null;
+             });
+             */
 
                 /*
                 nearestHook = function(e) {
@@ -136,8 +151,9 @@ angular.module('archCarto')
 
         archMap.getLayer('path')
           .then(function(layer) {
+            scope.layer = layer;
 
-            archMap.addControl('draw', L.Control.Draw, {
+            return archMap.addControl('draw', L.Control.Draw, {
               draw: {
                 polygon: false,
                 marker: false,
@@ -145,9 +161,26 @@ angular.module('archCarto')
                 circle: false
               },
               edit: {
-                featureGroup: layer.editable
+                featureGroup: scope.layer.editable
               }
             });
+          })
+          .then(function(control) {
+            return $q.all([
+              leafletData.getMap(),
+              archMap.getLayer('path')
+            ]);
+          })
+          .then(function(results) {
+            var map = results[0];
+            var layer = results[1];
+
+            /*
+            map.drawControl.setDrawingOptions({
+              polyline: { guideLayers: layer },
+              polygon: { guideLayers: layer, snapDistance: 5 }
+            });
+            */
           })
           .catch(function(err) {
             $log.error(err);

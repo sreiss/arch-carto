@@ -1,5 +1,36 @@
-module.exports = function(pathService) {
+module.exports = function(pathService, crudControllerFactory) {
 
+    return crudControllerFactory.extend('PATH', pathService, {
+        save: function (req, res, next) {
+            var isUpdate = !!req.body._id;
+            pathService.save(req.body)
+                .then(function (savedEntity) {
+                    if (!isUpdate) {
+                        req.archIo.namespace.emit('new', {
+                            message: 'NEW_PATH',
+                            value: savedEntity
+                        });
+                        res.json({
+                            message: 'PATH_ADDED',
+                            value: savedEntity
+                        });
+                    } else {
+                        req.archIo.namespace.emit('update', {
+                            message: 'PATH_UPDATE',
+                            value: savedEntity
+                        });
+                        res.json({
+                            message: 'PATH_UPDATED',
+                            value: savedEntity
+                        })
+                    }
+                })
+                .catch(function (err) {
+                    next(err);
+                });
+        }
+    });
+    /*
     return {
         getList: function(req, res, next) {
             pathService.getList()
@@ -38,5 +69,6 @@ module.exports = function(pathService) {
                 });
         }
     }
+    */
 
 };

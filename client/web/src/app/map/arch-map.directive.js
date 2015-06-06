@@ -46,7 +46,8 @@ angular.module('archCarto')
               icon: 'bug'
             });
             archLayerService.initOptions('path', {
-              popupDirective: 'arch-path-details-popup'
+              popupDirective: 'arch-path-details-popup',
+              icon: 'arrows'
             });
             archLayerService.initOptions('junction', {
                 icon: 'arrows'
@@ -105,7 +106,23 @@ angular.module('archCarto')
 
             archPathJunctionService.getList()
               .then(function(result) {
-                archLayerService.addLayers('path', 'junction', result.value);
+                archLayerService.addLayers('path', 'path', result.value, {
+                  popupDirective: null,
+                  onEachFeature: function(feature, layer) {
+                    layer.on('mouseover', function(e) {
+                      $scope.$broadcast('arch:junctionmouseover', feature, layer);
+                    });
+                    layer.on('click', function(e) {
+                      $scope.$broadcast('arch:junctionclicked', feature, layer);
+                    });
+                    /*
+                    layer.on('click', function(e) {
+                      var el = angular.element(e.originalEvent.target);
+                      el.css('opacity', '0.8');
+                    });
+                    */
+                  }
+                });
                 result.value.forEach(function(junction) {
                   archLayerService.addLayers('path', 'path', junction.properties.paths);
                 });
@@ -274,6 +291,10 @@ angular.module('archCarto')
         // endregion
 
         // region controls
+
+        this.getControl = function(name) {
+          return $q.when(_controls[name]);
+        };
 
         this.addControl = function(name, LClass, options) {
           var deferred = $q.defer();

@@ -1,30 +1,44 @@
-<md-content>
-  <h2>{{'PATH' | translate}}</h2>
-  <p>{{'COATING' | translate}}:
-    <span ng-if="path.properties.coating">{{path.properties.coating.name | translate}}.</span>
-    <span ng-if="!path.properties.coating">{{'NOT_DEFINED' | translate}}.</span>
-    <a ui-sref="map.path.draw({id: path._id})" ng-if="path._id">{{'EDIT' | translate}}</a>
-  </p>
-  <h3>{{'ASSOCIATED_MEDIAS' | translate}}</h3>
-  <div style="min-height: 16px">
-    <div ng-if="path.properties.medias.length === 0">
-      {{'NO_MEDIAS_FOUND' | translate}}.
+<md-toolbar class="md-theme-indigo">
+  <h1 class="md-toolbar-tools">{{'PATH' | translate}}</h1>
+</md-toolbar>
+<div class="arch-popup-content">
+  <md-content class="md-padding">
+    <arch-audit-events audit-events="path.properties.auditEvents"></arch-audit-events>
+    <div ng-if="!path">
+      <md-progress-circular md-diameter="20" md-mode="indeterminate"></md-progress-circular>
     </div>
-    <a ui-sref="map.marker.media({type: 'path', id: pathId})">
-      {{'ADD_SOME' | translate}}
-    </a>
-    <div ng-if="path.properties.medias.length > 0" style="max-height: 300px;">
-      <md-grid-list md-cols-sm="2"
-                    md-cols-md="2"
-                    md-cols-gt-md="2"
-                    md-row-height-gt-md="1:1"
-                    md-row-height="2:2"
-                    md-gutter="12px"
-                    md-gutter-gt-sm="8px" >
-        <md-grid-tile ng-repeat="media in path.properties.medias">
-          <img style="max-height: 200px" ng-src="{{apiUrl + '/' + media.url }}" />
-        </md-grid-tile>
-      </md-grid-list>
+    <div ng-if="path">
+      <md-list>
+        <md-list-item class="md-3-line">
+          <div class="md-list-item-text">
+            <h3>{{'COATING' | translate}}</h3>
+            <p>{{path.properties.coating.name || 'NOT_DEFINED' | translate}}</p>
+            <p><a ui-sref="map.path.draw({id: path._id})" ng-if="path._id">{{'EDIT' | translate}}</a></p>
+          </div>
+        </md-list-item>
+      </md-list>
     </div>
-  </div>
-</md-content>
+    <h3>{{'ASSOCIATED_MEDIAS' | translate}}</h3>
+    <div style="min-height: 16px">
+      <div ng-if="path.properties.medias.length === 0">
+        {{'NO_MEDIAS_FOUND' | translate}}.
+      </div>
+      <a ui-sref="map.marker.media({type: 'path', id: pathId})">
+        {{'ADD_SOME' | translate}}
+      </a>
+      <div ng-if="path.properties.medias.length > 0" style="max-height: 300px;">
+        <md-grid-list md-cols-sm="2"
+                      md-cols-md="2"
+                      md-cols-gt-md="2"
+                      md-row-height-gt-md="1:1"
+                      md-row-height="2:2"
+                      md-gutter="12px"
+                      md-gutter-gt-sm="8px" >
+          <md-grid-tile ng-repeat="media in path.properties.medias">
+            <img style="max-height: 200px" ng-src="{{apiUrl + '/' + media.url }}" />
+          </md-grid-tile>
+        </md-grid-list>
+      </div>
+    </div>
+  </md-content>
+</div>

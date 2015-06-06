@@ -24,6 +24,9 @@ angular.module('archCarto')
 
     return {
       isEditable: function(eventName) {
+        // FOR DEBUG
+        return true;
+        //
         if (_auditEvents.editable.indexOf(eventName) > -1) {
           return true;
         } else if (_auditEvents.notEditable.indexOf(eventName) > -1) {

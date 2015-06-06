@@ -1,5 +1,7 @@
-module.exports = function(junctionService) {
+module.exports = function(junctionService, crudControllerFactory) {
 
+    return crudControllerFactory.init('JUNCTION', junctionService);
+    /*
     return {
         getList: function(req, res, next) {
             junctionService.getList()
@@ -26,5 +28,6 @@ module.exports = function(junctionService) {
                 });
         }
     }
+    */
 
 };
