@@ -9,7 +9,7 @@ angular.module('archCarto')
         var controller = this;
 
         var _currentLayer = $scope._currentLayer = {};
-        var _currentJunctionLayer = $scope._currentJunctionLayer = {};
+        /*var _currentJunctionLayer = $scope._currentJunctionLayer = {};*/
 
         $scope.hasDrawnPath = false;
 
@@ -23,7 +23,7 @@ angular.module('archCarto')
             map.on('draw:created', function (e) {
               var layerType = e.layerType;
               _currentLayer = e.layer;
-              _currentJunctionLayer = L.featureGroup();
+              /*_currentJunctionLayer = L.featureGroup();*/
               controller.cleanCurrentLayer = function() {
                 map.removeLayer(_currentLayer);
                 $scope.hasDrawnPath = false;
@@ -37,26 +37,28 @@ angular.module('archCarto')
               };
 
               map.addLayer(_currentLayer);
-              map.addLayer(_currentJunctionLayer);
+             // map.addLayer(_currentJunctionLayer);
 
               if (layerType == 'polyline') {
                 $mdSidenav('right').open();
                 $scope.hasDrawnPath = true;
 
+                /*
                 var latlngs = _currentLayer.getLatLngs();
                 _currentJunctionLayer.addLayer(L.marker(latlngs[0]));
                 _currentJunctionLayer.addLayer(L.marker(latlngs[latlngs.length - 1]));
+                */
                 //_currentJunctionLayer.addData(L.marker([])
               }
 
               $scope.cancel = function() {
                 map.removeLayer(_currentLayer);
-                map.removeLayer(_currentJunctionLayer);
+                //map.removeLayer(_currentJunctionLayer);
                 $mdSidenav('right').close()
                   .then(function() {
                     $scope.hasDrawnPath = false;
                     _currentLayer = null;
-                    _currentJunctionLayer = null;
+                    //_currentJunctionLayer = null;
                     $scope.cancel = function() {
                       $state.go('map.path.draw', {id: ''});
                       $mdSidenav('right').close();
@@ -118,7 +120,7 @@ angular.module('archCarto')
         };
 
         this.getCurrentJunctionsLayer = function() {
-          return $q.when(_currentJunctionLayer);
+          //return $q.when(_currentJunctionLayer);
         };
 
       },
@@ -168,12 +170,23 @@ angular.module('archCarto')
           .then(function(control) {
             return $q.all([
               leafletData.getMap(),
-              archMap.getLayer('path')
+              archMap.getLayer('path'),
+              control
             ]);
           })
           .then(function(results) {
             var map = results[0];
             var layer = results[1];
+            var control = results[2];
+
+            /*
+            control.setDrawingOptions({
+              polyline: {
+                guideLayers: layer.editable._layers,
+                snapDistance: 20
+              }
+            });
+            */
 
             /*
             map.drawControl.setDrawingOptions({

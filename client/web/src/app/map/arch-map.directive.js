@@ -115,6 +115,9 @@ angular.module('archCarto')
                     layer.on('click', function(e) {
                       $scope.$broadcast('arch:junctionclicked', feature, layer);
                     });
+
+                    //layer.archIntersection = new L.Handler.ArchIntersection(layer, map);
+                    //layer.archIntersection.enable();
                     /*
                     layer.on('click', function(e) {
                       var el = angular.element(e.originalEvent.target);

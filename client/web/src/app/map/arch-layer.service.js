@@ -30,6 +30,13 @@ angular.module('archCarto')
         optionsOverrides = optionsOverrides || {};
 
         L.geoJson(layers, {
+          coordsToLatLng: function(coords) {
+            if (coords.length == 2) {
+              return L.latLng(coords[1], coords[0]);
+            } else if (coords.length == 3) {
+              return L.latLng(coords[1], coords[0], coords[2]);
+            }
+          },
           onEachFeature: function(feature, layer) {
             var type;
             if (feature.properties.auditEvents.length > 0) {

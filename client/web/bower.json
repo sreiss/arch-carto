@@ -15,7 +15,7 @@
     "Leaflet.awesome-markers": "~2.0.2",
     "Leaflet.draw": "https://github.com/Leaflet/Leaflet.draw.git",
     "Leaflet.Routing": "https://github.com/Turistforeningen/leaflet-routing.git",
-    "Leaflet.GeometryUtils": "https://github.com/makinacorpus/Leaflet.GeometryUtil.git",
+    "Leaflet.GeometryUtil": "https://github.com/makinacorpus/Leaflet.GeometryUtil.git",
     "Leaflet.Snap": "https://github.com/makinacorpus/Leaflet.Snap.git#gh-pages",
     "togpx": "https://github.com/tyrasd/togpx.git",
     "angular-leaflet-directive": "~0.7.15",
@@ -32,15 +32,14 @@
     "angular-socket-io": "~0.7.0"
   },
   "overrides": {
-    "Leaflet.GeometryUtils": {
+    "Leaflet.GeometryUtil": {
       "main": [
         "dist/leaflet.geometryutil.js"
       ]
     },
     "Leaflet.Snap": {
       "main": [
-        "dist/leaflet.snap.js",
-        "dist/leaflet.geometryutil.js"
+        "leaflet.snap.js"
       ]
     },
     "leaflet.draw": {

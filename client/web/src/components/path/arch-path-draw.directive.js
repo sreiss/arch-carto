@@ -24,11 +24,11 @@ angular.module('archCarto')
           if (hasDrawnPath) {
             $q.all([
                 archPath.getCurrentLayer(),
-                archPath.getCurrentJunctionsLayer()
+                //archPath.getCurrentJunctionsLayer()
               ])
               .then(function (results) {
                 var currentLayer = results[0];
-                var currentJunctionsLayer = results[1];
+                //var currentJunctionsLayer = results[1];
 
                 var pathCoordinates = currentLayer.getLatLngs();
 
@@ -40,8 +40,8 @@ angular.module('archCarto')
 
                 scope.save = function(path) {
                   var pathGeoJson = currentLayer.toGeoJSON();
-                  var junctionFeatureCollection = currentJunctionsLayer.toGeoJSON();
-                  var junctionGeoJsons = junctionFeatureCollection.features;
+                  // var junctionFeatureCollection = currentJunctionsLayer.toGeoJSON();
+                  //var junctionGeoJsons = junctionFeatureCollection.features;
 
                   pathGeoJson.properties = path.properties;
 
@@ -49,8 +49,8 @@ angular.module('archCarto')
                     .then(function(result) {
                       var junctionsFn = [];
                       for (var i = 0; i < junctionGeoJsons.length; i += 1) {
-                        junctionGeoJsons[i].properties.paths = junctionGeoJsons[i].properties.paths || [];
-                        junctionGeoJsons[i].properties.paths.push(result.value._id);
+                        //junctionGeoJsons[i].properties.paths = junctionGeoJsons[i].properties.paths || [];
+                        //junctionGeoJsons[i].properties.paths.push(result.value._id);
                         junctionsFn.push(function() {
                           return archPathJunctionService.save(junctionGeoJsons[i]);
                         }());
