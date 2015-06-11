@@ -306,7 +306,7 @@ angular.module('archCarto')
               options = options || {};
               _controls[name] = new LClass(options);
               map.addControl(_controls[name]);
-              deferred.resolve();
+              deferred.resolve(_controls[name]);
             });
           return deferred.promise;
         };

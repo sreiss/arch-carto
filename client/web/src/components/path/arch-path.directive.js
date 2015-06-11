@@ -179,6 +179,16 @@ angular.module('archCarto')
             var layer = results[1];
             var control = results[2];
 
+            control.setDrawingOptions({
+              polyline: {
+                //guideLayers: layer.editable._layers,
+                //snapVertices: true
+                //archIntersectionsEnabled: true,
+                //archJunctionsEnabled: true,
+                archReferenceLayer: layer
+              }
+            });
+
             /*
             control.setDrawingOptions({
               polyline: {
