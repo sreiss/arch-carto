@@ -15,6 +15,8 @@ L.Draw.Feature.ArchMixin = {
   _archOnEnabled: function(e) {
     if (!this.options.archReferenceLayer) {
       console.log('[L.Draw.Feature.ArchMixin]: Please provide a reference layer to enable intersections and junctions features.');
+    } else if (!this.options.archIntersections) {
+      console.log('[L.Draw.Feature.ArchMixin]: Please provide an empty array to retrieve the found intersections.');
     } else {
       this._map.on('layeradd', this._archOnLayerAdd, this);
       this._archJunction = new L.Handler.ArchJunction(this._map, this._mouseMarker, this.options.archReferenceLayer);
@@ -30,8 +32,8 @@ L.Draw.Feature.ArchMixin = {
     var self = this;
     var layer = e.layer;
     // To check if it is a polyline
-    if (layer && layer.getLatLngs) {
-      layer.archIntersection = new L.Handler.ArchIntersection(layer, self._map, this.options.archReferenceLayer);
+    if (layer && layer.getLatLngs && layer.editing) {
+      layer.archIntersection = new L.Handler.ArchIntersection(layer, self._map, this.options.archReferenceLayer, this.options.archIntersections);
       layer.archIntersection.enable();
     } else {
       //if (!this._map.archJunction.enabled()) {

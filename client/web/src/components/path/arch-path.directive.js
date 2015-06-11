@@ -185,7 +185,8 @@ angular.module('archCarto')
                 //snapVertices: true
                 //archIntersectionsEnabled: true,
                 //archJunctionsEnabled: true,
-                archReferenceLayer: layer
+                archReferenceLayer: layer,
+                archIntersections: []
               }
             });
 
