@@ -50,7 +50,7 @@ angular.module('archCarto')
               icon: 'arrows'
             });
             archLayerService.initOptions('junction', {
-                icon: 'arrows'
+              icon: 'arrows'
             });
             archLayerService.initOptions('course', {
               popupDirective: 'arch-course-details-popup'
@@ -154,6 +154,30 @@ angular.module('archCarto')
           return deferred.promise;
         };
 
+        /**
+         * Ajoute un layer à la carte.
+         * @param {string} name le nom du layer à ajouter.
+         * @param {string} type le type du layer à ajouter, baselayer ou overlay. Il est recommandé d'utiliser la constante archLayerTypes.
+         * @param {Object} layer Le layer à ajouter. Se référer à leaflet directive pour plus d'informations sur les paramètres {@link http://tombatossals.github.io/angular-leaflet-directive/#!/examples/layers-simple}.
+         * @return {Promise} résolue en cas de réussite, rejettée en cas d'échec.
+         */
+        this.addLayer = function(name, type, layer) {
+          var deferred = $q.defer();
+          if (!type) {
+            deferred.reject(new Error('Please provide a type for the layer you want to add. Either "baselayer" or "overlay".'));
+          } else if (!archUtilsService.contains(ARCH_LAYER_TYPES, type)) {
+            deferred.reject(new Error('The provided layer type is not handled.'));
+          } else if (!name) {
+            deferred.reject(new Error('You must provide a name to add a layer.'));
+          } else if (!angular.isObject(layer)) {
+            deferred.reject(new Error('A layer must be an object.'));
+          } else {
+            $scope.map.layers[type][name] = layer;
+            deferred.resolve();
+          }
+          return deferred.promise;
+        };
+
         // endregion
 
         var stopInitWatch = $scope.$watch('map', function(map) {
@@ -215,30 +239,6 @@ angular.module('archCarto')
         // endregion
 
         // region layers
-
-        /**
-         * Ajoute un layer à la carte.
-         * @param {string} name le nom du layer à ajouter.
-         * @param {string} type le type du layer à ajouter, baselayer ou overlay. Il est recommandé d'utiliser la constante archLayerTypes.
-         * @param {Object} layer Le layer à ajouter. Se référer à leaflet directive pour plus d'informations sur les paramètres {@link http://tombatossals.github.io/angular-leaflet-directive/#!/examples/layers-simple}.
-         * @return {Promise} résolue en cas de réussite, rejettée en cas d'échec.
-         */
-        this.addLayer = function(name, type, layer) {
-          var deferred = $q.defer();
-          if (!type) {
-            deferred.reject(new Error('Please provide a type for the layer you want to add. Either "baselayer" or "overlay".'));
-          } else if (!archUtilsService.contains(ARCH_LAYER_TYPES, type)) {
-            deferred.reject(new Error('The provided layer type is not handled.'));
-          } else if (!name) {
-            deferred.reject(new Error('You must provide a name to add a layer.'));
-          } else if (!angular.isObject(layer)) {
-            deferred.reject(new Error('A layer must be an object.'));
-          } else {
-            $scope.map.layers[type][name] = layer;
-            deferred.resolve();
-          }
-          return deferred.promise;
-        };
 
         /**
          * Supprime le layer dont le nom est passé en paramètre, s'il existe.

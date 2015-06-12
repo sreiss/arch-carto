@@ -11,26 +11,37 @@ L.Handler.ArchIntersection = L.Handler.extend({
   },
 
   addHooks: function() {
-    this._map.on('click', this._onClick, this);
+    //this._map.on('click', this._onClick, this);
+    this._findIntersections();
   },
 
   removeHooks: function() {
-    this._map.fire('arch:intersectionsfound', this._intersections);
-    this._map.off('click', this._onClick, this);
+    //this._map.fire('arch:intersectionsfound', this._intersections);
+    //this._map.off('click', this._onClick, this);
   },
 
-  _onClick: function() {
+  getIntersections: function() {
+    return this._intersections;
+  },
+
+  _findIntersections: function() {
+  //_onMove: function() {
     var self = this;
 
     var layers = self._referenceLayer.editable.getLayers();
     var allPaths = [];
 
     layers.forEach(function(layer) {
-      if (layer.getLatLngs) {
+      var layerLatLngs = self._layer.getLatLngs();
+      var foundLayer = layerLatLngs.find(function(l) {
+        return l.lat === layer.lat && l.lng === layer.lng;
+      });
+      if (layer.getLatLngs && !foundLayer) {
         var latLngs = layer.getLatLngs();
         allPaths.push(latLngs);
       }
     });
+    allPaths.push(this._layer.getLatLngs());
 
     var currentLayerCoords = this._layer.getLatLngs();
 
@@ -38,36 +49,42 @@ L.Handler.ArchIntersection = L.Handler.extend({
     allPaths.forEach(function(path) {
       for (var i = 0; i < currentLayerCoords.length - 1; i += 1) {
         for (var j = 0; j < path.length - 1; j += 1) {
-          intersections.push(self._computeIntersection(
-            currentLayerCoords[i].lat, currentLayerCoords[i].lng,
-            currentLayerCoords[i + 1].lat, currentLayerCoords[i + 1].lng,
-            path[j].lat, path[j].lng,
-            path[j + 1].lat, path[j + 1].lng
-          ));
+            intersections.push(self._computeIntersection(
+              currentLayerCoords[i].lat, currentLayerCoords[i].lng,
+              currentLayerCoords[i + 1].lat, currentLayerCoords[i + 1].lng,
+              path[j].lat, path[j].lng,
+              path[j + 1].lat, path[j + 1].lng
+            ));
         }
       }
     });
 
     intersections = intersections.compact(true);
+
+    // For debug
+    intersections.each(function(intersection) {
+      self._map.addLayer(new L.Marker(intersection))
+    });
+
     this._intersections = this._intersections.concat(intersections);
   },
 
-  _computeIntersection: function(x1, y1, x2, y2, x3, y3, x4, y4) {
-    var d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+  _computeIntersection: function(lat1, lng1, lat2, lng2, lat3, lng3, lat4, lng4) {
+    var d = (lat1 - lat2) * (lng3 - lng4) - (lng1 - lng2) * (lat3 - lat4);
 
     if (d == 0) {
       return null;
     }
 
-    var xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
-    var yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
+    var lat = ((lat3 - lat4) * (lat1 * lng2 - lng1 * lat2) - (lat1 - lat2) * (lat3 * lng4 - lng3 * lat4)) / d;
+    var lng = ((lng3 - lng4) * (lat1 * lng2 - lng1 * lat2) - (lng1 - lng2) * (lat3 * lng4 - lng3 * lat4)) / d;
 
-    var p = {x: xi, y: yi};
+    var p = new L.LatLng(lat, lng);
 
-    if (xi < Math.min(x1, x2) || xi > Math.max(x1, x2)) {
+    if (lat < Math.min(lat1, lat2) || lat > Math.max(lat1, lat2)) {
       return null;
     }
-    if (xi < Math.min(x3, x4) || xi > Math.max(x3, x4)) {
+    if (lat < Math.min(lat3, lat4) || lat > Math.max(lat3, lat4)) {
       return null;
     }
 
