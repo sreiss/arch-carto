@@ -53,31 +53,54 @@ angular.module('archCarto')
 
       getCurrentUser: function()
       {
+        var deferred = $q.defer();
         var token = this.getCurrentToken();
-        var currentUser;
-        if (token) {
-          currentUser = token.user || null;
-        } else {
-          currentUser = null;
+
+        if(token)
+        {
+          var currentUser = token.user || null;
+
+          if(currentUser)
+          {
+            this.getProfile(currentUser._id).then(function(profile)
+            {
+              currentUser.profile = profile || {};
+            })
+            .then(function()
+            {
+              var assets = {};
+              currentUser.profile.role = currentUser.profile.role || {};
+              currentUser.profile.role.name = currentUser.profile.role.name || '';
+
+              for(var role in _roles)
+              {
+                assets[role] = _roles[role].indexOf(currentUser.profile.role.name) > -1;
+              };
+
+              currentUser.profile.role._is = function(roleName)
+              {
+                return currentUser.profile.role.assets[roleName] || false;
+              };
+
+              currentUser.profile.role.assets = assets;
+              deferred.resolve(currentUser);
+            })
+            .catch(function()
+            {
+              deferred.resolve(currentUser);
+            });
+          }
+          else
+          {
+            deferred.reject(new Error('NO_CURRENT_USER_FOUND'));
+          }
+        }
+        else
+        {
+          deferred.reject(new Error('NO_TOKEN_FOUND'));
         }
 
-        return currentUser;
-      },
-
-      isCartographer: function() {
-        return _is('CARTOGRAPHER');
-      },
-
-      isAuthenticated: function() {
-        return _is('AUTHENTICATED');
-      },
-
-      isMember: function() {
-        return _is('MEMBER');
-      },
-
-      isAdmin: function() {
-        return _is('ADMIN');
+        return deferred.promise;
       },
 
       getProfile: function(id)
