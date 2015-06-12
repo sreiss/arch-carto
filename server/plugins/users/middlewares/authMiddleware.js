@@ -1,7 +1,7 @@
 var passport = require('passport'),
     BearerStrategy = require('passport-http-bearer');
 
-module.exports = function(User)
+module.exports = function()
 {
     passport.use(new BearerStrategy(function (token, next)
     {
