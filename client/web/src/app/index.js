@@ -30,6 +30,14 @@ angular.module('archCarto', [
           }
         }
       })
+      .state('mainToken', {
+        url: '/token/:token',
+        views: {
+          main: {
+            templateUrl: 'app/main/main.html'
+          }
+        }
+      })
       .state('map', {
         url: '/map',
         abstract: true,
