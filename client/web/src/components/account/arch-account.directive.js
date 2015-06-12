@@ -4,7 +4,7 @@ angular.module('archCarto')
     return {
       restrict: 'E',
       templateUrl: 'components/account/arch-account.html',
-      controller: function($scope, $cookieStore) {
+      controller: function($scope, $cookieStore, $stateParams) {
         var init = function()
         {
           // Get login url.
