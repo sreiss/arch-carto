@@ -23,7 +23,6 @@ angular.module('archCarto')
       {
         var deferred = $q.defer();
         config = this.setDefaultConfig(config);
-        data = this.setDefaultData(data);
 
         $http.post(url, data, config).success(function(result)
         {
@@ -57,12 +56,12 @@ angular.module('archCarto')
       setDefaultConfig: function(config)
       {
         var config = config || {};
-        var clientId = $cookieStore.get('clientId');
-        var clientSecret = $cookieStore.get('clientSecret');
+        var token = $cookieStore.get('token');
+        var accessToken = token.access_token || null;
 
         config.headers =
         {
-          "Authorization" : 'Basic ' + $base64.encode(clientId + ':' + clientSecret),
+          "Authorization" : 'Bearer ' + accessToken,
           "Content-Type" : "application/x-www-form-urlencoded"
         };
 
@@ -79,15 +78,6 @@ angular.module('archCarto')
         };
 
         return config;
-      },
-
-      setDefaultData: function(data)
-      {
-        var data = data || {};
-        var token = $cookieStore.get('token');
-        data.token = token.access_token || null;
-
-        return data;
       }
     };
   });
