@@ -10,21 +10,6 @@ angular.module('archCarto')
       ADMIN: ['AUTHENTICATED', 'MEMBER', 'CARTOGRAPHER', 'ADMIN']
     };
 
-    var _is = function(roleName)
-    {
-      var currentUser = this.getCurrentUser();
-      var role;
-
-      if (currentUser && currentUser.profile && (role = currentUser.profile.role))
-      {
-        return _roles[roleName].indexOf(role.name) > -1;
-      }
-      else
-      {
-        return false;
-      }
-    };
-
     return {
       saveClient: function()
       {

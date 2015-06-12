@@ -13,57 +13,52 @@ angular.module('archCarto')
             $scope.loginUrl = loginUrl;
           });
 
-          // Check token in coockies.
+          // Check token in cookies.
           var token = archAccountService.getCurrentToken();
+
+          if(!token && $stateParams.token)
+          {
+            $cookieStore.put('token', JSON.parse(decodeURIComponent(atob($stateParams.token))));
+            token = archAccountService.getCurrentToken();
+          }
 
           if(token)
           {
             console.log('INIT : Already connected.');
 
-            if(token.user.signuptype.name != httpConstant.signupType.name && token.user.signuptype.isPublic === false)
+            archAccountService.getCurrentUser().then(function(user)
             {
-              console.log('INIT : Current signup type not public.');
-              $scope.alreadyLogged = false;
-            }
-            else
+              $scope.user = user;
+            })
+            .then(function()
             {
-              $scope.alreadyLogged = true;
-
-              $scope.token = token;
-              $scope.user = token.user;
-
-              // Get current user's profile um die Role zu haben !
-              if(!$scope.user.profile)
+              if(token.user.signuptype.name != httpConstant.signupType.name && token.user.signuptype.isPublic === false)
               {
-                console.log('INIT : Get profil of current user.');
+                console.log('INIT : Current signup type not public.');
 
-                archAccountService.getProfile($scope.user._id).then(function(result)
+                archAccountService.getLoginUrl().then(function(loginUrl)
                 {
-                  $scope.alreadyLogged = true;
-
-                  token.user.profile = result.data;
-                  $cookieStore.put('token', token);
-                  $scope.user = token.user;
-                })
-                .catch(function(err)
-                {
-                  $scope.alreadyLogged = false;
-
-                  $mdToast.show($mdToast.simple()
-                      .content("Une erreur est survenue lors de la récupération du profile de l'utilisateur.")
-                      .position('top right')
-                      .hideDelay(3000)
-                  );
+                  window.location = loginUrl;
                 });
               }
-            }
+              else
+              {
+                $scope.alreadyLogged = true;
+              }
+            })
+            .catch(function()
+            {
+              $mdToast.show($mdToast.simple().content("Une erreur est survenue lors de la récupération de l'utilisateur courant.").position('top right').hideDelay(3000));
+            });
           }
         }();
 
         $scope.myAccount = function()
         {
-          var user = archAccountService.getCurrentUser();
-          $state.go('userEdit', {'id' : user._id});
+          archAccountService.getCurrentUser().then(function(user)
+          {
+            $state.go('userEdit', {'id' : user._id});
+          });
         };
 
         $scope.logout = function()
