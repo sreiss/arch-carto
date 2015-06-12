@@ -1,9 +1,9 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archAccount', function (archAccountService, $translate, $state, $window, httpConstant) {
+  .directive('archMainNavbar', function (archAccountService, $translate, $state, $window, httpConstant) {
     return {
       restrict: 'E',
-      templateUrl: 'components/account/arch-account.html',
+      templateUrl: 'app/main/arch-main-navbar.html',
       controller: function($scope, $cookieStore, $stateParams) {
         var init = function()
         {
