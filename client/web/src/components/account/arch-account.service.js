@@ -10,12 +10,17 @@ angular.module('archCarto')
       ADMIN: ['AUTHENTICATED', 'MEMBER', 'CARTOGRAPHER', 'ADMIN']
     };
 
-    var _is = function(roleName) {
+    var _is = function(roleName)
+    {
       var currentUser = this.getCurrentUser();
       var role;
-      if (currentUser && currentUser.profil && (role = currentUser.profil.role)) {
+
+      if (currentUser && currentUser.profile && (role = currentUser.profile.role))
+      {
         return _roles[roleName].indexOf(role.name) > -1;
-      } else {
+      }
+      else
+      {
         return false;
       }
     };
@@ -88,19 +93,6 @@ angular.module('archCarto')
 
       isAdmin: function() {
         return _is('ADMIN');
-      },
-
-      isCurrentUserAdmin: function()
-      {
-        var currentUser = this.getCurrentUser();
-        var role = currentUser.profil.role || '';
-
-        if(role == "admin")
-        {
-          return true;
-        }
-
-        return false;
       },
 
       getProfile: function(id)
