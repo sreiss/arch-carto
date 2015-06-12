@@ -38,6 +38,7 @@ angular.module('archCarto')
 
                 archAccountService.getLoginUrl().then(function(loginUrl)
                 {
+                  console.log(loginUrl);
                   window.location = loginUrl;
                 });
               }
