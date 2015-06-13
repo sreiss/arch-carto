@@ -124,5 +124,12 @@ angular.module('archCarto')
     MEMBER_SPACE: "Espace membre",
     COURSES_I_RATED: "Itinéraires que j'ai noté",
     MY_COURSES: "Mes itinéraires",
-    MY_FAVORITE_COURSES: "Mes itinéraires favoris"
+    MY_FAVORITE_COURSES: "Mes itinéraires favoris",
+
+    SUBSCRIBE_FORM_LNAME : "Nom",
+    SUBSCRIBE_FORM_FNAME : "Prénom",
+    SUBSCRIBE_FORM_EMAIL : "Adresse e-mail",
+    SUBSCRIBE_FORM_PASSWORD : "Mot de passe",
+    SUBSCRIBE_FORM_CONFIRM : "Confirmation",
+    SUBSCRIBE_FORM_SUBMIT : "M'inscrire"
   });
