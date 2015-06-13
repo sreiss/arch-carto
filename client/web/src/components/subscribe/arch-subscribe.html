@@ -1,4 +1,6 @@
-<form name="subscribeForm" role="form" ng-submit="subscribe()">
+<h2>Inscrivez vous et devenez un thugCartographer !</h2>
+
+<form name="subscribeForm" role="form" ng-submit="subscribe()" ng-hide="subscribeSuccess">
   <div layout="column">
     <div layout="row">
       <md-icon class="fa fa-user"></md-icon>
@@ -38,6 +40,8 @@
   </div>
 
   <div class="md-actions" layout="row">
-    <md-button class="md-raised md-accent" type="submit" ng-disabled="userForm.$invalid">{{'SUBSCRIBE_FORM_SUBMIT' | translate}}</md-button>
+    <md-button class="md-raised md-accent" type="submit" ng-disabled="subscribeForm.$invalid">{{'SUBSCRIBE_FORM_SUBMIT' | translate}}</md-button>
   </div>
 </form>
+
+<p ng-show="subscribeSuccess">GG Compte créé</p>
