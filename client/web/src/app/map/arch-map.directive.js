@@ -133,7 +133,6 @@ angular.module('archCarto')
 
             archCourseService.getList()
               .then(function(result) {
-                //debugger;
                 archLayerService.addLayers('course', 'course', result.value);
               });
 
@@ -305,8 +304,7 @@ angular.module('archCarto')
             .then(function(map) {
               options = options || {};
               _controls[name] = new LClass(options);
-              map.addControl(_controls[name]);
-              deferred.resolve(_controls[name]);
+              deferred.resolve(map.addControl(_controls[name]));
             });
           return deferred.promise;
         };
@@ -325,6 +323,92 @@ angular.module('archCarto')
           return deferred.promise;
         };
 
+
+        this.drawElevation = function(geoJson) {
+          this.addControl('el', L.control.elevation, {
+            position: "bottomleft",
+            theme: "steelblue-theme", //default: lime-theme
+            width: 600,
+            height: 125,
+            margins: {
+              top: 10,
+              right: 20,
+              bottom: 30,
+              left: 50
+            },
+            useHeightIndicator: true, //if false a marker is drawn at map position
+            interpolation: "linear", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
+            hoverNumber: {
+              decimalsX: 3, //decimals on distance (always in km)
+              decimalsY: 0, //deciamls on height (always in m)
+              formatter: undefined //custom formatter function may be injected
+            },
+            xTicks: undefined, //number of ticks in x axis, calculated by default according to width
+            yTicks: undefined, //number of ticks on y axis, calculated by default according to height
+            collapsed: false    //collapsed mode, show chart on click or mouseover
+          }).then(function (el) {
+            //_layers.elevation = archLayerService.initLayer('elevation');
+            //var addToMap = $scope.addToMap;
+            //
+            //addToMap('elevation');
+            console.log(controller);
+            $scope.el = el;
+
+            //controller.getLayer('elevation').then(function(layer) {
+            //  console.log(layer);
+            //});
+            archLayerService.addLayers('elevation', 'elevation', geoJson, {
+              onEachFeature: el.addData.bind(el)
+            });
+            controller.getLayer('elevation').then(function(layer) {
+              console.log(layer);
+              leafletData.getMap()
+                .then(function(map){
+                  console.log(layer);
+                  map.fitBounds(layer.getBounds());
+                });
+            });
+
+          });
+          //archLayerService.addLayers('elevation', 'path', geoJson, {
+          //  onEachFeature: $scope.el.addData.bind($scope.el)
+          //});
+
+
+          //controller.getLayer('marker').then(function(layer) {
+          //  console.log(layer);
+          //  leafletData.getMap()
+          //    .then(function(map){
+          //      console.log(layer);
+          //      map.fitBounds(layer.getBounds());
+          //    });
+          //});
+          //this.getLayer('elevation').then(function(layer){
+          //  console.log(layer);
+          //
+          //  //map.fitBounds(layer.getBounds());
+          //  //layer.addTo(map);
+          //});
+
+
+
+
+          //map.fitBounds(layer.getBounds());
+          //leafletData.getMap()
+          //  .then(function(map) {
+          //    el.addTo(map);
+          //  });
+
+
+          //$scope.el = map;
+          //console.log(map);
+          //console.log(geoJson);
+
+
+          //L.geoJson(geojson,{
+          //  onEachFeature: el.addData.bind(el) //working on a better solution
+          //}).addTo(map);
+        };
         // endregion
 
         // region display options
@@ -527,7 +611,6 @@ angular.module('archCarto')
 //            });
 //          })
 //          .then(function() {
-//            //debugger;
 //            setTimeout(function() {
 //              $scope.map.isInit = true;
 //            }, 1000);
@@ -662,7 +745,6 @@ angular.module('archCarto')
 //                  dashArray: '3',
 //                  fillOpacity: 0.7
 //              };
-//              debugger;
 //            });
 //        };
 //
@@ -720,7 +802,6 @@ angular.module('archCarto')
 //                },
 //
 //                onAdd: function (map) {
-//                  debugger;
 //                  var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
 //                  L.DomEvent
 //                    .addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
@@ -747,7 +828,6 @@ angular.module('archCarto')
 //
 //              console.log(L);
 //              $scope.controls[name] = {};
-//              debugger;
 //              */
 //            });
 //        });

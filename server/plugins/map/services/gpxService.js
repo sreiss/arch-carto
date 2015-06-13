@@ -5,21 +5,21 @@ var util = require('util');
 //var jsdom = require('jsdom').jsdom;
 var togeojson = require('togeojson');
 
-module.exports = function (Trace) {
+module.exports = function (Path) {
 
     //return {};
 
     return {
-        saveGpx: function(rawTrace, options) {
+        saveGpx: function(rawPath, options) {
             var deferred = Q.defer();
-            if (rawTrace._id) {
+            console.log(rawPath);
+            if (rawPath._id) {
                 console.log("saveGpx");
-                //console.log(rawTrace);
 
-                var id = rawTrace._id;
+                var id = rawPath._id;
 
-                delete rawTrace._id;
-                console.log(JSON.stringify(rawTrace));
+                delete rawPath._id;
+                console.log(JSON.stringify(rawPath));
                 //first version
                 //Trace.findByIdAndUpdate(id, { type: 'NTM'}, function (err, newTrace) {
                 //    if (err) {
@@ -76,8 +76,8 @@ module.exports = function (Trace) {
 
                         })
                         modifiedTrace._id = id;
-                        modifiedTrace.type = rawTrace.type;
-                        modifiedTrace.features[0] = rawTrace.features[0];
+                        modifiedTrace.type = rawPath.type;
+                        modifiedTrace.features[0] = rawPath.features[0];
                         modifiedTrace.save(function(err) {
                             if (err) {
                                 console.log('Ca marche pas');
@@ -125,18 +125,29 @@ module.exports = function (Trace) {
                 //    }
                 //});
             } else {
-                var trace = new Trace();
-                trace.type = rawTrace.type;
-                trace.features[0] = rawTrace.features[0];
-
-                trace.save(function(err) {
-                    if (err) {
-                        console.log('Ca marche pas');
-                        deferred.reject(err);
-                    }
-                    console.log('Save in db');
-                    deferred.resolve(trace);
-                })
+                try {
+                    var path = new Path({
+                        properties: {
+                            //coating: rawPath.properties.coating || null,
+                            //medias: rawPath.properties.medias || []
+                            length: rawPath.features[0].properties.lentgh,
+                            dPlus: rawPath.features[0].properties.dPLus,
+                            dMinus: rawPath.features[0].properties.dMinus
+                        },
+                        geometry: {
+                            coordinates: rawPath.features[0].geometry.coordinates
+                        }
+                    });
+                    path.save(function(err, savedPath) {
+                        if (err) {
+                            deferred.reject(err);
+                        } else {
+                            deferred.resolve(savedPath);
+                        }
+                    })
+                } catch(err) {
+                    deferred.reject(err);
+                }
 
             }
             return deferred.promise;
@@ -146,7 +157,7 @@ module.exports = function (Trace) {
             //new version
             var deferred = Q.defer();
             options = options || {};
-            Trace.find().lean().exec(options, function(err, traces) {
+            Path.find().lean().exec(options, function(err, traces) {
                 if (err) {
                     deferred.reject(err);
                 } else {
