@@ -130,8 +130,8 @@ module.exports = function (Path) {
                         properties: {
                             //coating: rawPath.properties.coating || null,
                             //medias: rawPath.properties.medias || []
-                            length: rawPath.features[0].properties.lentgh,
-                            dPlus: rawPath.features[0].properties.dPLus,
+                            length: rawPath.features[0].properties.length,
+                            dPlus: rawPath.features[0].properties.dPlus,
                             dMinus: rawPath.features[0].properties.dMinus
                         },
                         geometry: {

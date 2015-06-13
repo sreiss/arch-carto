@@ -13,8 +13,15 @@ angular.module('archCarto')
         archGpxService.getTrace()
           .then(function(traces) {
             $scope.traces = traces;
+            //console.log(JSON.stringify(traces));
           });
-
+        $scope.$on('upload', function(){
+          archGpxService.getTrace()
+            .then(function(traces) {
+              $scope.traces = traces;
+              console.log(JSON.stringify(traces));
+            });
+        });
 
         $scope.downloadPdf = function(trace) {
           $scope.$emit('download-start');

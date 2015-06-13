@@ -20,7 +20,7 @@ angular.module('archCarto')
       }
     };
   }])
-  .directive('onReadFile', function ($parse,archGpxUploadService, archGpxService, archInfoService) {
+  .directive('onReadFile', function ($parse,archGpxUploadService, archGpxService, archInfoService, $state) {
     return {
       restrict: 'A',
       scope: false,
@@ -38,7 +38,6 @@ angular.module('archCarto')
                 scope.geoJson = gj;
                 archGpxService.simplifyTrace(scope.geoJson).then(function(simplified)
                 {
-                  console.log(simplified);
                   scope.geoJson.features[0].geometry.coordinates = simplified;
                   archInfoService.getDGeoJ(scope.geoJson).then(function(distance){
                     scope.geoJson.features[0].properties.dPlus = distance.deniPlus;
@@ -49,7 +48,7 @@ angular.module('archCarto')
                     scope.geoJson.features[0].properties.length = distance;
                   });
                 });
-                console.log(scope.geoJson);
+                //console.log(scope.geoJson);
 
               });
 
@@ -61,9 +60,13 @@ angular.module('archCarto')
         });
         scope.upload = function(){
           console.log(scope.geoJson);
-
           //debugger;
-          archGpxUploadService.uploadFileToUrl(scope.geoJson);
+          archGpxUploadService.uploadFileToUrl(scope.geoJson)
+            .then(function()
+            {
+              scope.$emit('upload');
+            });
+
         }
       }
     };

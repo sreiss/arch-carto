@@ -5,24 +5,10 @@ angular.module('archCarto')
 
     return{
       uploadFileToUrl: function(trace){
-        //var fd = new FormData();
-        //fd.append('file', file);
-        //archHttpService.post(_gpxUrl, fd, {
-        //  transformRequest: angular.identity,
-        //  headers: {'Content-Type': "multipart/form-data"}
-        //})
+        var deferred = $q.defer();
 
-          //.success(function(){
-          //  console.log("Ca marche");
-          //})
-          //.error(function(){
-          //  console.log('Error upload');
-          //});
-          //var gpx = file[0];
-          //var formData = new FormData();
-          //formData.append("file", gpx);
-        console.log(trace);
-          return archHttpService.post(_gpxUrl, trace);
+        deferred.resolve(archHttpService.post(_gpxUrl, trace));
+        return deferred.promise;
       }
     }
   });

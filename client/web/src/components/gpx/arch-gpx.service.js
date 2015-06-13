@@ -198,8 +198,6 @@ angular.module('archCarto')
           return clean(prop);
         }
         deferred.resolve(gj);
-        console.log(gj);
-        debugger;
 
         //};
         return deferred.promise;
