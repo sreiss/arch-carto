@@ -18,34 +18,19 @@ L.Draw.Feature.ArchMixin = {
     } else if (!this.options.archIntersections) {
       console.log('[L.Draw.Feature.ArchMixin]: Please provide an empty array to retrieve the found intersections.');
     } else {
-      this._map.on('layeradd', this._archOnLayerAdd, this);
       this._archJunction = new L.Handler.ArchJunction(this._map, this._mouseMarker, this.options.archReferenceLayer);
       this._archJunction.enable();
     }
   },
 
   _archOnDisabled: function(e) {
-    this._map.off('layeradd', this._archOnLayerAdd, this);
+
   },
 
-  _archOnLayerAdd: function(e) {
-    var self = this;
-    var layer = e.layer;
-    // To check if it is a polyline
-    if (layer && layer.getLatLngs && layer.editing) {
-      layer.archIntersection = new L.Handler.ArchIntersection(layer, self._map, this.options.archReferenceLayer, this.options.archIntersections);
-      layer.archIntersection.enable();
-    } else {
-      //if (!this._map.archJunction.enabled()) {
-      //  this._map.archJunction.enable();
-      //}
-    }
-    /*
-     else {
-     layer.archJunction = new L.Handler.ArchJunction(layer, self._map);
-     layer.archJunction.enable();
-     }
-     */
+  _fireCreatedEvent: function (layer) {
+    layer.archIntersection = new L.Handler.ArchIntersection(layer, this._map, this.options.archReferenceLayer);
+    layer.archIntersection.enable();
+    this._map.fire('draw:created', { layer: layer, layerType: this.type  });
   }
 };
 

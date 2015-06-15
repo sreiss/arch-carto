@@ -3,11 +3,11 @@ if (!L) {
 }
 
 L.Handler.ArchIntersection = L.Handler.extend({
-  initialize: function(layer, map, referenceLayer, intersections) {
+  initialize: function(layer, map, referenceLayer) {
     this._layer = layer;
     this._map = map;
     this._referenceLayer = referenceLayer;
-    this._intersections = intersections;
+    this._intersections = [];
   },
 
   addHooks: function() {
@@ -51,17 +51,62 @@ L.Handler.ArchIntersection = L.Handler.extend({
     allPaths.forEach(function(path) {
       for (var i = 0; i < currentLayerCoords.length - 1; i += 1) {
         for (var j = 0; j < path.length - 1; j += 1) {
-            intersections.push(self._computeIntersection(
-              currentLayerCoords[i].lat, currentLayerCoords[i].lng,
-              currentLayerCoords[i + 1].lat, currentLayerCoords[i + 1].lng,
-              path[j].lat, path[j].lng,
-              path[j + 1].lat, path[j + 1].lng
-            ));
+          var intersection = self._computeIntersection(
+            currentLayerCoords[i].lat, currentLayerCoords[i].lng,
+            currentLayerCoords[i + 1].lat, currentLayerCoords[i + 1].lng,
+            path[j].lat, path[j].lng,
+            path[j + 1].lat, path[j + 1].lng
+          );
+
+          if (intersection !== null) {
+            intersections.push({
+              lat: intersection.lat,
+              lng: intersection.lng,
+              _path: path,
+              _pathIndex: j,
+              _currentPathIndex: i
+            });
+          }
         }
       }
     });
 
+    var markersFilter = function(layer) {
+      return layer.getLatLng;
+    };
+
+    // Cleans the intersections from null values.
     intersections = intersections.compact(true);
+
+    // Retrieves only markers from the reference layer.
+    var allLayers = this._referenceLayer.editable.getLayers().filter(markersFilter);
+    allLayers.add(this._referenceLayer.notEditable.getLayers().filter(markersFilter));
+
+    // Formats the layers to be used with geolib.
+    var geolibLayers = [];
+    allLayers.each(function(layer) {
+      var latLng = layer.getLatLng();
+      geolibLayers.push({
+        latitude: latLng.lat,
+        longitude: latLng.lng,
+        layer: layer
+      });
+    });
+
+    for (var i = 0; i < intersections.length; i += 1) {
+        var intersection = intersections[i];
+        var nearest = geolib.findNearest({latitude: intersection.lat, longitude: intersection.lng}, geolibLayers, 0, 1);
+        if (nearest.distance < 15) {
+          var nearestJunction = geolibLayers[nearest.key].layer;
+
+          // Adjust paths
+          self._layer._latlngs.add(nearestJunction.getLatLng(), intersection._currentPathIndex + 1);
+          intersection._path.add(nearestJunction.getLatLng(), intersection._pathIndex + 1);
+
+          intersections[i] = nearestJunction.getLatLng();
+          intersections[i].matchingJunction = nearestJunction;
+        }
+    }
 
     // For debug
     intersections.each(function(intersection) {

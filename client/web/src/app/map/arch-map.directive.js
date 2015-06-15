@@ -112,7 +112,7 @@ angular.module('archCarto')
 
             archPathJunctionService.getList()
               .then(function(result) {
-                archLayerService.addLayers('path', 'path', result.value, {
+                archLayerService.addLayers('path', 'junction', result.value, {
                   popupDirective: null,
                   onEachFeature: function(feature, layer) {
                     layer.on('mouseover', function(e) {
@@ -310,7 +310,8 @@ angular.module('archCarto')
             .then(function(map) {
               options = options || {};
               _controls[name] = new LClass(options);
-              deferred.resolve(map.addControl(_controls[name]));
+              map.addControl(_controls[name]);
+              deferred.resolve(_controls[name]);
             });
           return deferred.promise;
         };

@@ -14,6 +14,7 @@ angular.module('archCarto')
 
         _options[name] = options;
       },
+
       initLayer: function(name) {
         _layers[name] = {};
         _layers[name].editable = L.featureGroup();
@@ -22,6 +23,17 @@ angular.module('archCarto')
 
         return _layers[name];
       },
+
+      getLayers: function(layerName, optionName) {
+        var deferred = $q.defer();
+        if (_layerItems[layerName] && _layerItems[optionName]) {
+          deferred.resolve(_layerItems[layerName][optionName]);
+        } else {
+          deferred.reject(new Error('No layers matching these criterias where found'));
+        }
+        return deferred.promise;
+      },
+
       addLayers: function(layerName, optionsName, layers, optionsOverrides) {
         var options = angular.copy(_options[optionsName]);
         if (optionsOverrides) {
@@ -92,6 +104,22 @@ angular.module('archCarto')
             }
           }
         });
+      },
+
+      toLatLon: function(featureGroup) {
+        var latLons = [];
+        var layers = featureGroup.getLayers();
+        for (var i = 0; i < layers.length; i += 1) {
+          if (layers[i].getLatLng) {
+            var latLng = layers[i].getLatLng();
+            latLons.push({
+              latitude: latLng.lat,
+              longitude: latLng.lng,
+              layer: layers[i]
+            });
+          }
+        }
+        return latLons;
       }
     };
   });

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('archCarto')
-  .directive('archPath', function(leafletData, $log, $mdSidenav, $q, archPathService, archPathJunctionService, $compile, $state, archElevationService) {
+  .directive('archPath', function(leafletData, $log, $mdSidenav, $q, archPathService, archPathJunctionService, $compile, $state, archLayerService, archElevationService) {
     return {
       restrict: 'E',
       require: ['^archMap', '^archPath'],
@@ -98,10 +98,6 @@ angular.module('archCarto')
 
             control.setDrawingOptions({
               polyline: {
-                //guideLayers: layer.editable._layers,
-                //snapVertices: true
-                //archIntersectionsEnabled: true,
-                //archJunctionsEnabled: true,
                 archReferenceLayer: layer,
                 guideLayers: layer.editable._layers,
                 archIntersections: [],
@@ -112,6 +108,11 @@ angular.module('archCarto')
             map.on('draw:created', function (e) {
               var layerType = e.layerType;
               scope._currentLayer = e.layer;
+              var intersections = scope._currentLayer.archIntersection.getIntersections();
+              var junctionLatLons = [];
+              junctionLatLons.add(archLayerService.toLatLon(layer.editable));
+              junctionLatLons.add(archLayerService.toLatLon(layer.notEditable));
+
               /*_currentJunctionLayer = L.featureGroup();*/
 
               map.addLayer(scope._currentLayer);
@@ -122,7 +123,6 @@ angular.module('archCarto')
                 scope.hasDrawnPath = true;
 
                 control;
-                debugger;
               }
 
               scope.cancel = function () {
