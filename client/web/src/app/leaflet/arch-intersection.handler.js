@@ -28,19 +28,21 @@ L.Handler.ArchIntersection = L.Handler.extend({
   //_onMove: function() {
     var self = this;
 
-    var layers = self._referenceLayer.editable.getLayers();
     var allPaths = [];
 
-    layers.forEach(function(layer) {
-      var layerLatLngs = self._layer.getLatLngs();
-      var foundLayer = layerLatLngs.find(function(l) {
-        return l.lat === layer.lat && l.lng === layer.lng;
+    if (self._referenceLayer) {
+      var layers = self._referenceLayer.editable.getLayers();
+      layers.forEach(function (layer) {
+        var layerLatLngs = self._layer.getLatLngs();
+        var foundLayer = layerLatLngs.find(function (l) {
+          return l.lat === layer.lat && l.lng === layer.lng;
+        });
+        if (layer.getLatLngs && !foundLayer) {
+          var latLngs = layer.getLatLngs();
+          allPaths.push(latLngs);
+        }
       });
-      if (layer.getLatLngs && !foundLayer) {
-        var latLngs = layer.getLatLngs();
-        allPaths.push(latLngs);
-      }
-    });
+    }
     allPaths.push(this._layer.getLatLngs());
 
     var currentLayerCoords = this._layer.getLatLngs();
