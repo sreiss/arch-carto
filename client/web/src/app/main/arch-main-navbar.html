@@ -8,7 +8,7 @@
     <md-button class="md-button" href="{{loginUrl}}" ng-if="!alreadyLogged">
       <span>{{'MAIN_PAGE_LOGIN' | translate}}</span>
     </md-button>
-    <md-button class="md-button" ui-sref="subscribe" ng-if="!alreadyLogged">
+    <md-button class="md-button" ui-sref="main.subscribe" ng-if="!alreadyLogged">
       <span>{{'MAIN_PAGE_SIGNIN' | translate}}</span>
     </md-button>
     <md-button class="md-button" ui-sref="map.home" ng-if="alreadyLogged">

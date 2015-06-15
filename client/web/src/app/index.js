@@ -23,20 +23,25 @@ angular.module('archCarto', [
 
     $stateProvider
       .state('main', {
-        url: '/',
+        url: '',
+        abstract: true,
         views: {
           main: {
             templateUrl: 'app/main/main.html'
           }
         }
       })
+      .state('main.home', {
+        url: '/',
+        templateUrl: 'app/main/main-home.html'
+      })
+      .state('main.subscribe', {
+        url: '/subscribe',
+        template: '<arch-subscribe></arch-subscribe>'
+      })
       .state('main.token', {
         url: '/token/:token',
-        views: {
-          main: {
-            templateUrl: 'app/main/main.html'
-          }
-        }
+        template: ''
       })
       .state('map', {
         url: '/map',
@@ -151,14 +156,6 @@ angular.module('archCarto', [
         views: {
           "mapRight": {
             template: '<arch-search-form></arch-search-form>'
-          }
-        }
-      })
-      .state('subscribe', {
-        url: '/subscribe',
-        views: {
-          main: {
-            templateUrl: 'app/subscribe/subscribe.html'
           }
         }
       });
