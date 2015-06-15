@@ -1,14 +1,16 @@
 'use strict'
 angular.module('archCarto')
-  .factory('archSubscribeService', function(httpConstant, $q) {
-    var casUrl = httpConstant.casServerUrl + '/';
+  .factory('archSubscribeService', function(httpConstant, archHttpService, $q) {
+    var casUrl = httpConstant.casServerUrl + '/oauth';
 
     return {
-      saveUser: function (oauthUser, cartoUser)
+      subscribe: function (oauthUser)
       {
         var deferred = $q.defer();
 
-        archHttpService.post(casUrl, oauthUser).then(function(result)
+        oauthUser.signuptype = httpConstant.signupType;
+
+        archHttpService.post(casUrl + '/user', oauthUser).then(function(result)
         {
           deferred.resolve(result);
         })

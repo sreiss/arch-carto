@@ -178,7 +178,7 @@ angular.module('archCarto', [
           //debugger;
           if (rejection.data) {
             var $mdToast = $injector.get('$mdToast');
-            var untranslatedMessage = angular.copy(rejection.data.message);
+            var untranslatedMessage = angular.copy(rejection.data.error.message) || angular.copy(rejection.data.message);
             if (untranslatedMessage) {
               return archTranslateService(untranslatedMessage)
                 .then(function (translation) {

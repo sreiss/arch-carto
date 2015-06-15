@@ -6,20 +6,15 @@ angular.module('archCarto')
       templateUrl: 'components/subscribe/arch-subscribe.html',
       controller: function($scope)
       {
-        $scope.subscribeSuccess = false;
-
         $scope.subscribe = function()
         {
-          $scope.subscribeSuccess = true;
-          /*archSubscribeService.addUser($scope.oauthUser, $scope.cartoUser).then(function(result)
+          archSubscribeService.subscribe($scope.oauthUser).then(function(result)
           {
-            $mdToast.show($mdToast.simple().content("Membre ajouté avec succés.").position('top right').hideDelay(3000));
+            console.log(result);
           })
           .catch(function(err)
           {
-            $mdToast.show($mdToast.simple().content("Une erreur est survenue lors de l'ajout du membre.").position('top right').hideDelay(3000)
-            );
-          });*/
+          });
         }
       }
     };

@@ -1,6 +1,6 @@
-<h2>Inscrivez vous et devenez un thugCartographer !</h2>
+<h2>{{'SUBSCRIBE_FORM_TITLE' | translate}}</h2>
 
-<form name="subscribeForm" role="form" ng-submit="subscribe()" ng-hide="subscribeSuccess">
+<form name="subscribeForm" role="form" ng-submit="subscribe()">
   <div layout="column">
     <div layout="row">
       <md-icon class="fa fa-user"></md-icon>
@@ -24,18 +24,9 @@
       </md-input-container>
     </div>
     <div layout="row">
-      <md-icon class="fa fa-lock"></md-icon>
-      <md-input-container flex>
-        <label>{{'SUBSCRIBE_FORM_PASSWORD' | translate}}</label>
-        <input type="password" ng-model="oauthUser.password" ng-required="true">
-      </md-input-container>
-    </div>
-    <div layout="row">
-      <md-icon class="fa fa-lock"></md-icon>
-      <md-input-container flex>
-        <label>{{'SUBSCRIBE_FORM_CONFIRM' | translate}}</label>
-        <input type="password" ng-model="oauthUser.confirm" ng-required="true">
-      </md-input-container>
+      <md-checkbox class="no-margin-left" ng-model="acceptCGU" aria-label="{{'SUBSCRIBE_FORM_CGU' | translate}}" required="true">
+        {{'SUBSCRIBE_FORM_CGU' | translate}}
+      </md-checkbox>
     </div>
   </div>
 
@@ -43,5 +34,3 @@
     <md-button class="md-raised md-accent" type="submit" ng-disabled="subscribeForm.$invalid">{{'SUBSCRIBE_FORM_SUBMIT' | translate}}</md-button>
   </div>
 </form>
-
-<p ng-show="subscribeSuccess">GG Compte créé</p>

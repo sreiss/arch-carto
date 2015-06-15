@@ -5,7 +5,7 @@ angular.module('archCarto')
     $translate, $mdSidenav, $mdDialog, $mdToast, archCourseService,
     $state, archUtilsService, leafletData, archLayerService,
     archMapControlService, archMarkerBugService, archMarkerPoiService,
-    archPathJunctionService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT,
+    archPathJunctionService, archAccountService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT,
     ARCH_LAYER_TYPES) {
     return {
       restrict: 'E',
@@ -31,6 +31,12 @@ angular.module('archCarto')
         $scope.map.layers.baselayers = {};
 
         $scope.layersReady = false;
+
+        $scope.isLogged = false;
+        if(archAccountService.getCurrentToken())
+        {
+          $scope.isLogged = true;
+        }
 
         // region layers
 
