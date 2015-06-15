@@ -1,6 +1,6 @@
 <md-toolbar class="arch-navbar" id="toolbar" style="position:fixed;top:0; background:rgba(76,175,80, 1);" >
   <div class="md-toolbar-tools">
-    <a href="/"><b>{{'CUSTOMER_NAME' | translate}}</b> - {{'CUSTOMER_DESC' | translate}}</a>
+    <a href="/#/"><b>{{'CUSTOMER_NAME' | translate}}</b> - {{'CUSTOMER_DESC' | translate}}</a>
     <span flex></span>
     <md-button ui-sref="map.home">
       <span>{{'ACCESS_MAP' | translate}}</span>
@@ -11,10 +11,7 @@
     <md-button class="md-button" ui-sref="main.subscribe" ng-if="!alreadyLogged">
       <span>{{'MAIN_PAGE_SIGNIN' | translate}}</span>
     </md-button>
-    <md-button class="md-button" ui-sref="map.home" ng-if="alreadyLogged">
-      <span>{{'ACCESS_MAP' | translate}}</span>
-    </md-button>
-    <md-button class="md-button" ui-sref="map.home" ng-if="alreadyLogged">
+    <md-button class="md-button" ui-sref="map.memberSpace.personalInfos" ng-if="alreadyLogged">
       <span>{{user.fname}} {{user.lname}}</span>
     </md-button>
     <md-button class="md-button" ng-click="logout()" ng-if="alreadyLogged">

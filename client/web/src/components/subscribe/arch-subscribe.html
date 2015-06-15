@@ -1,36 +1,40 @@
-<h2>{{'SUBSCRIBE_FORM_TITLE' | translate}}</h2>
+<md-card style="background: rgba(255,255,255,0.7);">
+  <md-card-content>
+    <h2>{{'SUBSCRIBE_FORM_TITLE' | translate}}</h2>
 
-<form name="subscribeForm" role="form" ng-submit="subscribe()">
-  <div layout="column">
-    <div layout="row">
-      <md-icon class="fa fa-user"></md-icon>
-      <md-input-container flex>
-        <label>{{'SUBSCRIBE_FORM_LNAME' | translate}}</label>
-        <input type="text" ng-model="oauthUser.lname" ng-required="true">
-      </md-input-container>
-    </div>
-    <div layout="row">
-      <md-icon class="fa fa-user"></md-icon>
-      <md-input-container flex>
-        <label>{{'SUBSCRIBE_FORM_FNAME' | translate}}</label>
-        <input type="text" ng-model="oauthUser.fname" ng-required="true">
-      </md-input-container>
-    </div>
-    <div layout="row">
-      <md-icon class="fa fa-envelope-o"></md-icon>
-      <md-input-container flex>
-        <label>{{'SUBSCRIBE_FORM_EMAIL' | translate}}</label>
-        <input type="email" ng-model="oauthUser.email" ng-required="true">
-      </md-input-container>
-    </div>
-    <div layout="row">
-      <md-checkbox class="no-margin-left" ng-model="acceptCGU" aria-label="{{'SUBSCRIBE_FORM_CGU' | translate}}" required="true">
-        {{'SUBSCRIBE_FORM_CGU' | translate}}
-      </md-checkbox>
-    </div>
-  </div>
+    <form name="subscribeForm" role="form" ng-submit="subscribe()">
+      <div layout="column">
+        <div layout="row">
+          <md-icon class="fa fa-user"></md-icon>
+          <md-input-container flex>
+            <label>{{'SUBSCRIBE_FORM_LNAME' | translate}}</label>
+            <input type="text" ng-model="oauthUser.lname" ng-required="true">
+          </md-input-container>
+        </div>
+        <div layout="row">
+          <md-icon class="fa fa-user"></md-icon>
+          <md-input-container flex>
+            <label>{{'SUBSCRIBE_FORM_FNAME' | translate}}</label>
+            <input type="text" ng-model="oauthUser.fname" ng-required="true">
+          </md-input-container>
+        </div>
+        <div layout="row">
+          <md-icon class="fa fa-envelope-o"></md-icon>
+          <md-input-container flex>
+            <label>{{'SUBSCRIBE_FORM_EMAIL' | translate}}</label>
+            <input type="email" ng-model="oauthUser.email" ng-required="true">
+          </md-input-container>
+        </div>
+        <div layout="row">
+          <md-checkbox class="no-margin-left" ng-model="acceptCGU" aria-label="{{'SUBSCRIBE_FORM_CGU' | translate}}" required="true">
+            {{'SUBSCRIBE_FORM_CGU' | translate}}
+          </md-checkbox>
+        </div>
+      </div>
 
-  <div class="md-actions" layout="row">
-    <md-button class="md-raised md-accent" type="submit" ng-disabled="subscribeForm.$invalid">{{'SUBSCRIBE_FORM_SUBMIT' | translate}}</md-button>
-  </div>
-</form>
+      <div class="md-actions" layout="row">
+        <md-button class="md-raised md-accent" type="submit" ng-disabled="subscribeForm.$invalid">{{'SUBSCRIBE_FORM_SUBMIT' | translate}}</md-button>
+      </div>
+    </form>
+  </md-card-content>
+</md-card>

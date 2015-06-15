@@ -125,6 +125,7 @@ angular.module('archCarto')
     COURSES_I_RATED: "Itinéraires que j'ai noté",
     MY_COURSES: "Mes itinéraires",
     MY_FAVORITE_COURSES: "Mes itinéraires favoris",
+    PERSONAL_INFOS : "Informations personnelles",
 
     SUBSCRIBE_FORM_TITLE : "Inscrivez vous et devenez un thugCartographer !",
     SUBSCRIBE_FORM_LNAME : "Nom",

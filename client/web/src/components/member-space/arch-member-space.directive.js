@@ -9,7 +9,8 @@ angular.module('archCarto')
         scope.tabs = [
           {label: 'COURSES_I_RATED', state: 'map.memberSpace.ratedCourses'},
           {label: 'MY_COURSES', state: 'map.memberSpace.courses'},
-          {label: 'MY_FAVORITE_COURSES', state: 'map.memberSpace.favoriteCourses'}
+          {label: 'MY_FAVORITE_COURSES', state: 'map.memberSpace.favoriteCourses'},
+          {label: 'PERSONAL_INFOS', state: 'map.memberSpace.personalInfos'}
         ];
 
         scope.go = function(tab) {

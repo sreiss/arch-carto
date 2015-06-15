@@ -130,6 +130,10 @@ angular.module('archCarto', [
         url: '/favorite-courses',
         template: '<arch-member-space-favorite-courses></arch-member-space-favorite-courses>'
       })
+      .state('map.memberSpace.personalInfos', {
+        url: '/personal-infos',
+        template: '<arch-member-space-personal-infos></arch-member-space-personal-infos>'
+      })
       /*
       .state('map.center', {
         url: '/center',
