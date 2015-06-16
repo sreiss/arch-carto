@@ -1,8 +1,6 @@
 'use strict'
 angular.module('archCarto')
   .factory('archAccountService', function(archHttpService, $q, httpConstant, $cookieStore, $base64) {
-    var casUrl = httpConstant.casServerUrl + '/oauth';
-
     var _roles = {
       AUTHENTICATED: ['AUTHENTICATED'],
       MEMBER: ['AUTHENTICATED', 'MEMBER'],
@@ -21,14 +19,14 @@ angular.module('archCarto')
 
         var deferred = $q.defer();
 
-        archHttpService.post(casUrl + '/client', client).then(function(result)
+        archHttpService.post(httpConstant.casServerUrl + '/oauth/client', client).then(function(result)
         {
           deferred.resolve(result);
         })
-          .catch(function(err)
-          {
-            deferred.reject(err.message);
-          });
+        .catch(function(err)
+        {
+          deferred.reject(err.message);
+        });
 
         return deferred.promise;
       },
@@ -53,6 +51,7 @@ angular.module('archCarto')
 
       getCurrentUser: function()
       {
+        var self = this;
         var deferred = $q.defer();
         var token = this.getCurrentToken();
 
@@ -62,13 +61,37 @@ angular.module('archCarto')
 
           if(currentUser)
           {
-            this.getProfile(currentUser._id).then(function(profile)
+            self.getProfile(currentUser._id).then(function(result)
             {
-              currentUser.profile = profile || {};
+              if(result.count > 1)
+              {
+                return result;
+              }
+              else
+              {
+                return $q.reject(new Error('CARTO_PROFILE_NOT_FOUND'));
+              }
             })
-            .then(function()
+            .catch(function()
+            {
+              return self.getCoreProfile(currentUser._id).then(function(coreProfile)
+              {
+                var cartoProfile =
+                {
+                  oauth : coreProfile.data.oauth,
+                  role : coreProfile.data.role._id
+                };
+
+                return archHttpService.post(httpConstant.cartoServerUrl + '/users/user', cartoProfile).then(function(cartoProfile)
+                {
+                  return coreProfile;
+                });
+              })
+            })
+            .then(function(profile)
             {
               var assets = {};
+              currentUser.profile = profile.data;
               currentUser.profile.role = currentUser.profile.role || {};
               currentUser.profile.role.name = currentUser.profile.role.name || '';
 
@@ -83,10 +106,6 @@ angular.module('archCarto')
               };
 
               currentUser.profile.role.assets = assets;
-              deferred.resolve(currentUser);
-            })
-            .catch(function()
-            {
               deferred.resolve(currentUser);
             });
           }
@@ -113,7 +132,23 @@ angular.module('archCarto')
         })
         .catch(function(err)
         {
-          deferred.reject(err.message);
+          deferred.reject(err);
+        });
+
+        return deferred.promise;
+      },
+
+      getCoreProfile: function(id)
+      {
+        var deferred = $q.defer();
+
+        archHttpService.get(httpConstant.coreServerUrl + '/users/user/' + id).then(function(result)
+        {
+          deferred.resolve(result);
+        })
+        .catch(function(err)
+        {
+          deferred.reject(err);
         });
 
         return deferred.promise;
@@ -122,7 +157,8 @@ angular.module('archCarto')
       logout: function()
       {
         $cookieStore.remove('token');
-        window.location = httpConstant.cartoClientUrl + '/#/';
+        window.location.href = httpConstant.cartoClientUrl + '/#/';
+        window.location.reload();
       },
 
       getLoginUrl: function()
@@ -149,13 +185,13 @@ angular.module('archCarto')
             $cookieStore.put('CARTO_clientRedirectUri', result.data.clientRedirectUri);
             $cookieStore.put('CARTO_clientHash', clientHash);
 
-            deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + clientHash + '&return=' + $base64.encode(result.data.clientRedirectUri));
+            deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + clientHash + '&logout=true&return=' + $base64.encode(result.data.clientRedirectUri));
           });
         }
         else
         {
           console.log('INIT : Params found in cookies.');
-          deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + cookieClientHash + '&return=' + $base64.encode(cookieClientRedirectUri));
+          deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + cookieClientHash + '&logout=true&return=' + $base64.encode(cookieClientRedirectUri));
         }
 
         return deferred.promise;

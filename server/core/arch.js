@@ -25,7 +25,8 @@ var path = require('path'),
 
 exports.name = 'arch';
 
-exports.attach = function(opts) {
+exports.attach = function(opts)
+{
     var app = this;
 
     app.arch = {};
@@ -53,16 +54,17 @@ exports.attach = function(opts) {
     app.use(controllersLoader);
     app.use(routesLoader);
     app.use(userCleaner);
-    //app.use(pluginsLoader);
 };
 
-exports.init = function(done) {
+exports.init = function(done)
+{
     var app = this;
 
     var config = app.arch.config;
     var port = config.get('http:port');
 
-    app.arch.server.listen(port, function() {
+    app.arch.server.listen(port, function()
+    {
         var address = app.arch.server.address();
         var port = address.port || '80';
         console.log('[' + (new Date()) + '] Listening to port ' + port);

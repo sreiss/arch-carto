@@ -57,23 +57,14 @@ angular.module('archCarto')
       {
         var config = config || {};
         var token = $cookieStore.get('token') || null;
-        if (token !== null) {
+
+        if (token !== null)
+        {
           var accessToken = token.access_token || null;
 
           config.headers =
           {
             "Authorization": 'Bearer ' + accessToken,
-            "Content-Type": "application/x-www-form-urlencoded"
-          };
-
-          config.transformRequest = function (obj) {
-            var str = [];
-
-            for (var p in obj) {
-              str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-            }
-
-            return str.join("&");
           };
         }
 

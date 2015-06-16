@@ -2,6 +2,13 @@
   <md-card-content>
     <h2>{{'SUBSCRIBE_FORM_TITLE' | translate}}</h2>
 
+
+    <div ng-messages="$success">
+      <div class="ng-message-success" ng-message="subscribeSucceed">
+        {{'SUBSCRIBE_SUCCESS_1' | translate}}<br>{{'SUBSCRIBE_SUCCESS_2' | translate}}
+      </div>
+    </div>
+
     <form name="subscribeForm" role="form" ng-submit="subscribe()">
       <div layout="column">
         <div layout="row">
@@ -27,7 +34,7 @@
         </div>
         <div layout="row">
           <md-checkbox class="no-margin-left" ng-model="acceptCGU" aria-label="{{'SUBSCRIBE_FORM_CGU' | translate}}" required="true">
-            {{'SUBSCRIBE_FORM_CGU' | translate}}
+            {{'SUBSCRIBE_FORM_CGU_1' | translate}} <a href="#">{{'SUBSCRIBE_FORM_CGU_2' | translate}}</a>
           </md-checkbox>
         </div>
       </div>

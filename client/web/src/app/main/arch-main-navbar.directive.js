@@ -16,8 +16,6 @@ angular.module('archCarto')
           // Check token in cookies.
           var token = archAccountService.getCurrentToken();
 
-          console.log($stateParams);
-
           if(!token && $stateParams.token)
           {
             $cookieStore.put('token', JSON.parse(decodeURIComponent(atob($stateParams.token))));
@@ -40,7 +38,6 @@ angular.module('archCarto')
 
                 archAccountService.getLoginUrl().then(function(loginUrl)
                 {
-                  console.log(loginUrl);
                   window.location = loginUrl;
                 });
               }

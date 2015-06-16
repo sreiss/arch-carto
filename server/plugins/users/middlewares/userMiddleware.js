@@ -29,13 +29,6 @@ module.exports = function() {
                 throw new ArchParameterError("User last name must contain at least 3 chars.")
             }
 
-            // Check user email.
-            var userEmail = userData.email || '';
-            if(!validator.isEmail(userEmail))
-            {
-                throw new ArchParameterError("User email isn't a valid mail address.")
-            }
-
             // Check user password.
             var userPassword = userData.password || '';
             if(!validator.isLength(userPassword, 5))

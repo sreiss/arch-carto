@@ -41,7 +41,7 @@ angular.module('archCarto', [
       })
       .state('main.token', {
         url: '/token/:token',
-        template: ''
+        templateUrl: 'app/main/main-home.html'
       })
       .state('map', {
         url: '/map',

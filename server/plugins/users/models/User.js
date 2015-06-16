@@ -10,13 +10,9 @@ module.exports = function(Types) {
         schema:
         {
             oauth: {type: Types.ObjectId, required: true},
-            role: {type: String},
-            birthdate: {type: Date},
-            phone: {type: String},
-            avatar: {type: String},
-            firstconnexion: {type: Boolean, default: true},
+            role: {type: Types.ObjectId, ref: 'Role'},
             favoriteCourses: [{type: Types.ObjectId, ref: 'Course'}]
         },
-        priority: 1
+        priority: 2
     };
 };
