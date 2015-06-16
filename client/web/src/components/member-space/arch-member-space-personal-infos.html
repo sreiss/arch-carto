@@ -1,7 +1,43 @@
-<md-list>
-  <md-list-item class="md-2-line" ng-repeat="rating in ratings">
-    <div class="md-list-item-text">
-      {{rating}}
+<form name="personalInfosForm" role="form" ng-submit="updatePersonalInfos()">
+  <div layout="column">
+    <div layout="row">
+      <md-icon class="fa fa-user"></md-icon>
+      <md-input-container flex>
+        <label>{{'PERSONAL_INFOS_FORM_LNAME' | translate}}</label>
+        <input type="text" ng-model="oauthUser.lname" ng-required="true">
+      </md-input-container>
     </div>
-  </md-list-item>
-</md-list>
+    <div layout="row">
+      <md-icon class="fa fa-user"></md-icon>
+      <md-input-container flex>
+        <label>{{'PERSONAL_INFOS_FORM_FNAME' | translate}}</label>
+        <input type="text" ng-model="oauthUser.fname" ng-required="true">
+      </md-input-container>
+    </div>
+    <div layout="row">
+      <md-icon class="fa fa-envelope-o"></md-icon>
+      <md-input-container flex>
+        <label>{{'PERSONAL_INFOS_FORM_EMAIL' | translate}}</label>
+        <input type="email" ng-model="oauthUser.email" ng-required="true" readonly="true">
+      </md-input-container>
+    </div>
+    <div layout="row">
+      <md-icon class="fa fa-lock-o"></md-icon>
+      <md-input-container flex>
+        <label>{{'PERSONAL_INFOS_FORM_PASSWORD' | translate}}</label>
+        <input type="text" ng-model="oauthUser.password">
+      </md-input-container>
+    </div>
+    <div layout="row">
+      <md-icon class="fa fa-lock-o"></md-icon>
+      <md-input-container flex>
+        <label>{{'PERSONAL_INFOS_FORM_CONFIRM' | translate}}</label>
+        <input type="text" ng-model="oauthUser.confirm">
+      </md-input-container>
+    </div>
+  </div>
+
+  <div class="md-actions" layout="row">
+    <md-button class="md-raised md-accent" type="submit" ng-disabled="personalInfosForm.$invalid">{{'SUBSCRIBE_FORM_SUBMIT' | translate}}</md-button>
+  </div>
+</form>
