@@ -23,12 +23,30 @@ exports.attach = function(opts) {
     expressApp.use(function(req, res, next)
     {
         var origin = req.headers.origin;
+        var method = req.method;
 
-        if (allowedOrigins.indexOf(origin) > -1)
+        if(allowedOrigins.indexOf(origin) > -1)
         {
-            res.header('Access-Control-Allow-Origin', origin);
-            res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
-            res.header('Access-Control-Allow-Headers', 'Content-Type');
+            var headers =
+            {
+                'Access-Control-Allow-Origin' : origin,
+                'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Credentials' : true,
+                'Access-Control-Allow-Headers' : 'Content-Type'
+            }
+
+            if(method == 'OPTIONS')
+            {
+                res.writeHead(200, headers);
+                res.end();
+            }
+            else
+            {
+                res.header('Access-Control-Allow-Origin', origin);
+                res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+                res.header('Access-Control-Allow-Credentials', true);
+                res.header('Access-Control-Allow-Headers', 'Content-Type');
+            }
         }
 
         return next();
