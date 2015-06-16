@@ -28,27 +28,13 @@ exports.attach = function(opts) {
     config.set('db:url', dbUrl);
 };
 
-exports.init = function(done) {
+exports.init = function(done)
+{
     var app = this;
 
     var config = app.arch.config;
     var plugins = app.arch.plugins;
     var pluginsDir = config.get('pluginsDir');
-
-    /*
-    config.set('plugins', 'ok');
-    var pluginsConf = config.get('plugins');
-
-    for (var pluginName in plugins) {
-        var plugin = plugins[pluginName];
-        config.add('plugins:' + pluginName, {type: 'file', file: path.join(pluginsDir, pluginName, 'plugin.js')});
-        config.load();
-
-        var pluginsConf = config.get('plugins');
-        var dependencies = config.get('plugins:' + pluginName).get('dependencies') || [];
-
-        config.set('plugins:' + pluginName + ':dependencies', dependencies);
-    }*/
 
     return done();
 };

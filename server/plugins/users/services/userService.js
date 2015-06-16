@@ -73,7 +73,7 @@ module.exports = function(User, userService, config)
         {
             var deferred = Q.defer();
 
-            User.findOne({oauth: oauthUserId}).exec(function(err, result)
+            User.findOne({oauth: oauthUserId}).populate('role').exec(function(err, result)
             {
                 if(err)
                 {

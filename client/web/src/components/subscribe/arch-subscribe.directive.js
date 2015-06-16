@@ -10,10 +10,11 @@ angular.module('archCarto')
         {
           archSubscribeService.subscribe($scope.oauthUser).then(function(result)
           {
-            console.log(result);
+            $scope.$success = {"subscribeSucceed" : true};
           })
           .catch(function(err)
           {
+            console.log(err);
           });
         }
       }

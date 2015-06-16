@@ -127,12 +127,14 @@ angular.module('archCarto')
     MY_FAVORITE_COURSES: "Mes itinéraires favoris",
     PERSONAL_INFOS : "Informations personnelles",
 
-    SUBSCRIBE_FORM_TITLE : "Inscrivez vous et devenez un thugCartographer !",
+    SUBSCRIBE_FORM_TITLE : "Inscrivez-vous en quelques secondes !",
     SUBSCRIBE_FORM_LNAME : "Nom",
     SUBSCRIBE_FORM_FNAME : "Prénom",
     SUBSCRIBE_FORM_EMAIL : "Adresse e-mail",
     SUBSCRIBE_FORM_SUBMIT : "M'inscrire",
-    SUBSCRIBE_FORM_CGU : "J'accepte les conditions d'utilisations générales.",
+    SUBSCRIBE_FORM_CGU_1 : "J'accepte les",
+    SUBSCRIBE_FORM_CGU_2 : "conditions d'utilisations générales.",
     EMAIL_ALREADY_EXISTS : "Un compte est déjà associé à cette adresse e-mail.",
-    SUBSCRIBE_SUCCESS : "Félicitations ! Consultez vos e-mails pour récupérer vos identifiants."
+    SUBSCRIBE_SUCCESS_1 : "Félicitations ! Votre compte a été créé avec succès.",
+    SUBSCRIBE_SUCCESS_2 : "Consultez vos e-mails pour récupérer vos identifiants."
   });

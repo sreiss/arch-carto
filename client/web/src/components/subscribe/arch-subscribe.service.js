@@ -1,8 +1,6 @@
 'use strict'
 angular.module('archCarto')
   .factory('archSubscribeService', function(httpConstant, archHttpService, $q) {
-    var casUrl = httpConstant.casServerUrl + '/oauth';
-
     return {
       subscribe: function (oauthUser)
       {
@@ -10,14 +8,34 @@ angular.module('archCarto')
 
         oauthUser.signuptype = httpConstant.signupType;
 
-        archHttpService.post(casUrl + '/user', oauthUser).then(function(result)
+        archHttpService.post(httpConstant.casServerUrl + '/oauth/user', oauthUser).then(function(oauthUser)
         {
-          deferred.resolve(result);
+          archHttpService.get(httpConstant.cartoServerUrl + '/users/role/MEMBER').then(function(role)
+          {
+            var cartoUser =
+            {
+              oauth : oauthUser.data._id,
+              role : role.data._id
+            };
+
+            archHttpService.post(httpConstant.cartoServerUrl + '/users/user', cartoUser).then(function(cartoUser)
+            {
+              deferred.resolve(cartoUser);
+            })
+            .catch(function(err)
+            {
+              deferred.reject(err);
+            })
+          })
+          .catch(function(err)
+          {
+            deferred.reject(err);
+          })
         })
         .catch(function(err)
         {
           deferred.reject(err);
-        })
+        });
 
         return deferred.promise;
       }
