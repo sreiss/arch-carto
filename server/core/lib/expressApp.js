@@ -23,30 +23,33 @@ exports.attach = function(opts) {
     expressApp.use(function(req, res, next)
     {
         var origin = req.headers.origin;
+        var method = req.method;
 
-        if (allowedOrigins.indexOf(origin) > -1)
+        if(allowedOrigins.indexOf(origin) > -1)
         {
-            res.header('Access-Control-Allow-Origin', origin);
-            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-            res.header('Access-Control-Allow-Headers', 'Content-Type');
+            var headers =
+            {
+                'Access-Control-Allow-Origin' : origin,
+                'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Credentials' : true,
+                'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+            }
+
+            if(method == 'OPTIONS')
+            {
+                res.writeHead(200, headers);
+                res.end();
+            }
+            else
+            {
+                res.header('Access-Control-Allow-Origin', origin);
+                res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+                res.header('Access-Control-Allow-Credentials', true);
+                res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+            }
         }
 
         return next();
-    });
-
-    // Allow OPTIONS requests.
-    expressApp.options('*', function(req, res)
-    {
-        var headers = {};
-
-        headers["Access-Control-Allow-Origin"] = "*";
-        headers["Access-Control-Allow-Methods"] = "POST, PUT, DELETE, GET, OPTIONS";
-        headers["Access-Control-Allow-Credentials"] = false;
-        headers["Access-Control-Max-Age"] = '86400';
-        headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Authorization";
-
-        res.writeHead(200, headers);
-        res.end();
     });
 
     expressApp.use(logger('dev'));
