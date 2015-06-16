@@ -5,32 +5,29 @@ if (!L) {
 // region ArchJunction
 
 L.Handler.ArchJunction = L.Handler.extend({
-  initialize: function(map, marker, referenceLayer, options) {
+  initialize: function(map, marker, referenceLayer) {
     this._map = map;
     this._marker = marker;
     this._referenceLayer = referenceLayer;
-
-    options = options || {};
-    this._options = {
-      magnetismDistance: options.magnetismeDistance || 5
-    }
   },
 
   addHooks: function() {
-    this._marker.on('move', this._onMove, this);
+    this._marker.on('snap', this._onSnap, this);
   },
 
   removeHooks: function() {
-    this._marker.off('move', this._onMove, this);
+    this._marker.off('snap', this._onSnap, this);
   },
 
-  _onMove: function(e) {
+  _onSnap: function(e) {
     var layers = this._referenceLayer.editable.getLayers();
-    var closest = L.GeometryUtil.closestLayerSnap(this._map, layers, e.latlng, this._options.magnetismDistance);
-    if (closest && closest.layer instanceof L.Marker) {
-      closest.layer.on('click', function() {
-        console.log('ok');
-      });
+    var junctions = layers.filter(function(layer) {
+      return layer instanceof L.Marker;
+    });
+    var closest = L.GeometryUtil.closestLayerSnap(this._map, junctions, e.latlng, 15);
+    console.log(closest);
+    if (closest) {
+      this._marker.setLatLng(closest.layer.getLatLng());
       //this._marker.setLatLng(closest.latlng);
     }
   }
