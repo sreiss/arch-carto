@@ -11,6 +11,7 @@ module.exports = function(Types) {
         onSchemaReady: function(junctionSchema) {
             junctionSchema.pre('validate', function(next) {
                 this.properties.entity = "JUNCTION";
+                this.properties.auditEvents = this.properties.auditEvents || [];
                 return next();
             });
         },

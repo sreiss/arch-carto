@@ -45,11 +45,11 @@ module.exports = function(Junction, pathService) {
                 var promises = [];
                 for(var i = 0; i < (paths = rawJunction.properties.paths).length; i += 1) {
                     if (paths[i]._id) {
-                        promises.push($q.when(junction.properties.paths.push(paths[i]._id)));
+                        promises.push(Q.when(paths[i]._id));
                     } else {
                         promises.push(pathService.save(paths[i])
                             .then(function(savedPath) {
-                                junction.properties.paths.push(savedPath._id);
+                                return savedPath._id;
                                 return true;
                             })
                             .catch(function(err) {
@@ -58,7 +58,11 @@ module.exports = function(Junction, pathService) {
                     }
                 }
                 Q.all(promises)
-                    .then(function() {
+                    .then(function(pathIds) {
+                        junction.properties.paths = [];
+                        pathIds.forEach(function(pathId) {
+                            junction.properties.paths.push(pathId.toHexString());
+                        });
                         junction.save(function(err, savedJunction) {
                             if (err) {
                                 deferred.reject(err);

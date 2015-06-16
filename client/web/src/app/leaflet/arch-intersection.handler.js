@@ -30,6 +30,7 @@ L.Handler.ArchIntersection = L.Handler.extend({
 
     var allPaths = [];
 
+    /*
     if (self._referenceLayer) {
       var layers = self._referenceLayer.editable.getLayers();
       layers.forEach(function (layer) {
@@ -46,26 +47,42 @@ L.Handler.ArchIntersection = L.Handler.extend({
     allPaths.push(this._layer.getLatLngs());
 
     var currentLayerCoords = this._layer.getLatLngs();
+    */
+    var allPaths = [];
+    if (self._referenceLayer) {
+      allPaths.add(self._referenceLayer.editable.getLayers());
+    }
+    //allPaths.add(self._layer);
+
+    // Initial fetching of the current coordinates
+    var currentLayerCoords;
+    var pathLayerCoords;
 
     var intersections = [];
     allPaths.forEach(function(path) {
-      for (var i = 0; i < currentLayerCoords.length - 1; i += 1) {
-        for (var j = 0; j < path.length - 1; j += 1) {
-          var intersection = self._computeIntersection(
-            currentLayerCoords[i].lat, currentLayerCoords[i].lng,
-            currentLayerCoords[i + 1].lat, currentLayerCoords[i + 1].lng,
-            path[j].lat, path[j].lng,
-            path[j + 1].lat, path[j + 1].lng
-          );
+      if (path.getLatLngs) {
+        currentLayerCoords = self._layer.getLatLngs();
+        pathLayerCoords = path.getLatLngs();
 
-          if (intersection !== null) {
-            intersections.push({
-              lat: intersection.lat,
-              lng: intersection.lng,
-              _path: path,
-              _pathIndex: j,
-              _currentPathIndex: i
-            });
+        for (var i = 0; i < currentLayerCoords.length - 1; i += 1) {
+          for (var j = 0; j < pathLayerCoords.length - 1; j += 1) {
+
+            var intersection = self._computeIntersection(
+              currentLayerCoords[i].lat, currentLayerCoords[i].lng,
+              currentLayerCoords[i + 1].lat, currentLayerCoords[i + 1].lng,
+              pathLayerCoords[j].lat, pathLayerCoords[j].lng,
+              pathLayerCoords[j + 1].lat, pathLayerCoords[j + 1].lng
+            );
+
+            if (intersection !== null) {
+              intersections.push({
+                lat: intersection.lat,
+                lng: intersection.lng,
+                _path: path,
+                _pathIndex: j + 1,
+                _currentPathIndex: i + 1
+              });
+            }
           }
         }
       }
@@ -86,26 +103,46 @@ L.Handler.ArchIntersection = L.Handler.extend({
     var geolibLayers = [];
     allLayers.each(function(layer) {
       var latLng = layer.getLatLng();
-      geolibLayers.push({
-        latitude: latLng.lat,
-        longitude: latLng.lng,
+      geolibLayers.push(self._toLatLon(latLng, {
         layer: layer
-      });
+      }));
     });
 
     for (var i = 0; i < intersections.length; i += 1) {
-        var intersection = intersections[i];
-        var nearest = geolib.findNearest({latitude: intersection.lat, longitude: intersection.lng}, geolibLayers, 0, 1);
-        if (nearest.distance < 15) {
-          var nearestJunction = geolibLayers[nearest.key].layer;
+      var junction;
+      var nearest = geolib.findNearest(self._toLatLon(intersections[i]), geolibLayers, 0, 1);
 
-          // Adjust paths
-          self._layer._latlngs.add(nearestJunction.getLatLng(), intersection._currentPathIndex + 1);
-          intersection._path.add(nearestJunction.getLatLng(), intersection._pathIndex + 1);
+      // The junction either already exists or will be created.
+      if (nearest.distance < 15) {
+        var nearestJunction = geolibLayers[nearest.key].layer;
+        junction = nearestJunction;
 
-          intersections[i] = nearestJunction.getLatLng();
-          intersections[i].matchingJunction = nearestJunction;
-        }
+        // We replace the current intersection coordinates with the junction's ones.
+        var latLng = nearestJunction.getLatLng();
+        intersections[i].lat = latLng.lat;
+        intersections[i].lng = latLng.lng;
+      } else {
+        junction = L.marker(L.latLng(intersections[i].lat, intersections[i].lng));
+      }
+
+      var paths = [];
+      // Adjust paths
+      self._layer._latlngs.add(junction.getLatLng(), intersections[i]._currentPathIndex);
+      paths.push(self._layer._latlngs.slice(0, intersections[i]._currentPathIndex));
+      paths.push(self._layer._latlngs.slice(intersections[i]._currentPathIndex));
+      paths[0].add(junction.getLatLng());
+
+      intersections[i]._path._latlngs.add(junction.getLatLng(), intersections[i]._pathIndex);
+      paths.push(intersections[i]._path._latlngs.slice(0, intersections[i]._pathIndex));
+      paths.push(intersections[i]._path._latlngs.slice(intersections[i]._pathIndex));
+      paths[2].add(junction.getLatLng());
+
+      // Integrity test
+      console.log(paths[0][paths[0].length - 1].lng === paths[1][0].lng);
+      console.log(paths[2][paths[2].length - 1].lng === paths[3][0].lng);
+
+      intersections[i].junction = junction;
+      intersections[i].paths = paths;
     }
 
     // For debug
@@ -113,7 +150,20 @@ L.Handler.ArchIntersection = L.Handler.extend({
       self._map.addLayer(new L.Marker(intersection))
     });
 
-    this._intersections = this._intersections.concat(intersections);
+    this._intersections = this._intersections.add(intersections);
+  },
+
+  _toLatLon: function(latLng, properties) {
+    var latLon = {
+      latitude: latLng.lat,
+      longitude: latLng.lng
+    };
+    if (!!properties) {
+      for (var key in properties) {
+        latLon[key] = properties[key];
+      }
+    }
+    return latLon;
   },
 
   _computeIntersection: function(lat1, lng1, lat2, lng2, lat3, lng3, lat4, lng4) {

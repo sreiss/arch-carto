@@ -1,6 +1,6 @@
 'use strict';
 angular.module('archCarto')
-  .directive('archPath', function(leafletData, $log, $mdSidenav, $q, archPathService, archPathJunctionService, $compile, $state, archLayerService, archElevationService) {
+  .directive('archPath', function(leafletData, $log, $mdSidenav, $q, archPathService, archPathJunctionService, $compile, $state, archLayerService, archElevationService, $mdDialog, $translate) {
     return {
       restrict: 'E',
       require: ['^archMap', '^archPath'],
@@ -109,11 +109,58 @@ angular.module('archCarto')
               var layerType = e.layerType;
               scope._currentLayer = e.layer;
               var intersections = scope._currentLayer.archIntersection.getIntersections();
-              var junctionLatLons = [];
-              junctionLatLons.add(archLayerService.toLatLon(layer.editable));
-              junctionLatLons.add(archLayerService.toLatLon(layer.notEditable));
 
-              /*_currentJunctionLayer = L.featureGroup();*/
+
+              $translate([
+                  'ADD_THIS_PATH',
+                  'ARE_YOU_SURE_YOU_WANT_TO_ADD_THIS_PATH',
+                  'YES',
+                  'NO'
+                ])
+                .then(function(translations) {
+                  var confirm = $mdDialog.confirm()
+                    .parent(angular.element(document.body))
+                    .title(translations.ADD_THIS_PATH)
+                    .content(translations.ARE_YOU_SURE_YOU_WANT_TO_ADD_THIS_PATH)
+                    .ok(translations.YES)
+                    .cancel(translations.NO);
+                  return $mdDialog.show(confirm);
+                })
+                .then(function() {
+                  intersections.forEach(function (intersection) {
+                    // Promises are created for each path
+                    var pathGeoJsons = [];
+                    intersection.paths.each(function (path) {
+                      var pathPolyline = L.polyline(path);
+                      // For debug
+                      L.Util.setOptions(pathPolyline, {
+                        color: 'green'
+                      });
+                      pathPolyline.addTo(map);
+                      //
+                      pathGeoJsons.push(pathPolyline.toGeoJSON());
+                    });
+
+                    var junction = intersection.junction.toGeoJSON();
+                    junction.properties.paths = pathGeoJsons;
+
+                    // Save the junction
+                    return archPathJunctionService.save(junction)
+                      .then(function () {
+                        debugger;
+                      });
+
+                    /*
+                     archPathService.save(pathGeoJson)
+                     .then(function(result) {
+                     debugger;
+                     var junction  = intersection.junction;
+
+                     archPathJunctionService.save()
+                     });
+                     */
+                  });
+                });
 
               map.addLayer(scope._currentLayer);
               // map.addLayer(_currentJunctionLayer);
