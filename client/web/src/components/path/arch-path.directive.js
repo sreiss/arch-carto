@@ -96,12 +96,14 @@ angular.module('archCarto')
             var layer = results[1];
             var control = results[2];
 
+            var guideLayers = layer.editable.getLayers();
+            guideLayers.add(layer.notEditable.getLayers());
+
             control.setDrawingOptions({
               polyline: {
                 archReferenceLayer: layer,
-                guideLayers: layer.editable._layers,
-                archIntersections: [],
-                snapDistance: 20
+                guideLayers: guideLayers,
+                snapDistance: 15
               }
             });
 
@@ -110,83 +112,68 @@ angular.module('archCarto')
               scope._currentLayer = e.layer;
               var intersections = scope._currentLayer.archIntersection.getIntersections();
 
+              if (layerType === 'polyline') {
+                // Temporarly adding the drawn path to the map
+                map.addLayer(scope._currentLayer);
 
-              $translate([
+                $translate([
                   'ADD_THIS_PATH',
                   'ARE_YOU_SURE_YOU_WANT_TO_ADD_THIS_PATH',
                   'YES',
                   'NO'
                 ])
-                .then(function(translations) {
-                  var confirm = $mdDialog.confirm()
-                    .parent(angular.element(document.body))
-                    .title(translations.ADD_THIS_PATH)
-                    .content(translations.ARE_YOU_SURE_YOU_WANT_TO_ADD_THIS_PATH)
-                    .ok(translations.YES)
-                    .cancel(translations.NO);
-                  return $mdDialog.show(confirm);
-                })
-                .then(function() {
-                  intersections.forEach(function (intersection) {
-                    // Promises are created for each path
-                    var pathGeoJsons = [];
-                    intersection.paths.each(function (path) {
-                      var pathPolyline = L.polyline(path);
-                      // For debug
-                      L.Util.setOptions(pathPolyline, {
-                        color: 'green'
-                      });
-                      pathPolyline.addTo(map);
-                      //
-                      pathGeoJsons.push(pathPolyline.toGeoJSON());
-                    });
-
-                    var junction = intersection.junction.toGeoJSON();
-                    junction.properties.paths = pathGeoJsons;
-
-                    // Save the junction
-                    return archPathJunctionService.save(junction)
-                      .then(function () {
-                        debugger;
-                      });
-
-                    /*
-                     archPathService.save(pathGeoJson)
-                     .then(function(result) {
-                     debugger;
-                     var junction  = intersection.junction;
-
-                     archPathJunctionService.save()
-                     });
-                     */
-                  });
-                });
-
-              map.addLayer(scope._currentLayer);
-              // map.addLayer(_currentJunctionLayer);
-
-              if (layerType == 'polyline') {
-                $mdSidenav('right').open();
-                scope.hasDrawnPath = true;
-
-                control;
-              }
-
-              scope.cancel = function () {
-                map.removeLayer(scope._currentLayer);
-                //map.removeLayer(_currentJunctionLayer);
-                $mdSidenav('right').close()
+                  .then(function (translations) {
+                    var confirm = $mdDialog.confirm()
+                      .parent(angular.element(document.body))
+                      .title(translations.ADD_THIS_PATH)
+                      .content(translations.ARE_YOU_SURE_YOU_WANT_TO_ADD_THIS_PATH)
+                      .ok(translations.YES)
+                      .cancel(translations.NO);
+                    return $mdDialog.show(confirm);
+                  })
                   .then(function () {
-                    scope.hasDrawnPath = false;
+                    intersections.forEach(function (intersection) {
+                      // Promises are created for each path
+                      var pathGeoJsons = [];
+                      intersection.paths.each(function (path) {
+                        var pathPolyline = L.polyline(path);
+                        // For debug
+                        //L.Util.setOptions(pathPolyline, {
+                        //  color: 'green'
+                        //});
+                        //pathPolyline.addTo(map);
+                        //
+                        pathGeoJsons.push(pathPolyline.toGeoJSON());
+                      });
+
+                      var junction = intersection.junction.toGeoJSON();
+                      junction.properties.paths = pathGeoJsons;
+
+                      // Save the junction
+                      archPathJunctionService.save(junction);
+
+                      /*
+                       archPathService.save(pathGeoJson)
+                       .then(function(result) {
+                       debugger;
+                       var junction  = intersection.junction;
+
+                       archPathJunctionService.save()
+                       });
+                       */
+                    });
+                  })
+                  .catch(function () {
+                    return false;
+                  })
+                  .then(function () {
+                    map.removeLayer(scope._currentLayer);
+                    scope.hasDrownPath = false;
                     scope._currentLayer = null;
-                    //_currentJunctionLayer = null;
-                    scope.cancel = function () {
-                      $state.go('map.path.draw', {id: ''});
-                      $mdSidenav('right').close();
-                    };
-                    $state.go('map.path.draw');
+                    $state.go('map.path.draw', {id: ''});
                   });
-              };
+                // map.addLayer(_currentJunctionLayer);
+              }
             });
 
             // Suppression des controls de draw lors du changement d'action.

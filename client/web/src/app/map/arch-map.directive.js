@@ -75,14 +75,13 @@ angular.module('archCarto')
             addToMap('path');
             addToMap('course');
 
-            $scope.layersReady = true;
-
 
             // Websocket handlers
             // This handles error, refresh on new and save messages.
             archMarkerPoiService.useDefaultHandlers('marker', 'poi');
             archMarkerBugService.useDefaultHandlers('marker', 'bug');
             archCourseService.useDefaultHandlers('course', 'course');
+            archPathJunctionService.useDefaultHandlers('path', 'junction');
 
 
             map.on('popupopen', function(event) {
@@ -100,19 +99,21 @@ angular.module('archCarto')
                 });
             });
 
-            archMarkerBugService.getList()
-              .then(function(result) {
-                archLayerService.addLayers('marker', 'bug', result.value);
-              });
+            $q.all([
+                archMarkerBugService.getList(),
+                archMarkerPoiService.getList(),
+                archPathJunctionService.getList(),
+                archCourseService.getList()
+              ])
+              .then(function(results) {
+                var bugsResult = results[0];
+                var poisResult = results[1];
+                var junctionsResult = results[2];
+                var coursesResult = results[3];
 
-            archMarkerPoiService.getList()
-              .then(function(result) {
-                archLayerService.addLayers('marker', 'poi', result.value);
-              });
-
-            archPathJunctionService.getList()
-              .then(function(result) {
-                archLayerService.addLayers('path', 'junction', result.value, {
+                archLayerService.addLayers('marker', 'bug', bugsResult.value);
+                archLayerService.addLayers('marker', 'poi', poisResult.value);
+                archLayerService.addLayers('path', 'junction', junctionsResult.value, {
                   popupDirective: null,
                   onEachFeature: function(feature, layer) {
                     layer.on('mouseover', function(e) {
@@ -125,23 +126,21 @@ angular.module('archCarto')
                     //layer.archIntersection = new L.Handler.ArchIntersection(layer, map);
                     //layer.archIntersection.enable();
                     /*
-                    layer.on('click', function(e) {
-                      var el = angular.element(e.originalEvent.target);
-                      el.css('opacity', '0.8');
-                    });
-                    */
+                     layer.on('click', function(e) {
+                     var el = angular.element(e.originalEvent.target);
+                     el.css('opacity', '0.8');
+                     });
+                     */
                   }
                 });
-                result.value.forEach(function(junction) {
+                junctionsResult.value.forEach(function(junction) {
                   archLayerService.addLayers('path', 'path', junction.properties.paths);
                 });
-              });
 
-            archCourseService.getList()
-              .then(function(result) {
-                archLayerService.addLayers('course', 'course', result.value);
-              });
+                archLayerService.addLayers('course', 'course', coursesResult.value);
 
+                $scope.layersReady = true;
+              });
           });
 
         this.getLayer = function(name) {

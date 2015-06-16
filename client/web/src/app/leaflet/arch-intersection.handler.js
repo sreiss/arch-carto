@@ -13,6 +13,7 @@ L.Handler.ArchIntersection = L.Handler.extend({
   addHooks: function() {
     //this._map.on('click', this._onClick, this);
     this._findIntersections();
+    this._findEndIntersections();
   },
 
   removeHooks: function() {
@@ -146,9 +147,11 @@ L.Handler.ArchIntersection = L.Handler.extend({
     }
 
     // For debug
+    /*
     intersections.each(function(intersection) {
       self._map.addLayer(new L.Marker(intersection))
     });
+    */
 
     this._intersections = this._intersections.add(intersections);
   },
@@ -164,6 +167,25 @@ L.Handler.ArchIntersection = L.Handler.extend({
       }
     }
     return latLon;
+  },
+
+  _findEndIntersections: function() {
+    var self = this;
+    var latLngs = self._layer.getLatLngs();
+
+    var ends = [
+      L.marker(latLngs[0]),
+      L.marker(latLngs[latLngs.length - 1])
+    ];
+
+    ends.forEach(function(end) {
+      self._intersections.push({
+        junction: end,
+        paths: [
+          self._layer.getLatLngs()
+        ]
+      });
+    });
   },
 
   _computeIntersection: function(lat1, lng1, lat2, lng2, lat3, lng3, lat4, lng4) {

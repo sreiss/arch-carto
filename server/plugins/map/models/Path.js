@@ -11,8 +11,8 @@ module.exports = function(Types, auditEventService) {
                 medias: [{type: Types.ObjectId, ref: 'Media'}],
                 length : {type: Number, ref: 'Length'},
                 dPlus : {type: Number, ref: "dPLus"},
-                dMinus : {type: Number, ref: "dMinus"}
-
+                dMinus : {type: Number, ref: "dMinus"},
+                junctions: [{type: Types.ObjectId, ref: 'Junction', required: true}]
             },
             geometry: {
                 type: {type: String, required: true},
