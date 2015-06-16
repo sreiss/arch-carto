@@ -185,13 +185,13 @@ angular.module('archCarto')
             $cookieStore.put('CARTO_clientRedirectUri', result.data.clientRedirectUri);
             $cookieStore.put('CARTO_clientHash', clientHash);
 
-            deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + clientHash + '&logout=true&return=' + $base64.encode(result.data.clientRedirectUri));
+            deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + clientHash + '&return=' + $base64.encode(result.data.clientRedirectUri));
           });
         }
         else
         {
           console.log('INIT : Params found in cookies.');
-          deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + cookieClientHash + '&logout=true&return=' + $base64.encode(cookieClientRedirectUri));
+          deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + cookieClientHash + '&return=' + $base64.encode(cookieClientRedirectUri));
         }
 
         return deferred.promise;
