@@ -34,6 +34,7 @@ exports.attach = function(opts) {
         return next();
     });
 
+    // Allow OPTIONS requests.
     expressApp.options('*', function(req, res)
     {
         var headers = {};
