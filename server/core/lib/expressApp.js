@@ -32,7 +32,7 @@ exports.attach = function(opts) {
                 'Access-Control-Allow-Origin' : origin,
                 'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Credentials' : true,
-                'Access-Control-Allow-Headers' : 'Content-Type'
+                'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
             }
 
             if(method == 'OPTIONS')
@@ -45,7 +45,7 @@ exports.attach = function(opts) {
                 res.header('Access-Control-Allow-Origin', origin);
                 res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
                 res.header('Access-Control-Allow-Credentials', true);
-                res.header('Access-Control-Allow-Headers', 'Content-Type');
+                res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
             }
         }
 
