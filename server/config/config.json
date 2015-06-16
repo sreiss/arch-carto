@@ -2,7 +2,7 @@
   "http": {
     "port": "3022",
     "allowedOrigins" : [
-      "http://acrobatt-vm11.psi.ad.unistra.fr:3020",
+      "http://acrobatt-vm12.psi.ad.unistra.fr:3020",
       "http://acrobatt-vm11.psi.ad.unistra.fr:3021",
       "http://acrobatt-vm11.psi.ad.unistra.fr:3022",
       "http://acrobatt-vm11.psi.ad.unistra.fr:3023",
