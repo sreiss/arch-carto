@@ -161,8 +161,11 @@ angular.module('archCarto')
       logout: function()
       {
         $cookieStore.remove('token');
-        window.location.href = httpConstant.cartoClientUrl + '/#/';
-        window.location.reload();
+
+        this.getLoginUrl().then(function(loginUrl)
+        {
+          window.location.href = loginUrl + '&logout=true';
+        });
       },
 
       getLoginUrl: function()
