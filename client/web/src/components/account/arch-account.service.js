@@ -63,6 +63,8 @@ angular.module('archCarto')
           {
             self.getProfile(currentUser._id).then(function(result)
             {
+              console.log('getCartoProfile');
+              console.log(result);
               if(result.count > 0)
               {
                 return result;
@@ -74,6 +76,7 @@ angular.module('archCarto')
             })
             .catch(function()
             {
+              console.log('getCoreProfile');
               return self.getCoreProfile(currentUser._id).then(function(coreProfile)
               {
                 var cartoProfile =
@@ -84,6 +87,7 @@ angular.module('archCarto')
 
                 return archHttpService.post(httpConstant.cartoServerUrl + '/users/user', cartoProfile).then(function(cartoProfile)
                 {
+                  console.log('createCartoProfile with coreProfile data.');
                   return coreProfile;
                 });
               })
