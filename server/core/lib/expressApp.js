@@ -6,6 +6,7 @@ var express = require('express'),
     expressValidator = require('express-validator'),
     multer = require('multer'),
     http = require('http'),
+    qt = require('quickthumb'),
     fs = require('fs');
 
 exports.name = 'arch-http';
@@ -33,7 +34,7 @@ exports.attach = function(opts) {
                 'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Credentials' : true,
                 'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-            }
+            };
 
             if(method == 'OPTIONS')
             {
@@ -76,7 +77,7 @@ exports.attach = function(opts) {
     }));
     expressApp.use(cookieParser());
     expressApp.use('/', express.static(path.join(__dirname, '..', '..', 'public')));
-    expressApp.use('/uploads/', express.static(path.join(__dirname, '..', '..', 'uploads')));
+    expressApp.use('/uploads/', qt.static(path.join(__dirname, '..', '..', 'uploads')));
     //expressApp.use(express.static(path.join(__dirname, '..', 'public')));
 };
 
