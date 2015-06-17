@@ -4,35 +4,35 @@
       <md-icon class="fa fa-user"></md-icon>
       <md-input-container flex>
         <label>{{'PERSONAL_INFOS_FORM_LNAME' | translate}}</label>
-        <input type="text" ng-model="oauthUser.lname" ng-required="true">
+        <input type="text" ng-model="profile.user.lname" ng-required="true">
       </md-input-container>
     </div>
     <div layout="row">
       <md-icon class="fa fa-user"></md-icon>
       <md-input-container flex>
         <label>{{'PERSONAL_INFOS_FORM_FNAME' | translate}}</label>
-        <input type="text" ng-model="oauthUser.fname" ng-required="true">
+        <input type="text" ng-model="profile.user.fname" ng-required="true">
       </md-input-container>
     </div>
     <div layout="row">
       <md-icon class="fa fa-envelope-o"></md-icon>
       <md-input-container flex>
         <label>{{'PERSONAL_INFOS_FORM_EMAIL' | translate}}</label>
-        <input type="email" ng-model="oauthUser.email" ng-required="true" readonly="true">
+        <input type="email" ng-model="profile.user.email" ng-required="true" readonly="true">
       </md-input-container>
     </div>
     <div layout="row">
       <md-icon class="fa fa-lock"></md-icon>
       <md-input-container flex>
         <label>{{'PERSONAL_INFOS_FORM_PASSWORD' | translate}}</label>
-        <input type="text" ng-model="oauthUser.password">
+        <input type="password" ng-model="profile.user.newPassword">
       </md-input-container>
     </div>
     <div layout="row">
       <md-icon class="fa fa-lock"></md-icon>
       <md-input-container flex>
         <label>{{'PERSONAL_INFOS_FORM_CONFIRM' | translate}}</label>
-        <input type="text" ng-model="oauthUser.confirm">
+        <input type="password" ng-model="profile.user.confirmNewPassword">
       </md-input-container>
     </div>
   </div>
