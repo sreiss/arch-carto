@@ -36,6 +36,23 @@ angular.module('archCarto')
         return deferred.promise;
       },
 
+      put: function(url, data, config)
+      {
+        var deferred = $q.defer();
+        config = this.setDefaultConfig(config);
+
+        $http.put(url, data, config).success(function(result)
+        {
+          deferred.resolve(result);
+        })
+        .error(function(err)
+        {
+          deferred.reject(err);
+        });
+
+        return deferred.promise;
+      },
+
       delete: function(url, config)
       {
         var deferred = $q.defer();

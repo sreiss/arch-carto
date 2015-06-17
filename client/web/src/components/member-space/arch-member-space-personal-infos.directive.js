@@ -1,6 +1,6 @@
 'use strict';
 angular.module('archCarto')
-  .directive('archMemberSpacePersonalInfos', function(archAccountService, $mdToast)
+  .directive('archMemberSpacePersonalInfos', function(archAccountService, archMemberSpacePersonalInfosService, archToastService, md5)
   {
     return {
       restrict: 'E',
@@ -8,35 +8,41 @@ angular.module('archCarto')
       templateUrl: 'components/member-space/arch-member-space-personal-infos.html',
       link: function(scope, element, attributes, archMap)
       {
-        archMap.setDisplayOptions({
-          mapRight: {
+        archMap.setDisplayOptions(
+        {
+          mapRight:
+          {
             width: 'extra'
           }
         });
 
-        scope.oauthUser = {};
-        archAccountService.getCurrentUser().then(function(user)
+        archMemberSpacePersonalInfosService.getPersonalInfos().then(function(profile)
         {
-          scope.oauthUser = user;
-          scope.oauthUser.password = '';
-          scope.oauthUser.confirm = '';
-        })
-        .catch(function()
-        {
-          console.log('Unable to get current user.');
+          scope.profile = profile;
         });
 
         scope.updatePersonalInfos = function()
         {
-          console.log(scope.oauthUser);
-
-          if((scope.oauthUser.password.length > 0 || scope.oauthUser.confirm.length > 0 )&& scope.oauthUser.password != scope.oauthUser.confirm)
+          if((scope.profile.user.newPassword.length > 0 || scope.profile.user.confirmNewPassword.length > 0 )&& scope.profile.user.newPassword != scope.profile.user.confirmNewPassword)
           {
-            $mdToast.show($mdToast.simple().content('Password not egal.'));
+            archToastService.showToast('PERSONAL_INFOS_FORM_PASSWORD_DIFFERENT', 'error');
           }
           else
           {
-            $mdToast.show($mdToast.simple().content('Profil successflly updated.'));
+            if(scope.profile.user.newPassword.length > 0 && scope.profile.user.confirmNewPassword.length > 0)
+            {
+              scope.profile.user.password = md5.createHash(scope.profile.user.newPassword);
+            }
+
+            archMemberSpacePersonalInfosService.updatePersonalInfos(scope.profile).then(function(result)
+            {
+              archToastService.showToast('PERSONAL_INFOS_FORM_UPDATE_SUCCESS', 'success');
+              archAccountService.updateToken(scope.profile);
+            })
+            .catch(function()
+            {
+              archToastService.showToast('PERSONAL_INFOS_FORM_UPDATE_FAIL', 'error');
+            });
           }
         };
       }

@@ -136,5 +136,14 @@ angular.module('archCarto')
     SUBSCRIBE_FORM_CGU_2 : "conditions d'utilisations générales.",
     EMAIL_ALREADY_EXISTS : "Un compte est déjà associé à cette adresse e-mail.",
     SUBSCRIBE_SUCCESS_1 : "Félicitations ! Votre compte a été créé avec succès.",
-    SUBSCRIBE_SUCCESS_2 : "Consultez vos e-mails pour récupérer vos identifiants."
+    SUBSCRIBE_SUCCESS_2 : "Consultez vos e-mails pour récupérer vos identifiants.",
+
+    PERSONAL_INFOS_FORM_LNAME : "Nom",
+    PERSONAL_INFOS_FORM_FNAME : "Prénom",
+    PERSONAL_INFOS_FORM_EMAIL : "Adresse e-mail",
+    PERSONAL_INFOS_FORM_PASSWORD : "Mot de passe",
+    PERSONAL_INFOS_FORM_CONFIRM : "Confirmation",
+    PERSONAL_INFOS_FORM_PASSWORD_DIFFERENT : "Les mots de passe ne sont pas égaux.",
+    PERSONAL_INFOS_FORM_UPDATE_SUCCESS : "Profil mis à jour avec succès.",
+    PERSONAL_INFOS_FORM_UPDATE_FAIL : "Une erreur est survenue à la mise à jour de votre profil."
   });
