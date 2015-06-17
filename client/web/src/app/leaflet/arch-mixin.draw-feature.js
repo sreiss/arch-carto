@@ -26,8 +26,10 @@ L.Draw.Feature.ArchMixin = {
   },
 
   _fireCreatedEvent: function (layer) {
-    layer.archIntersection = new L.Handler.ArchIntersection(layer, this._map, this.options.archReferenceLayer);
-    layer.archIntersection.enable();
+    if (this.options.archReferenceLayer) {
+      layer.archIntersection = new L.Handler.ArchIntersection(layer, this._map, this.options.archReferenceLayer);
+      layer.archIntersection.enable();
+    }
     this._map.fire('draw:created', { layer: layer, layerType: this.type  });
   }
 };
