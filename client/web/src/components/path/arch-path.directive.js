@@ -107,12 +107,11 @@ angular.module('archCarto')
               }
             });
 
-            map.on('draw:created', function (e) {
+            var onDrawCreated = function (e) {
               var layerType = e.layerType;
               scope._currentLayer = e.layer;
-              var intersections = scope._currentLayer.archIntersection.getIntersections();
-
               if (layerType === 'polyline') {
+                var intersections = scope._currentLayer.archIntersection.getIntersections();
                 // Temporarly adding the drawn path to the map
                 map.addLayer(scope._currentLayer);
 
@@ -174,10 +173,13 @@ angular.module('archCarto')
                   });
                 // map.addLayer(_currentJunctionLayer);
               }
-            });
+            };
+
+            map.on('draw:created', onDrawCreated);
 
             // Suppression des controls de draw lors du changement d'action.
             scope.$on('$destroy', function () {
+              map.off('draw:created', onDrawCreated);
               archMap.removeControl('elevation')
                 .then(archMap.removeControl('draw'))
                 .catch(function (err) {
