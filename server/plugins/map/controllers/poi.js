@@ -14,7 +14,7 @@ module.exports = function (poiService) {
                         next(err);
                     });
             } else {
-                poiService.getAllPois()
+                poiService.getAllPois(req.query)
                     .then(function(pois) {
                         res.json({
                             message: 'POI_LIST',

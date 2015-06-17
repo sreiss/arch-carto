@@ -40,10 +40,15 @@ module.exports = function(Poi, poiTypeService, auditEventService) {
                 });
             return deferred.promise;
         },
-        getAllPois: function() {
+        getAllPois: function(criterias) {
             var deferred = Q.defer();
-            Poi.find()
-                .populate('properties.type')
+            var query = Poi.find();
+
+            if (!!criterias && criterias['with-medias']) {
+                query.populate('properties.medias');
+            }
+
+            query.populate('properties.type')
                 .populate({
                     path: 'properties.auditEvents',
                     limit: 1
