@@ -63,7 +63,7 @@ angular.module('archCarto')
           {
             self.getProfile(currentUser._id).then(function(result)
             {
-              if(result.count > 1)
+              if(result.count > 0)
               {
                 return result;
               }
