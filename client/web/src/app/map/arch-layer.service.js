@@ -43,9 +43,17 @@ angular.module('archCarto')
 
         L.geoJson(layers, {
           coordsToLatLng: function(coords) {
-            if (coords.length == 2) {
-              return L.latLng(coords[1], coords[0]);
-            } else if (coords.length == 3) {
+            if (coords.lenth)
+            {
+              if (coords.length == 2) {
+                return L.latLng(coords[1], coords[0]);
+              } else if (coords.length == 3) {
+                debugger;
+                return L.latLng(coords[1], coords[0], coords[2]);
+              }
+            }
+            else
+            {
               return L.latLng(coords[1], coords[0], coords[2]);
             }
           },

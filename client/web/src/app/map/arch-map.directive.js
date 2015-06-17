@@ -6,7 +6,7 @@ angular.module('archCarto')
     $state, archUtilsService, leafletData, archLayerService,
     archMapControlService, archMarkerBugService, archMarkerPoiService,
     archPathJunctionService, archAccountService, ARCH_MAP_DEFAULTS, ARCH_MAP_INIT,
-    ARCH_LAYER_TYPES) {
+    ARCH_LAYER_TYPES, archGpxService) {
     return {
       restrict: 'E',
       require: ['^archMap'],
@@ -61,10 +61,13 @@ angular.module('archCarto')
             archLayerService.initOptions('course', {
               popupDirective: 'arch-course-details-popup'
             });
+            archLayerService.initOptions('trace');
 
             _layers.marker = archLayerService.initLayer('marker');
             _layers.path = archLayerService.initLayer('path');
             _layers.course = archLayerService.initLayer('course');
+            _layers.trace = archLayerService.initLayer('trace');
+
 
             var addToMap = controller.addToMap = function(layerName) {
               _layers[layerName].editable.addTo(map);
@@ -74,6 +77,7 @@ angular.module('archCarto')
             addToMap('marker');
             addToMap('path');
             addToMap('course');
+            addToMap('trace');
 
 
             // Websocket handlers
@@ -103,17 +107,20 @@ angular.module('archCarto')
                 archMarkerBugService.getList(),
                 archMarkerPoiService.getList(),
                 archPathJunctionService.getList(),
-                archCourseService.getList()
+                archCourseService.getList(),
+                archGpxService.getTrace(),
               ])
               .then(function(results) {
                 var bugsResult = results[0];
                 var poisResult = results[1];
                 var junctionsResult = results[2];
                 var coursesResult = results[3];
+                var traceResult = results[4];
 
                 archLayerService.addLayers('marker', 'bug', bugsResult.value);
                 archLayerService.addLayers('marker', 'poi', poisResult.value);
-                archLayerService.addLayers('path', 'junction', junctionsResult.value, {
+                archLayerService.addLayers('trace', 'trace', traceResult);
+              archLayerService.addLayers('path', 'junction', junctionsResult.value, {
                   popupDirective: null,
                   onEachFeature: function(feature, layer) {
                     layer.on('mouseover', function(e) {
