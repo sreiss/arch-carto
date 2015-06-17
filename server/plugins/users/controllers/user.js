@@ -20,7 +20,6 @@ module.exports = function(userService) {
             // Saving user.
             userService.saveUser(user).then(function(result)
             {
-                console.log(result);
                 res.status(201).json({"count": (result ? 1 : 0), "data": result});
             })
             .catch(function(err)

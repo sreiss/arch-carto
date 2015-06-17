@@ -63,6 +63,8 @@ angular.module('archCarto')
           {
             self.getProfile(currentUser._id).then(function(result)
             {
+              console.log('getCartoProfile');
+              console.log(result);
               if(result.count > 0)
               {
                 return result;
@@ -74,6 +76,7 @@ angular.module('archCarto')
             })
             .catch(function()
             {
+              console.log('getCoreProfile');
               return self.getCoreProfile(currentUser._id).then(function(coreProfile)
               {
                 var cartoProfile =
@@ -84,6 +87,7 @@ angular.module('archCarto')
 
                 return archHttpService.post(httpConstant.cartoServerUrl + '/users/user', cartoProfile).then(function(cartoProfile)
                 {
+                  console.log('createCartoProfile with coreProfile data.');
                   return coreProfile;
                 });
               })
@@ -157,21 +161,20 @@ angular.module('archCarto')
       logout: function()
       {
         $cookieStore.remove('token');
-        window.location.href = httpConstant.cartoClientUrl + '/#/';
-        window.location.reload();
+
+        this.getLoginUrl().then(function(loginUrl)
+        {
+          window.location.href = loginUrl + '&logout=true';
+        });
       },
 
       getLoginUrl: function()
       {
         var deferred = $q.defer();
-
-        var cookieClientId = $cookieStore.get('CARTO_clientId') || '';
-        var cookieClientSecret = $cookieStore.get('CARTO_clientSecret') || '';
-        var cookieClientRedirectUri = $cookieStore.get('CARTO_clientRedirectUri') || '';
         var cookieClientHash = $cookieStore.get('CARTO_clientHash') || '';
 
         // If no saved in cookies, save new client.
-        if(cookieClientId.length == 0 || cookieClientSecret.length == 0 || cookieClientRedirectUri.length == 0 || cookieClientHash.length == 0)
+        if(cookieClientHash.length == 0)
         {
           console.log('INIT : Params not found in cookies, save new client.');
 
@@ -180,18 +183,15 @@ angular.module('archCarto')
             console.log('INIT : Params saved in cookies.');
 
             var clientHash = $base64.encode(result.data.clientId + ':' + result.data.clientSecret);
-            $cookieStore.put('CARTO_clientId', result.data.clientId);
-            $cookieStore.put('CARTO_clientSecret', result.data.clientSecret);
-            $cookieStore.put('CARTO_clientRedirectUri', result.data.clientRedirectUri);
             $cookieStore.put('CARTO_clientHash', clientHash);
 
-            deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + clientHash + '&return=' + $base64.encode(result.data.clientRedirectUri));
+            deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + clientHash + '&return=' + $base64.encode(httpConstant.clientRedirectUri));
           });
         }
         else
         {
           console.log('INIT : Params found in cookies.');
-          deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + cookieClientHash + '&return=' + $base64.encode(cookieClientRedirectUri));
+          deferred.resolve(httpConstant.casClientUrl + '/#/?client=' + cookieClientHash + '&return=' + $base64.encode(httpConstant.clientRedirectUri));
         }
 
         return deferred.promise;
