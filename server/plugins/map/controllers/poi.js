@@ -1,3 +1,5 @@
+var camelCase = require('camel-case');
+
 module.exports = function (poiService) {
 
     return {
@@ -14,7 +16,11 @@ module.exports = function (poiService) {
                         next(err);
                     });
             } else {
-                poiService.getAllPois(req.query)
+                var criterias = {};
+                for (var key in req.query) {
+                    criterias[camelCase(key)] = req.query[key];
+                }
+                poiService.getAllPois(criterias)
                     .then(function(pois) {
                         res.json({
                             message: 'POI_LIST',

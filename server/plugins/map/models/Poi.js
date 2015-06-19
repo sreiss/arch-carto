@@ -17,6 +17,13 @@ module.exports = function(Types) {
                 return next();
             });
         },
+        onModelReady: function(Poi) {
+            Poi.collection.createIndex({geometry: '2dsphere'}, function(err, result) {
+                if (err) {
+                    console.error(err);
+                }
+            });
+        },
         priority: 10
     };
     /*return {

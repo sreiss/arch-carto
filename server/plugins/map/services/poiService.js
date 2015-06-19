@@ -44,8 +44,27 @@ module.exports = function(Poi, poiTypeService, auditEventService) {
             var deferred = Q.defer();
             var query = Poi.find();
 
-            if (!!criterias && criterias['with-medias']) {
-                query.populate('properties.medias');
+            if (!!criterias) {
+                if (criterias.withMedias) {
+                    query.populate('properties.medias');
+                }
+
+                if (criterias.lat && criterias.lng) {
+                    criterias.radius = parseInt(criterias.radius, 10) || 3000;
+                    criterias.lat = parseFloat(criterias.lat);
+                    criterias.lng = parseFloat(criterias.lng);
+                    if (!isNaN(criterias.lat) && !isNaN(criterias.lng) && !isNaN(criterias.radius)) {
+                        query.where('geometry')
+                            .near({
+                                center: {
+                                    type: 'Point',
+                                    coordinates: [criterias.lng, criterias.lat]
+                                },
+                                maxDistance: criterias.radius,
+                                spherical: true
+                            });
+                    }
+                }
             }
 
             query.populate('properties.type')
