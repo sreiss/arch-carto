@@ -12,12 +12,5 @@ module.exports = function(courseController, courseRouter) {
 
     courseRouter.route('/:id')
         .get(courseController.get);
-
-    /*
-    courseSocket({
-       save: courseController.io.save
-    });
-    */
-
 };
 
