@@ -20,6 +20,7 @@ module.exports = function(Path) {
                 });
             return deferred.promise;
         },
+
         get: function(id) {
             var deferred = Q.defer();
             Path.findById(id)
@@ -41,47 +42,69 @@ module.exports = function(Path) {
                 });
             return deferred.promise;
         },
+
         save: function(rawPath) {
+            var self = this;
             var deferred = Q.defer();
-            if (rawPath._id) {
-                try {
-                    var id = rawPath._id;
-                    delete rawPath._id;
-                    delete rawPath.properties.auditEvents;
-                    rawPath.properties.coating = rawPath.properties.coating._id;
-                    Path.findByIdAndUpdate(id, rawPath, function(err, updatedPath) {
-                        if (err) {
-                            deferred.reject(err);
-                        } else {
-                            deferred.resolve(updatedPath);
-                        }
-                    });
-                } catch(err) {
-                    deferred.reject(err);
-                }
-            } else {
-                try {
-                    var path = new Path({
-                        properties: {
-                            coating: rawPath.properties.coating || null,
-                            medias: rawPath.properties.medias || []
-                        },
-                        geometry: {
-                            coordinates: rawPath.geometry.coordinates
-                        }
-                    });
-                    path.save(function(err, savedPath) {
+
+            self.get(rawPath._id)
+                .catch(function(err) {
+                    if (err.message === 'PATH_NOT_FOUND') {
+                        return Q.resolve(new Path({
+                            properties: {
+                                coating: rawPath.properties.coating || null,
+                                junctions: rawPath.properties.junctions,
+                                medias: rawPath.properties.medias || []
+                            },
+                            geometry: {
+                                coordinates: rawPath.geometry.coordinates
+                            }
+                        }));
+                    } else {
+                        throw err;
+                    }
+                 })
+                .then(function(path) {
+                    path.save(function (err, savedPath) {
                         if (err) {
                             deferred.reject(err);
                         } else {
                             deferred.resolve(savedPath);
                         }
-                    })
-                } catch(err) {
-                    deferred.reject(err);
+                    });
+                });
+
+            return deferred.promise;
+        },
+
+        savePaths: function(paths, options) {
+            var self = this;
+            var paths;
+            var promises = [];
+
+            options = options || {};
+            options.returnIds = options.returnIds || true;
+
+            for(var i = 0; i < paths.length; i += 1) {
+                if (paths[i]._id) {
+                    if (options.returnIds) {
+                        promises.push(Q.resolve(paths[i]._id));
+                    } else {
+                        promises.push(Q.resolve(paths[i]));
+                    }
+                } else {
+                    promises.push(self.save(paths[i])
+                            .then(function(savedPath) {
+                                if (options.returnIds) {
+                                    return Q.resolve(savedPath._id.toHexString());
+                                } else {
+                                    return Q.resolve(savedPath);
+                                }
+                            })
+                    );
                 }
             }
-            return deferred.promise;
+            return Q.all(promises);
         }
     };
 

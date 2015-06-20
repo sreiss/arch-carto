@@ -15,6 +15,13 @@ module.exports = function(Types) {
                 return next();
             });
         },
+        onModelReady: function(Junction) {
+            Junction.collection.createIndex({geometry: '2dsphere'}, function(err, result) {
+                if (err) {
+                    console.error(err);
+                }
+            });
+        },
         priority: 10
     };
 

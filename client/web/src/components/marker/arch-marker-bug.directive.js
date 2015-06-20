@@ -14,38 +14,12 @@ angular.module('archCarto')
             if (!layer) {
               $state.go('map.marker.choice');
             } else {
+              // We convert the marker added by Leaflet Draw to a GeoJSON.
               var coordinates = layer.getLatLng();
-
-              scope.bug = {
-                coordinates: coordinates
-              };
+              scope.bug = layer.toGeoJSON();
 
               scope.save = function(bug) {
-                var geoJson = archMarkerBugService.toGeoJson(bug);
-
-                archMarkerBugService.save(geoJson);
-
-                /*
-                archMarkerBugService.save(geoJson)
-                  .then(function (result) {
-                    archMap.getBugsLayer()
-                      .then(function(layer) {
-                        return layer.addData(result.value);
-                      })
-                      .then(function() {
-                        return $mdSidenav('right').close();
-                      })
-                      .then(function() {
-                        return archMarker.cleanCurrentLayer();
-                      })
-                      .then(function() {
-                        archTranslateService(result.message)
-                          .then(function(translation) {
-                            $mdToast.show($mdToast.simple().content(translation));
-                          });
-                      });
-                  });
-                  */
+                archMarkerBugService.save(bug);
               };
 
               scope.$watch('bugForm.$valid', function(valid) {

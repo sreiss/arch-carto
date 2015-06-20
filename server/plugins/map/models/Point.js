@@ -12,7 +12,7 @@ module.exports = function(Types, auditEventService) {
             },
             geometry: {
                 type: {type: String, required: true},
-                coordinates: [Types.Mixed]
+                coordinates: {type: [Number]}
             }
         },
         onSchemaReady: function(schema) {

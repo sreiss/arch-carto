@@ -17,6 +17,13 @@ module.exports = function(Types, auditEventService) {
                 return next();
             });
         },
+        onModelReady: function(Bug) {
+            Bug.collection.createIndex({geometry: '2dsphere'}, function(err, result) {
+                if (err) {
+                    console.error(err);
+                }
+            });
+        },
         priority: 10
     };
 

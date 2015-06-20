@@ -179,23 +179,11 @@ angular.module('archCarto', [
         'responseError': function (rejection) {
           //debugger;
           if (rejection.data) {
-            var $mdToast = $injector.get('$mdToast');
-            var untranslatedMessage = angular.copy(rejection.data.error.message) || angular.copy(rejection.data.message);
+            var archToastService = $injector.get('archToastService');
+            var untranslatedMessage = angular.copy(rejection.data.message) || angular.copy(rejection.data.error.message);
             if (untranslatedMessage) {
-              return archTranslateService(untranslatedMessage)
-                .then(function (translation) {
-                  return $mdToast.show({
-                    template: '<md-toast class="md-toast arch-toast-error">' + translation + '</md-toast>',
-                    hideDelay: 3000,
-                    position: 'bottom left'
-                  });
-                })
-                .then(function () {
-                  return $q.reject(rejection);
-                })
-                .catch(function () {
-                  return $q.reject(rejection);
-                });
+              archToastService.showToast(untranslatedMessage, 'error');
+              $q.reject(rejection);
             } else {
               return $q.reject(rejection);
             }

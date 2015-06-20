@@ -116,11 +116,11 @@ angular.module('archCarto')
                 map.addLayer(scope._currentLayer);
 
                 $translate([
-                  'ADD_THIS_PATH',
-                  'ARE_YOU_SURE_YOU_WANT_TO_ADD_THIS_PATH',
-                  'YES',
-                  'NO'
-                ])
+                    'ADD_THIS_PATH',
+                    'ARE_YOU_SURE_YOU_WANT_TO_ADD_THIS_PATH',
+                    'YES',
+                    'NO'
+                  ])
                   .then(function (translations) {
                     var confirm = $mdDialog.confirm()
                       .parent(angular.element(document.body))
@@ -133,6 +133,7 @@ angular.module('archCarto')
                   .then(function () {
                     intersections.forEach(function (intersection) {
                       // Promises are created for each path
+                      debugger;
                       var pathGeoJsons = [];
                       intersection.paths.each(function (path) {
                         var pathPolyline = L.polyline(path);
@@ -162,7 +163,7 @@ angular.module('archCarto')
                        */
                     });
                   })
-                  .catch(function () {
+                  .catch(function (err) {
                     return false;
                   })
                   .then(function () {

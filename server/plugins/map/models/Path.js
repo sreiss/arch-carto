@@ -23,6 +23,7 @@ module.exports = function(Types, auditEventService) {
             schema.pre('validate', function(next) {
                 this.type = "Feature";
                 this.geometry.type = "LineString";
+                this.properties.junctions = [];
                 return next();
             });
             /*

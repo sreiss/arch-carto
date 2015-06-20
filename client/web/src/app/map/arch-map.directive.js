@@ -53,7 +53,15 @@ angular.module('archCarto')
             });
             archLayerService.initOptions('path', {
               popupDirective: 'arch-path-details-popup',
-              icon: 'arrows'
+              icon: 'arrows',
+              leafletOptions: {
+                stroke: true,
+                color: '#fff',
+                opacity: 0.5,
+                fillColor: '#fff',
+                fillOpacity: 0.2,
+                weight: 4
+              }
             });
             archLayerService.initOptions('junction', {
               icon: 'arrows'
@@ -107,20 +115,20 @@ angular.module('archCarto')
                 archMarkerBugService.getList(),
                 archMarkerPoiService.getList(),
                 archPathJunctionService.getList(),
-                archCourseService.getList(),
-                archGpxService.getTrace(),
+                archCourseService.getList()
+                //archGpxService.getTrace(),
               ])
               .then(function(results) {
                 var bugsResult = results[0];
                 var poisResult = results[1];
                 var junctionsResult = results[2];
                 var coursesResult = results[3];
-                var traceResult = results[4];
+                //var traceResult = results[4];
 
                 archLayerService.addLayers('marker', 'bug', bugsResult.value);
                 archLayerService.addLayers('marker', 'poi', poisResult.value);
-                archLayerService.addLayers('trace', 'trace', traceResult);
-              archLayerService.addLayers('path', 'junction', junctionsResult.value, {
+                //archLayerService.addLayers('trace', 'trace', traceResult);
+                archLayerService.addLayers('path', 'junction', junctionsResult.value.junctions, {
                   popupDirective: null,
                   onEachFeature: function(feature, layer) {
                     layer.on('mouseover', function(e) {
@@ -140,11 +148,9 @@ angular.module('archCarto')
                      */
                   }
                 });
-                junctionsResult.value.forEach(function(junction) {
-                  archLayerService.addLayers('path', 'path', junction.properties.paths);
-                });
+                archLayerService.addLayers('path', 'path', junctionsResult.value.paths);
 
-                archLayerService.addLayers('course', 'course', coursesResult.value);
+                //archLayerService.addLayers('course', 'course', coursesResult.value);
 
                 $scope.layersReady = true;
               });

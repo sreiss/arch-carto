@@ -1,6 +1,7 @@
 var Q = require('q')
     path = require('path'),
     fs = require('fs'),
+    slug = require('slug'),
     moment = require('moment');
 
 var mediasUrl = 'uploads/medias/';
@@ -22,7 +23,7 @@ module.exports = function(Media) {
 
                 });
             } else {
-                var fileName = moment().format('YYYYMMDDHHmmss') + '-' + rawMedia.body.name + path.extname(rawMedia.files.file.name);
+                var fileName = moment().format('YYYYMMDDHHmmss') + '-' + slug(rawMedia.body.name).toLowerCase() + path.extname(rawMedia.files.file.name);
                 var filePath = path.join(mediasPath, fileName);
 
                 fs.readFile(rawMedia.files.file.path, function(err, data) {

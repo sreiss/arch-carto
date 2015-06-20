@@ -8,6 +8,8 @@ L.Handler.ArchIntersection = L.Handler.extend({
     this._map = map;
     this._referenceLayer = referenceLayer;
     this._intersections = [];
+    this._junctions = [];
+    this._paths = [];
   },
 
   addHooks: function() {
@@ -25,42 +27,70 @@ L.Handler.ArchIntersection = L.Handler.extend({
     return this._intersections;
   },
 
+  /**
+   * Call to refresh the reload the junctions, if the referenceLayer has changed for instance.
+   */
+  refreshJunctions: function() {
+    var self = this;
+
+    if (self._referenceLayer) {
+      var markersFilter = function (item) {
+        return item instanceof L.Marker;
+      };
+
+      // Retrieves only markers from the reference layer.
+      var allJunctions = this._referenceLayer.editable.getLayers().filter(markersFilter);
+      allJunctions.add(this._referenceLayer.notEditable.getLayers().filter(markersFilter));
+
+      self._junctions = allJunctions;
+
+      // We also refresh the geolib layer in order to find the closest points
+      self._geolibLayers = [];
+      allJunctions.each(function (layer) {
+        var latLng = layer.getLatLng();
+        self._geolibLayers.push(self._toLatLon(latLng, {
+          layer: layer
+        }));
+      });
+    } else {
+      throw new Error('Unable to refresh junctions, no reference layer was provided.');
+    }
+
+  },
+
+  /**
+   * Call to refresh the paths, if the referenceLayer has changed for instance.
+   */
+  refreshPaths: function() {
+    var self = this;
+
+    if (self._referenceLayer) {
+      var pathsFilter = function(item) {
+        return item instanceof L.Polyline;
+      };
+
+      var allPaths = [];
+      allPaths.add(self._referenceLayer.editable.getLayers().filter(pathsFilter));
+
+      self._paths = allPaths;
+    } else {
+      throw new Error('Unable to refresh paths, no referenceLayer was provided.');
+    }
+  },
+
   _findIntersections: function() {
   //_onMove: function() {
     var self = this;
 
-    var allPaths = [];
-
-    /*
-    if (self._referenceLayer) {
-      var layers = self._referenceLayer.editable.getLayers();
-      layers.forEach(function (layer) {
-        var layerLatLngs = self._layer.getLatLngs();
-        var foundLayer = layerLatLngs.find(function (l) {
-          return l.lat === layer.lat && l.lng === layer.lng;
-        });
-        if (layer.getLatLngs && !foundLayer) {
-          var latLngs = layer.getLatLngs();
-          allPaths.push(latLngs);
-        }
-      });
-    }
-    allPaths.push(this._layer.getLatLngs());
-
-    var currentLayerCoords = this._layer.getLatLngs();
-    */
-    var allPaths = [];
-    if (self._referenceLayer) {
-      allPaths.add(self._referenceLayer.editable.getLayers());
-    }
-    //allPaths.add(self._layer);
+    self.refreshJunctions();
+    self.refreshPaths();
 
     // Initial fetching of the current coordinates
     var currentLayerCoords;
     var pathLayerCoords;
 
     var intersections = [];
-    allPaths.forEach(function(path) {
+    self._paths.forEach(function(path) {
       if (path.getLatLngs) {
         currentLayerCoords = self._layer.getLatLngs();
         pathLayerCoords = path.getLatLngs();
@@ -89,33 +119,16 @@ L.Handler.ArchIntersection = L.Handler.extend({
       }
     });
 
-    var markersFilter = function(layer) {
-      return layer.getLatLng;
-    };
-
     // Cleans the intersections from null values.
     intersections = intersections.compact(true);
 
-    // Retrieves only markers from the reference layer.
-    var allLayers = this._referenceLayer.editable.getLayers().filter(markersFilter);
-    allLayers.add(this._referenceLayer.notEditable.getLayers().filter(markersFilter));
-
-    // Formats the layers to be used with geolib.
-    var geolibLayers = [];
-    allLayers.each(function(layer) {
-      var latLng = layer.getLatLng();
-      geolibLayers.push(self._toLatLon(latLng, {
-        layer: layer
-      }));
-    });
-
     for (var i = 0; i < intersections.length; i += 1) {
       var junction;
-      var nearest = geolib.findNearest(self._toLatLon(intersections[i]), geolibLayers, 0, 1);
+      var nearest = geolib.findNearest(self._toLatLon(intersections[i]), self._geolibLayers, 0, 1);
 
       // The junction either already exists or will be created.
-      if (nearest.distance < 15) {
-        var nearestJunction = geolibLayers[nearest.key].layer;
+      if (!!nearest && nearest.distance < 15) {
+        var nearestJunction = self._geolibLayers[nearest.key].layer;
         junction = nearestJunction;
 
         // We replace the current intersection coordinates with the junction's ones.
@@ -179,12 +192,23 @@ L.Handler.ArchIntersection = L.Handler.extend({
     ];
 
     ends.forEach(function(end) {
-      self._intersections.push({
-        junction: end,
-        paths: [
-          self._layer.getLatLngs()
-        ]
-      });
+      var latLon = self._toLatLon(end.getLatLng());
+      var nearest = geolib.findNearest(latLon, self._geolibLayers, 0, 1);
+
+      if (!!nearest && nearest.distance < 15) {
+        var latLngs = self._layer._latlngs;
+        var junctionLayer = self._geolibLayers[nearest.key].layer;
+        latLngs[latLngs.length - 1] = junctionLayer.getLatLng();
+        // Add the path to the junction
+        junctionLayer.feature.properties.paths.push(self._layer.toGeoJSON());
+      } else {
+        self._intersections.push({
+          junction: end,
+          paths: [
+            self._layer.getLatLngs()
+          ]
+        });
+      }
     });
   },
 

@@ -20,15 +20,14 @@ L.Handler.ArchJunction = L.Handler.extend({
   },
 
   _onSnap: function(e) {
+    var self = this;
     var layers = this._referenceLayer.editable.getLayers();
     var junctions = layers.filter(function(layer) {
       return layer instanceof L.Marker;
     });
     var closest = L.GeometryUtil.closestLayerSnap(this._map, junctions, e.latlng, 15);
-    console.log(closest);
-    if (closest) {
-      this._marker.setLatLng(closest.layer.getLatLng());
-      //this._marker.setLatLng(closest.latlng);
+    if (!!closest) {
+      self._marker.setLatLng(closest.layer.getLatLng());
     }
   }
 });
