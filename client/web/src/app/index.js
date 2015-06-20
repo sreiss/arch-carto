@@ -195,4 +195,134 @@ angular.module('archCarto', [
     })
 
   })
+  .run(function($translate) {
+    $translate([
+      "CANCEL_DRAWING",
+      "CANCEL",
+      "DELETE_LAST_POINT_DRAWN",
+      "DELETE_LAST_POINT",
+      "DRAW_A_POLYLINE",
+      "DRAW_A_POLYGON",
+      "DRAW_A_RECTANGLE",
+      "DRAW_A_CIRCLE",
+      "DRAW_A_MARKER",
+      "CLICK_AND_DRAG_TO_DRAW_CIRCLE",
+      "RADIUS",
+      "CLICK_MAP_TO_PLACE_MARKER",
+      "CLICK_TO_START_DRAWING_SHAPE",
+      "CLICK_TO_CONTINUE_DRAWING_SHAPE",
+      "CLICK_FIRST_POINT_TO_CLOSE_THIS_SHAPE",
+      "SHAPE_EDGES_CANNOT_CROSS",
+      "CLICK_TO_START_DRAWING_LINE",
+      "CLICK_TO_CONTINUE_DRAWING_LINE",
+      "CLICK_LAST_POINT_TO_FINISH_LINE",
+      "CLICK_AND_DRAG_TO_DRAW_RECTANGLE",
+      "RELEASE_MOUSE_TO_FINISH_DRAWING",
+      "SAVE_CHANGES",
+      "SAVE",
+      "CANCEL_EDITING_DISCARDS_ALL_CHANGES",
+      "CANCEL",
+      "EDIT_LAYERS",
+      "NO_LAYERS_TO_EDIT",
+      "DELETE_LAYERS",
+      "NO_LAYERS_TO_DELETE",
+      "DRAG_HANDLES_OR_MARKER_TO_EDIT_FEATURE",
+      "CLICK_CANCEL_TO_UNDO_CHANGES",
+      "CLICK_ON_A_FEATURE_TO_REMOVE"
+    ])
+      .then(function(translations) {
+        L.drawLocal = {
+          draw: {
+            toolbar: {
+              actions: {
+                title: translations.CANCEL_DRAWING,
+                text: translations.CANCEL
+              },
+              undo: {
+                title: translations.DELETE_LAST_POINT_DRAWN,
+                text: translations.DELETE_LAST_POINT
+              },
+              buttons: {
+                polyline: translations.DRAW_A_POLYLINE,
+                polygon: translations.DRAW_A_POLYGON,
+                rectangle: translations.DRAW_A_RECTANGLE,
+                circle: translations.DRAW_A_CIRCLE,
+                marker: translations.DRAW_A_MARKER
+              }
+            },
+            handlers: {
+              circle: {
+                tooltip: {
+                  start: translations.CLICK_AND_DRAG_TO_DRAW_CIRCLE
+                },
+                radius: translations.RADIUS
+              },
+              marker: {
+                tooltip: {
+                  start: translations.CLICK_MAP_TO_PLACE_MARKER
+                }
+              },
+              polygon: {
+                tooltip: {
+                  start: translations.CLICK_TO_START_DRAWING_SHAPE,
+                  cont: translations.CLICK_TO_CONTINUE_DRAWING_SHAPE,
+                  end: translations.CLICK_FIRST_POINT_TO_CLOSE_THIS_SHAPE
+                }
+              },
+              polyline: {
+                error: translations.SHAPE_EDGES_CANNOT_CROSS,
+                tooltip: {
+                  start: translations.CLICK_TO_START_DRAWING_LINE,
+                  cont: translations.CLICK_TO_CONTINUE_DRAWING_LINE,
+                  end: translations.CLICK_LAST_POINT_TO_FINISH_LINE
+                }
+              },
+              rectangle: {
+                tooltip: {
+                  start: translations.CLICK_AND_DRAG_TO_DRAW_RECTANGLE
+                }
+              },
+              simpleshape: {
+                tooltip: {
+                  end: translations.RELEASE_MOUSE_TO_FINISH_DRAWING
+                }
+              }
+            }
+          },
+          edit: {
+            toolbar: {
+              actions: {
+                save: {
+                  title: translations.SAVE_CHANGES,
+                  text: translations.SAVE
+                },
+                cancel: {
+                  title: translations.CANCEL_EDITING_DISCARDS_ALL_CHANGES,
+                  text: translations.CANCEL
+                }
+              },
+              buttons: {
+                edit: translations.EDIT_LAYERS,
+                editDisabled: translations.NO_LAYERS_TO_EDIT,
+                remove: translations.DELETE_LAYERS,
+                removeDisabled: translations.NO_LAYERS_TO_DELETE
+              }
+            },
+            handlers: {
+              edit: {
+                tooltip: {
+                  text: translations.DRAG_HANDLES_OR_MARKER_TO_EDIT_FEATURE,
+                  subtext: translations.CLICK_CANCEL_TO_UNDO_CHANGES
+                }
+              },
+              remove: {
+                tooltip: {
+                  text: translations.CLICK_ON_A_FEATURE_TO_REMOVE
+                }
+              }
+            }
+          }
+        };
+      });
+  })
 ;
