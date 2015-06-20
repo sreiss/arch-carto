@@ -1,4 +1,5 @@
 'use strict';
+
 angular.module('archCarto', [
     'ngAnimate', 'ngCookies', 'ngTouch',
     'ngSanitize', 'ngMessages', 'ui.router',
@@ -12,7 +13,6 @@ angular.module('archCarto', [
     if (!L.Icon.Default.imagePath) {
       L.Icon.Default.imagePath = 'assets/images';
     }
-    //L.Icon.Default.imagePath = 'http://api.tiles.mapbox.com/mapbox.js/v1.0.0beta0.0/images';
 
     $mdThemingProvider.theme('default')
       .primaryPalette('green')
@@ -135,19 +135,6 @@ angular.module('archCarto', [
         url: '/personal-infos',
         template: '<arch-member-space-personal-infos></arch-member-space-personal-infos>'
       })
-      /*
-      .state('map.center', {
-        url: '/center',
-        views: {
-          sideNavLeft: {
-            template: '<arch-map-side-nav-center-left></arch-map-side-nav-center-left>'
-          },
-          sideNavRight: {
-            template: '<arch-map-side-nav-center-right></arch-map-side-nav-center-right>'
-          }
-        }
-      })
-      */
       .state('map.gpx', {
         url: '/gpx',
         views: {
@@ -166,7 +153,6 @@ angular.module('archCarto', [
       });
     console.log('State map');
 
-
     $urlRouterProvider.otherwise('/');
 
     $translateProvider
@@ -177,7 +163,6 @@ angular.module('archCarto', [
     $httpProvider.interceptors.push(function($q, archTranslateService, $injector) {
       return {
         'responseError': function (rejection) {
-          //debugger;
           if (rejection.data) {
             var archToastService = $injector.get('archToastService');
             var untranslatedMessage = angular.copy(rejection.data.message) || angular.copy(rejection.data.error.message);
@@ -324,5 +309,4 @@ angular.module('archCarto', [
           }
         };
       });
-  })
-;
+  });
