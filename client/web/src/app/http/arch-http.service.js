@@ -77,8 +77,6 @@ angular.module('archCarto')
 
         if(token !== null)
         {
-          var accessToken = token.access_token || null;
-
           config.headers = config.headers || {};
           config.headers["Authorization"] = 'Bearer ' + btoa(JSON.stringify(token));
         }
