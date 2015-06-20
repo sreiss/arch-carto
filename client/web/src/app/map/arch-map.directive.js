@@ -69,12 +69,12 @@ angular.module('archCarto')
             archLayerService.initOptions('course', {
               popupDirective: 'arch-course-details-popup'
             });
-            archLayerService.initOptions('trace');
+            //archLayerService.initOptions('trace');
 
             _layers.marker = archLayerService.initLayer('marker');
             _layers.path = archLayerService.initLayer('path');
             _layers.course = archLayerService.initLayer('course');
-            _layers.trace = archLayerService.initLayer('trace');
+            //_layers.trace = archLayerService.initLayer('trace');
 
 
             var addToMap = controller.addToMap = function(layerName) {
@@ -85,7 +85,7 @@ angular.module('archCarto')
             addToMap('marker');
             addToMap('path');
             addToMap('course');
-            addToMap('trace');
+            //addToMap('trace');
 
 
             // Websocket handlers
@@ -364,67 +364,14 @@ angular.module('archCarto')
             yTicks: undefined, //number of ticks on y axis, calculated by default according to height
             collapsed: false    //collapsed mode, show chart on click or mouseover
           }).then(function (el) {
-            //_layers.elevation = archLayerService.initLayer('elevation');
-            //var addToMap = $scope.addToMap;
-            //
-            //addToMap('elevation');
-            console.log(controller);
-            $scope.el = el;
-
-            //controller.getLayer('elevation').then(function(layer) {
-            //  console.log(layer);
+            //archLayerService.addLayers('elevation', 'path', geoJson, {
+            //  onEachFeature: el.addData.bind(el)
             //});
-            archLayerService.addLayers('elevation', 'elevation', geoJson, {
-              onEachFeature: el.addData.bind(el)
-            });
-            controller.getLayer('elevation').then(function(layer) {
-              console.log(layer);
-              leafletData.getMap()
-                .then(function(map){
-                  console.log(layer);
-                  map.fitBounds(layer.getBounds());
-                });
-            });
-
+            //for display it's better to use the default L.geoJson
+            L.geoJson(geoJson,{
+                onEachFeature: el.addData.bind(el) //working on a better solution
+              });
           });
-          //archLayerService.addLayers('elevation', 'path', geoJson, {
-          //  onEachFeature: $scope.el.addData.bind($scope.el)
-          //});
-
-
-          //controller.getLayer('marker').then(function(layer) {
-          //  console.log(layer);
-          //  leafletData.getMap()
-          //    .then(function(map){
-          //      console.log(layer);
-          //      map.fitBounds(layer.getBounds());
-          //    });
-          //});
-          //this.getLayer('elevation').then(function(layer){
-          //  console.log(layer);
-          //
-          //  //map.fitBounds(layer.getBounds());
-          //  //layer.addTo(map);
-          //});
-
-
-
-
-          //map.fitBounds(layer.getBounds());
-          //leafletData.getMap()
-          //  .then(function(map) {
-          //    el.addTo(map);
-          //  });
-
-
-          //$scope.el = map;
-          //console.log(map);
-          //console.log(geoJson);
-
-
-          //L.geoJson(geojson,{
-          //  onEachFeature: el.addData.bind(el) //working on a better solution
-          //}).addTo(map);
         };
         // endregion
 

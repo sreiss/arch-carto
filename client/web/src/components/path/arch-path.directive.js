@@ -11,6 +11,16 @@ angular.module('archCarto')
         $scope._currentLayer = {};
         /*var _currentJunctionLayer = $scope._currentJunctionLayer = {};*/
 
+        $scope.geoJson = {
+          "type": "Feature",
+          "geometry": {
+            "type": "LineString",
+            "coordinates": []
+          },
+          "properties": {
+          }
+        };
+
         $scope.hasDrawnPath = false;
 
         $scope.cancel = function() {
@@ -45,28 +55,6 @@ angular.module('archCarto')
         var archMap = controllers[0];
         var archPath = controllers[1];
 
-        archMap.addControl('elevation', L.Control.Elevation, {
-            position: "bottomleft",
-            theme: "steelblue-theme", //default: lime-theme
-            width: 600,
-            height: 125,
-            margins: {
-            top: 10,
-              right: 20,
-              bottom: 30,
-              left: 50
-          },
-          useHeightIndicator: true, //if false a marker is drawn at map position
-            interpolation: "linear", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
-            hoverNumber: {
-            decimalsX: 3, //decimals on distance (always in km)
-              decimalsY: 0, //deciamls on height (always in m)
-              formatter: undefined //custom formatter function may be injected
-          },
-          xTicks: undefined, //number of ticks in x axis, calculated by default according to width
-            yTicks: undefined, //number of ticks on y axis, calculated by default according to height
-            collapsed: false    //collapsed mode, show chart on click or mouseover
-        });
 
         archMap.getLayer('path')
           .then(function(layer) {
@@ -177,6 +165,30 @@ angular.module('archCarto')
             };
 
             map.on('draw:created', onDrawCreated);
+
+            map.on('draw:clicked', function(e) {
+
+              archElevationService.getElevation(e.lat, e.lng)
+                .then(function(elevation){
+                  var lat = e.lat;
+                  var lng = e.lng;
+                  var height = elevation.elevationProfile[0].height;
+                  var coordinates = [lat, lng, height];
+                  scope.geoJson.geometry.coordinates.push(coordinates);
+                  if(archMap.removeControl('el'))
+                  {
+                    archMap.removeControl('el');
+                    archMap.drawElevation(scope.geoJson);
+                  }
+                  else
+                  {
+                    archMap.drawElevation(scope.geoJson);
+
+                  }
+                });
+
+
+            });
 
             // Suppression des controls de draw lors du changement d'action.
             scope.$on('$destroy', function () {

@@ -34,6 +34,17 @@ L.Draw.Feature.ArchMixin = {
   }
 };
 
+L.Draw.Polyline.ArchMixin = {
+  _onMouseDown: function (e) {
+    var originalEvent = e.originalEvent;
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+    this._mouseDownOrigin = L.point(originalEvent.clientX, originalEvent.clientY);
+    this._map.fire('draw:clicked', { lat: lat, lng: lng });
+  }
+};
+
+L.Draw.Polyline.include(L.Draw.Polyline.ArchMixin);
 L.Draw.Feature.include(L.Draw.Feature.ArchMixin);
 L.Draw.Feature.addInitHook('archInitialize');
 
