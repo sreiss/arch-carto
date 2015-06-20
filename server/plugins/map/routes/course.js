@@ -1,6 +1,7 @@
-module.exports = function(courseController, courseRouter) {
-
+module.exports = function(courseController, courseRouter, authMiddleware)
+{
     courseRouter.route('/')
+        .post(authMiddleware.authenticate)
         .post(courseController.save)
         .get(courseController.getList);
 
@@ -8,6 +9,7 @@ module.exports = function(courseController, courseRouter) {
         .get(courseController.getFavoriteList);
 
     courseRouter.route('/favorite')
+        .post(authMiddleware.authenticate)
         .post(courseController.saveFavorite);
 
     courseRouter.route('/:id')

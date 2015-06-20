@@ -330,9 +330,7 @@ angular.module('archCarto')
 
         this.removeControl = function(name) {
           var deferred = $q.defer();
-          if (!_controls[name]) {
-            deferred.reject(new Error('The control you are trying to remove doesn\'t exist'));
-          } else {
+          if (_controls[name]) {
             leafletData.getMap()
               .then(function (map) {
                 map.removeControl(_controls[name]);

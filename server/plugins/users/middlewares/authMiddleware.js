@@ -1,17 +1,16 @@
 var passport = require('passport'),
-    BearerStrategy = require('passport-http-bearer');
+    BearerStrategy = require('passport-http-bearer'),
+    atob = require('atob');
 
-module.exports = function()
+module.exports = function(userService)
 {
     passport.use(new BearerStrategy(function (token, next)
     {
-        User.findOne({token: token}, function (err, user)
+        var token = JSON.parse(atob(token));
+
+        userService.getUserByToken(token).then(function(user)
         {
-            if (err)
-            {
-                return next(err);
-            }
-            else if(!user)
+            if(!user)
             {
                 return next(null, false);
             }
@@ -19,6 +18,10 @@ module.exports = function()
             {
                 return next(null, user, {scope: 'read'});
             }
+        })
+        .catch(function(err)
+        {
+            return next(err);
         });
     }));
 

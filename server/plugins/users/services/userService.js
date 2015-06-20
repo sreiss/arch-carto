@@ -46,12 +46,7 @@ module.exports = function(User, userService, config)
 
             User.update({oauth: userData.id},
             {
-                role: userData.role,
-                //birthdate: userData.birthdate,
-                phone: userData.phone,
-                licenceffa: userData.licenceffa,
-                avatar: userData.avatar,
-                firstconnexion: false
+                role: userData.role
             },
             function(err, numberAffected, rawResponse)
             {
@@ -74,6 +69,25 @@ module.exports = function(User, userService, config)
             var deferred = Q.defer();
 
             User.findOne({oauth: oauthUserId}).populate('role').exec(function(err, result)
+            {
+                if(err)
+                {
+                    deferred.reject(err);
+                }
+                else
+                {
+                    deferred.resolve(result);
+                }
+            });
+
+            return deferred.promise;
+        },
+
+        getUserByToken: function(token)
+        {
+            var deferred = Q.defer();
+
+            User.findOne({oauth: token.user._id}).exec(function(err, result)
             {
                 if(err)
                 {
@@ -122,8 +136,6 @@ module.exports = function(User, userService, config)
                 tls: {rejectUnauthorized: false},
                 debug:true
             }));
-
-            console.log(oauthUser);
 
             var mailOptions =
             {
