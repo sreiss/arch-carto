@@ -102,8 +102,6 @@ module.exports = function(Poi, poiTypeService, auditEventService) {
             } else {
                 var poi = new Poi({
                     properties: {
-                        // TODO: Get the user ID
-                        userId: rawPoi.properties.userId,
                         // TODO: Get the point altitude
                         medias: rawPoi.properties.medias,
                         description: rawPoi.properties.description,
@@ -115,6 +113,7 @@ module.exports = function(Poi, poiTypeService, auditEventService) {
                         coordinates: rawPoi.geometry.coordinates
                     }
                 });
+                poi._user = rawPoi._user;
                 poi.save(function (err) {
                     if (err) {
                         deferred.reject(err);

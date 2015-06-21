@@ -45,7 +45,7 @@ module.exports = (function(entityName, service) {
             var isUpdate = !!req.body._id;
             var body = req.body;
             if (req.user) {
-                body._user = user;
+                body._user = req.user;
             }
             _service.save(body)
                 .then(function (savedEntity) {

@@ -31,7 +31,7 @@ exports.attach = function(opts) {
     };
 
     var _pushEvent = function(promise, model, next) {
-        promise.then(function(auditEventId) {
+        return promise.then(function(auditEventId) {
                 model.properties.auditEvents.unshift(auditEventId);
                 next();
             })
@@ -40,11 +40,11 @@ exports.attach = function(opts) {
             });
     };
 
-    var _is = function(user, roleName) {
-        if (!_hierarchy[user.role.name]) {
+    var _is = function(roleName, targetRoleName) {
+        if (!_hierarchy[roleName]) {
             throw new ArchError('UNKNOWN_ROLE', 500);
         }
-        return _.contains(_hierarchy[user.role.name], roleName);
+        return _.contains(_hierarchy[roleName], targetRoleName);
     };
 
     var auditEventService = app.arch.audit.auditEventService = {
@@ -54,27 +54,28 @@ exports.attach = function(opts) {
                 if (!model._user) {
                     next(new Error('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS'));
                 }
-                var user = deepcopy(model._user);
+                var userId = model._user._id;
+                var roleName = model._user.role.name;
                 delete model._user;
 
                 auditEventService.getLastEvent(model.properties.auditEvents)
                     .then(function(lastEvent) {
                         if (model.isNew) {
-                            _pushEvent(auditEventService.awaitingAddition(entityName, model, false));
+                            _pushEvent(auditEventService.awaitingAddition(entityName, model, userId), model, next);
                         } else if (lastEvent !== null) {
                             if (lastEvent.type === _events.awaitingAddition
                                 || lastEvent.type === _events.awaitingUpdate
                                 || lastEvent.type === _events.awaitingDeletion
-                                && !_is(user, _hierarchy.CARTOGRAPHER)) {
+                                && !_is(roleName, _hierarchy.CARTOGRAPHER)) {
                                 throw new Error('YOU_DO_NOT_HAVE_THE_RIGHTS_TO_DO_THAT', 403);
                             }
 
                             if (lastEvent.type === _events.awaitingAddition) {
-                                _pushEvent(auditEventService.added(entityName, model, false));
+                                _pushEvent(auditEventService.added(entityName, model, userId), model, next);
                             } else if (lastEvent.type === _events.awaitingUpdate) {
-                                _pushEvent(auditEventService.updated(entityName, model, false));
+                                _pushEvent(auditEventService.updated(entityName, model, userId), model, next);
                             } else {
-                                _pushEvent(auditEventService.awaitingUpdate(entityName, model, false));
+                                _pushEvent(auditEventService.awaitingUpdate(entityName, model, userId), model, next);
                             }
                         } else {
                             throw new Error('UNABLE_TO_ATTACH_AUDIT_EVENT', 500);
@@ -84,7 +85,14 @@ exports.attach = function(opts) {
 
             schema.pre('remove', function(next) {
                 var model = this;
-                _pushEvent(auditEventService.delete(entityName, model, false));
+                if (!model._user) {
+                    next(new Error('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS'));
+                }
+                var userId = model._user._id;
+                var roleName = model._user.role.name;
+                delete model._user;
+
+                _pushEvent(auditEventService.delete(entityName, model, false), model, next);
             });
         },
         getAuditEvents: function(criteria) {
@@ -174,20 +182,22 @@ exports.attach = function(opts) {
 
     // adding a shorcut handler for each audit event.
     for (var eventName in _events) {
-        auditEventService[eventName] = function(entityName, model, userId) {
-            userId = userId || '55140dd309800aa60b882a59';
+        auditEventService[eventName] = (function(eventName) {
+            return (function(entityName, model, userId) {
+                userId = userId || '55140dd309800aa60b882a59';
 
-            var deferred = Q.defer();
+                var deferred = Q.defer();
 
-            var displayName = _events[eventName];
-            return auditEventService.saveAuditEvent({
-                type: displayName,
-                entityId: model._id,
-                entityName: entityName,
-                userId: userId,
-                pendingChanges: deepcopy(model._doc) || {}
+                var displayName = _events[eventName];
+                return auditEventService.saveAuditEvent({
+                    type: displayName,
+                    entityId: model._id,
+                    entityName: entityName,
+                    userId: userId,
+                    pendingChanges: deepcopy(model._doc) || {}
+                });
             });
-        };
+        })(eventName);
     }
 };
 
