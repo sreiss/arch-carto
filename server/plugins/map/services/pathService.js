@@ -1,5 +1,5 @@
-var Q = require('q');
-var ArchError = GLOBAL.ArchError;
+var Q = require('q'),
+    ArchError = GLOBAL.ArchError;
 
 module.exports = function(Path) {
 
@@ -43,7 +43,7 @@ module.exports = function(Path) {
             return deferred.promise;
         },
 
-        save: function(rawPath) {
+        save: function(rawPath, options) {
             var self = this;
             var deferred = Q.defer();
 
@@ -65,7 +65,11 @@ module.exports = function(Path) {
                     }
                  })
                 .then(function(path) {
-                    path._user = rawPath._user;
+                    if (options && options.noAudit) {
+                        path._noAudit = true;
+                    } else {
+                        path._user = rawPath._user;
+                    }
                     path.save(function (err, savedPath) {
                         if (err) {
                             deferred.reject(err);

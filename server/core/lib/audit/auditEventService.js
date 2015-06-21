@@ -51,8 +51,13 @@ exports.attach = function(opts) {
         attachAuditEvents: function(schema, entityName) {
             schema.pre('save', function(next) {
                 var model = this;
+                if (model._noAudit) {
+                    delete model._noAudit;
+                    return next();
+                }
+
                 if (!model._user) {
-                    next(new Error('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS'));
+                    return next(new Error('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS'));
                 }
                 var userId = model._user._id;
                 var roleName = model._user.role.name;

@@ -174,6 +174,7 @@ module.exports = (function(Junction, pathService) {
                     }
                 })
                 .then(function(junction) {
+                    junction._user = rawJunction._user;
                     junction.save(function(err, savedJunction) {
                         if (err) {
                             deferred.reject(err);
@@ -227,7 +228,9 @@ module.exports = (function(Junction, pathService) {
                             path.properties.junctions.push(
                                 junction
                             );
-                            promises.push(pathService.save(path));
+                            promises.push(pathService.save(path, {
+                                noAudit: true
+                            }));
                         }
                     }
                     return Q.when(Q.all(promises)
