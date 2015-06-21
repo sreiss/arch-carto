@@ -65,6 +65,7 @@ module.exports = function(Path) {
                     }
                  })
                 .then(function(path) {
+                    path._user = rawPath._user;
                     path.save(function (err, savedPath) {
                         if (err) {
                             deferred.reject(err);

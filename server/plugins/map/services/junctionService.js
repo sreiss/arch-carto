@@ -202,6 +202,10 @@ module.exports = (function(Junction, pathService) {
             //        }
             //    });
             //} else {
+            for (var i = 0; i < rawJunction.properties.paths.length; i += 1) {
+                rawJunction.properties.paths[i]._user = rawJunction._user;
+            }
+
             return pathService.savePaths(rawJunction.properties.paths)
                 .then(function(pathIds) {
                     rawJunction.properties.paths = pathIds;

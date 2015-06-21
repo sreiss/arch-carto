@@ -3,7 +3,11 @@ module.exports = function(pathService, crudControllerFactory) {
     return crudControllerFactory.extend('PATH', pathService, {
         save: function (req, res, next) {
             var isUpdate = !!req.body._id;
-            pathService.save(req.body)
+            var body = req.body;
+            if (req.user) {
+                body._user = req.user;
+            }
+            pathService.save(body)
                 .then(function (savedEntity) {
                     if (!isUpdate) {
                         req.archIo.namespace.emit('new', {

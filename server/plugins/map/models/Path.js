@@ -26,6 +26,8 @@ module.exports = function(Types, auditEventService) {
                 this.properties.junctions = [];
                 return next();
             });
+
+            auditEventService.attachAuditEvents(schema, 'PATH');
             /*
             var addAuditEvent = function(eventType, model, next) {
                 model.validate(function(err) {
