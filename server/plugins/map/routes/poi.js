@@ -2,7 +2,7 @@ module.exports = function(poiController, poiRouter, poiValidationMiddleware, val
 {
     poiRouter.route('/')
         .get(poiController.getList)
-        .post(poiValidationMiddleware.validateSavePoi, validationGateMiddleware, poiController.save);
+        .post(authMiddleware.authenticate, poiValidationMiddleware.validateSavePoi, validationGateMiddleware, poiController.save);
 
     poiRouter.route('/:id')
         .get(poiController.get)
