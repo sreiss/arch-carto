@@ -105,6 +105,14 @@ angular.module('archCarto', [
           }
         }
       })
+      .state('map.cartographer', {
+        url: '/cartographer',
+        views: {
+          mapRight: {
+            template: '<arch-cartographer></arch-cartographer>'
+          }
+        }
+      })
       .state('map.course.draw', {
         url: '/:id',
         template: '<arch-course-draw></arch-course-draw>',
