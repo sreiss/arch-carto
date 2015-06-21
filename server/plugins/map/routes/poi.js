@@ -1,11 +1,11 @@
 module.exports = function(poiController, poiRouter, poiValidationMiddleware, validationGateMiddleware, authMiddleware)
 {
     poiRouter.route('/')
-        .get(poiController.getPoi)
-        .post(poiValidationMiddleware.validateSavePoi, validationGateMiddleware, poiController.savePoi);
+        .get(poiController.getList)
+        .post(poiValidationMiddleware.validateSavePoi, validationGateMiddleware, poiController.save);
 
     poiRouter.route('/:id')
-        .get(poiController.getPoi)
+        .get(poiController.get)
         .delete(authMiddleware.authenticate)
-        .delete(poiController.deletePoi);
+        .delete(poiController.delete);
 };

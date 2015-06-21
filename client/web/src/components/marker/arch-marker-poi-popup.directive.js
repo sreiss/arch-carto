@@ -9,8 +9,8 @@ angular.module('archCarto')
 
         var refreshPoi = function() {
           archMarkerPoiService.get(scope.id)
-            .then(function (poi) {
-              scope.poi = poi;
+            .then(function (result) {
+              scope.poi = result.value;
             });
         };
         refreshPoi();

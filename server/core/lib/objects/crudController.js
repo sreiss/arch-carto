@@ -4,9 +4,20 @@ module.exports = (function(entityName, service) {
     var _entityName = entityName;
     var _service = service;
 
+    var _buildNormalizedQuery = function(query) {
+        var options = {};
+        for (var paramName in query) {
+            var normilizedName = camelCase(paramName);
+            var value = query[paramName];
+            options[normilizedName] = value;
+        };
+        return options;
+    };
+
     return {
         get: function (req, res, next) {
-            _service.get(req.params.id)
+            var options = _buildNormalizedQuery(req.query);
+            _service.get(req.params.id, options)
                 .then(function (entity) {
                     res.json({
                         message: _entityName + '_RETRIEVED',
@@ -18,12 +29,7 @@ module.exports = (function(entityName, service) {
                 });
         },
         getList: function (req, res, next) {
-            var criterias = {};
-            for (var paramName in req.query) {
-                var normilizedName = camelCase(paramName);
-                var value = req.query[paramName];
-                criterias[normilizedName] = value;
-            };
+            var criterias = _buildNormalizedQuery(req.query);
             _service.getList(criterias)
                 .then(function (list) {
                     res.json({
@@ -37,7 +43,11 @@ module.exports = (function(entityName, service) {
         },
         save: function (req, res, next) {
             var isUpdate = !!req.body._id;
-            _service.save(req.body)
+            var body = req.body;
+            if (req.user) {
+                body._user = user;
+            }
+            _service.save(body)
                 .then(function (savedEntity) {
                     if (!isUpdate) {
                         req.archIo.namespace.emit('new', {

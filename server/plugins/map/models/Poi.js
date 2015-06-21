@@ -1,4 +1,4 @@
-module.exports = function(Types) {
+module.exports = function(Types, auditEventService) {
 
     return {
         extends: 'Point',
@@ -13,9 +13,10 @@ module.exports = function(Types) {
         },
         onSchemaReady: function(schema) {
             schema.pre('save', function(next) {
-                this.properties.entity = "POI";
                 return next();
             });
+
+            auditEventService.attachAuditEvents(schema, 'POI');
         },
         onModelReady: function(Poi) {
             Poi.collection.createIndex({geometry: '2dsphere'}, function(err, result) {

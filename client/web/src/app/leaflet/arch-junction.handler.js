@@ -3,7 +3,23 @@ if (!L) {
 }
 
 // region ArchJunction
+/**
+ * A handler for the junctions. It permits to move junctions across the map and to keep the paths attached to it magnetised.
+ */
+L.Handler.ArchJunction = L.Handler.extend({
+  initialize: function(map, marker) {
+    this._map = map;
+    this._marker = marker;
+  },
 
+  addHooks: function() {
+    this._marker.on('move', this._onMove, this);
+  },
+
+  _onMove: function(e) {
+  }
+});
+/*
 L.Handler.ArchJunction = L.Handler.extend({
   initialize: function(map, marker, referenceLayer) {
     this._map = map;
@@ -31,3 +47,4 @@ L.Handler.ArchJunction = L.Handler.extend({
     }
   }
 });
+*/

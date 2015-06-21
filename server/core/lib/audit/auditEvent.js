@@ -10,7 +10,7 @@ exports.attach = function(opts) {
     var auditEventSchema = mongoose.Schema({
         type: {type: String, required: true},
         entityName: {type: String, required: true},
-        entity: {type: mongoose.Schema.Types.ObjectId, required: true},
+        entityId: {type: mongoose.Schema.Types.ObjectId, required: true},
         pendingChanges: {type: mongoose.Schema.Types.Mixed},
         userId: {type: mongoose.Schema.Types.ObjectId, required: true},
         date: {type: Date, required: true}

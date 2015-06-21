@@ -16,7 +16,7 @@ L.Draw.Feature.ArchMixin = {
     if (!this.options.archReferenceLayer) {
       console.log('[L.Draw.Feature.ArchMixin]: Please provide a reference layer to enable intersections and junctions features.');
     } else {
-      this._archJunction = new L.Handler.ArchJunction(this._map, this._mouseMarker, this.options.archReferenceLayer);
+      this._archJunction = new L.Handler.ArchJunction(this._map, this._mouseMarker);
       this._archJunction.enable();
     }
   },

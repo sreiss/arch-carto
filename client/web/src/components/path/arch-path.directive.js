@@ -136,9 +136,9 @@ angular.module('archCarto')
 
                       var junction = intersection.junction.toGeoJSON();
                       junction.properties.paths = pathGeoJsons;
-
+                      debugger;
                       // Save the junction
-                      archPathJunctionService.save(junction);
+                      //archPathJunctionService.save(junction);
 
                       /*
                        archPathService.save(pathGeoJson)
@@ -164,7 +164,16 @@ angular.module('archCarto')
               }
             };
 
+            var onDrawEdited = function(e) {
+              var editedLayers = e.layers;
+              editedLayers.eachLayer(function(layer) {
+                var geoJson = layer.toGeoJSON();
+              });
+              //archPathService.savePaths()
+            };
+
             map.on('draw:created', onDrawCreated);
+            map.on('draw:edited', onDrawEdited);
 
             map.on('draw:clicked', function(e) {
 

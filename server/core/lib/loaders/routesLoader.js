@@ -92,7 +92,6 @@ exports.init = function(done) {
                                     throw new Error("Plugin " + otherPluginName + " doesn't exist! Please remove it form " + pluginName + " plugin dependencies");
 
                                 var otherPlugin = plugins[otherPluginName];
-                                console.log(otherPlugin);
                                 if (otherPlugin.middlewares[dependencyName]) {
                                     args.push(otherPlugin.middlewares[dependencyName]);
                                 } else {

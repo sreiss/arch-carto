@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .directive('archMarkerPoi', function(archPoiService, archPoiTypeService, archMarkerPoiService, $filter, $state, $translate, archTranslateService, $mdToast, $mdSidenav) {
+  .directive('archMarkerPoi', function(archPoiTypeService, archMarkerPoiService, $filter, $state, $translate, archTranslateService, $mdToast, $mdSidenav) {
     return {
       restrict: 'E',
       require: ['^archMap', '^archMarker'],

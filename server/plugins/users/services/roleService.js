@@ -1,7 +1,23 @@
-var Q = require('q');
+var Q = require('q'),
+    _ = require('underscore'),
+    ArchError = GLOBAL.ArchError;
 
 module.exports = function(Role) {
+    var _hierarchy = {
+        AUTHENTICATED: ['AUTHENTICATED'],
+        MEMBER: ['AUTHENTICATED', 'MEMBER'],
+        ADMIN: ['AUTHENTICATED', 'MEMBER', 'CARTOGRAPHER', 'ADMIN'],
+        CARTOGRAPHER: ['AUTHENTICATED', 'MEMBER', 'ADMIN']
+    };
+
     return {
+        is: function(user, roleName) {
+            if (!_hierarchy[user.role.name]) {
+                throw new ArchError('UNKNOWN_ROLE', 500);
+            }
+            return _.contains(_hierarchy[user.role.name], roleName);
+        },
+
         getList: function() {
             var deferred = Q.defer();
             Role.find({}, function(err, roles) {

@@ -3,7 +3,7 @@ var Q = require('q');
 module.exports = function(Poi, poiTypeService, auditEventService) {
 
     return {
-        getPoi: function(id, options) {
+        get: function(id, options) {
             var deferred = Q.defer();
 
             var query = Poi.findById(id);
@@ -35,12 +35,13 @@ module.exports = function(Poi, poiTypeService, auditEventService) {
                     }
                     if (poi == null) {
                         deferred.reject(new Error('Poi ' + id + ' not found'));
+                    } else {
+                        deferred.resolve(poi);
                     }
-                    deferred.resolve(poi);
                 });
             return deferred.promise;
         },
-        getAllPois: function(criterias) {
+        getList: function(criterias) {
             var deferred = Q.defer();
             var query = Poi.find();
 
@@ -124,7 +125,7 @@ module.exports = function(Poi, poiTypeService, auditEventService) {
             }
             return deferred.promise;
         },
-        deletePoi: function(id) {
+        delete: function(id) {
             var deferred = Q.defer();
             Poi.findByIdAndRemove(id, function(err, poi) {
                 if (err) {

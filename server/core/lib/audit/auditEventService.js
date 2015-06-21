@@ -14,6 +14,13 @@ exports.attach = function(opts) {
     var AuditEvent = app.arch.audit.AuditEvent;
     var validators = app.arch.validators;
 
+    var _hierarchy = {
+        AUTHENTICATED: ['AUTHENTICATED'],
+        MEMBER: ['AUTHENTICATED', 'MEMBER'],
+        ADMIN: ['AUTHENTICATED', 'MEMBER', 'CARTOGRAPHER', 'ADMIN'],
+        CARTOGRAPHER: ['AUTHENTICATED', 'MEMBER', 'ADMIN']
+    };
+
     var _events = {
         awaitingAddition: 'AWAITING_ADDITION',
         awaitingUpdate: 'AWAITING_UPDATE',
@@ -23,7 +30,63 @@ exports.attach = function(opts) {
         deleted: 'DELETED'
     };
 
+    var _pushEvent = function(promise, model, next) {
+        promise.then(function(auditEventId) {
+                model.properties.auditEvents.unshift(auditEventId);
+                next();
+            })
+            .catch(function(err) {
+                next(err);
+            });
+    };
+
+    var _is = function(user, roleName) {
+        if (!_hierarchy[user.role.name]) {
+            throw new ArchError('UNKNOWN_ROLE', 500);
+        }
+        return _.contains(_hierarchy[user.role.name], roleName);
+    };
+
     var auditEventService = app.arch.audit.auditEventService = {
+        attachAuditEvents: function(schema, entityName) {
+            schema.pre('save', function(next) {
+                var model = this;
+                if (!model._user) {
+                    next(new Error('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS'));
+                }
+                var user = deepcopy(model._user);
+                delete model._user;
+
+                auditEventService.getLastEvent(model.properties.auditEvents)
+                    .then(function(lastEvent) {
+                        if (model.isNew) {
+                            _pushEvent(auditEventService.awaitingAddition(entityName, model, false));
+                        } else if (lastEvent !== null) {
+                            if (lastEvent.type === _events.awaitingAddition
+                                || lastEvent.type === _events.awaitingUpdate
+                                || lastEvent.type === _events.awaitingDeletion
+                                && !_is(user, _hierarchy.CARTOGRAPHER)) {
+                                throw new Error('YOU_DO_NOT_HAVE_THE_RIGHTS_TO_DO_THAT', 403);
+                            }
+
+                            if (lastEvent.type === _events.awaitingAddition) {
+                                _pushEvent(auditEventService.added(entityName, model, false));
+                            } else if (lastEvent.type === _events.awaitingUpdate) {
+                                _pushEvent(auditEventService.updated(entityName, model, false));
+                            } else {
+                                _pushEvent(auditEventService.awaitingUpdate(entityName, model, false));
+                            }
+                        } else {
+                            throw new Error('UNABLE_TO_ATTACH_AUDIT_EVENT', 500);
+                        }
+                    });
+            });
+
+            schema.pre('remove', function(next) {
+                var model = this;
+                _pushEvent(auditEventService.delete(entityName, model, false));
+            });
+        },
         getAuditEvents: function(criteria) {
             var deferred = Q.defer();
             criteria = criteria || {};
@@ -38,17 +101,21 @@ exports.attach = function(opts) {
         },
         getLastEvent: function(auditEvents) {
             var deferred = Q.defer();
-            var lastAuditEvent = auditEvents[auditEvents.length - 1];
-            if (validators.isObjectId(lastAuditEvent)) {
-                AuditEvent.findOne({_id: lastAuditEvent}, function(err, lastEvent) {
-                   if (err) {
-                       deferred.reject(err);
-                   } else {
-                       deferred.resolve(lastEvent);
-                   }
-                });
+            if (auditEvents.length > 0) {
+                var lastAuditEvent = auditEvents[auditEvents.length - 1];
+                if (validators.isObjectId(lastAuditEvent)) {
+                    AuditEvent.findOne({_id: lastAuditEvent}, function (err, lastEvent) {
+                        if (err) {
+                            deferred.reject(err);
+                        } else {
+                            deferred.resolve(lastEvent);
+                        }
+                    });
+                } else {
+                    deferred.resolve(lastAuditEvent);
+                }
             } else {
-                deferred.resolve(lastAuditEvent);
+                deferred.resolve(null);
             }
             return deferred.promise;
         },
@@ -89,7 +156,7 @@ exports.attach = function(opts) {
             var auditEvent = new AuditEvent({
                 type: rawAuditEvent.type,
                 entityName: rawAuditEvent.entityName,
-                entity: rawAuditEvent.entity,
+                entityId: rawAuditEvent.entityId,
                 userId: rawAuditEvent.userId,
                 pendingChanges: rawAuditEvent.pendingChanges || {},
                 date: moment().toDate()
@@ -113,22 +180,13 @@ exports.attach = function(opts) {
             var deferred = Q.defer();
 
             var displayName = _events[eventName];
-            var auditEvent = new AuditEvent({
+            return auditEventService.saveAuditEvent({
                 type: displayName,
-                entity: model._id,
+                entityId: model._id,
                 entityName: entityName,
                 userId: userId,
-                pendingChanges: deepcopy(model._doc) || {},
-                date: moment().toDate()
+                pendingChanges: deepcopy(model._doc) || {}
             });
-            auditEvent.save(function(err, savedAuditEvent) {
-                if (err) {
-                    deferred.reject(err);
-                } else {
-                    deferred.resolve(savedAuditEvent._id);
-                }
-            });
-            return deferred.promise;
         };
     }
 };

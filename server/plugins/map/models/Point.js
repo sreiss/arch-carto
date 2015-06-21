@@ -7,8 +7,7 @@ module.exports = function(Types, auditEventService) {
         schema: {
             type: {type: String, required: true},
             properties: {
-                auditEvents: [{type: Types.ObjectId, ref: 'AuditEvent'}],
-                entity: {type: String, required: true}
+                auditEvents: [{type: Types.ObjectId, ref: 'AuditEvent'}]
             },
             geometry: {
                 type: {type: String, required: true},
@@ -22,29 +21,29 @@ module.exports = function(Types, auditEventService) {
                 return next();
             });
 
-            schema.pre('save', function(next) {
-                var model = this;
-                var entityName = model.properties.entity;
-                if (model.isNew) {
-                    auditEventService.awaitingAddition(entityName, model, false)
-                        .then(function(auditEventId) {
-                            model.properties.auditEvents.unshift(auditEventId);
-                            next();
-                        })
-                        .catch(function(err) {
-                            next(err);
-                        });
-                } else {
-                    auditEventService.awaitingUpdate(entityName, model, false)
-                        .then(function(auditEventId) {
-                            model.properties.auditEvents.unshift(auditEventId);
-                            next();
-                        })
-                        .catch(function(err) {
-                            next(err);
-                        });
-                }
-            });
+            //schema.pre('save', function(next) {
+            //    var model = this;
+            //    var entityName = model.properties.entity;
+            //    if (model.isNew) {
+            //        auditEventService.awaitingAddition(entityName, model, false)
+            //            .then(function(auditEventId) {
+            //                model.properties.auditEvents.unshift(auditEventId);
+            //                next();
+            //            })
+            //            .catch(function(err) {
+            //                next(err);
+            //            });
+            //    } else {
+            //        auditEventService.awaitingUpdate(entityName, model, false)
+            //            .then(function(auditEventId) {
+            //                model.properties.auditEvents.unshift(auditEventId);
+            //                next();
+            //            })
+            //            .catch(function(err) {
+            //                next(err);
+            //            });
+            //    }
+            //});
 
             schema.methods.delete = function() {
                 var model = this;
