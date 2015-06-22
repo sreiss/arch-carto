@@ -1,0 +1,40 @@
+<ion-view view-title="Ajouter un nouveau point d'interêt">
+  <ion-content>
+    <div ng-controller="addPOICtrl" data-ng-init="initAddImage()">
+      <form role="form" ng-submit="addPOI()">
+        <img class="center" ng-src="{{image}}" height="200px"></img>
+        <div class="list">
+          <label class="item item-input">
+            <span class="input-label">Nom du POI</span>
+            <input ng-model="poiname" type="text" placeholder="ex : Cathédrale de Strasbourg">
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Description du POI</span>
+            <textarea ng-model="poidesc" type="text" placeholder="ex : superbe endroit au soleil"></textarea>
+          </label>
+          <div class="list">
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Type de POI
+              </div>
+              <select ng-model="poitype">
+                <option ng-repeat="item in poiTypeArray" value="{{item._id}}">{{item.name}}</option>
+              </select>
+            </label>
+          </div>
+          <div>
+          </div>
+        </div>
+        <div class="userMessage">
+          <p style="{{userCSS}}">{{userErr}}</p>
+        </div>
+        <div class="button-bar">
+          <img ng-src="img/ajax-loader.gif" ng-if="hide"></img>
+          <a class="button icon-left ion-ios-loop-strong button-calm" ng-click="initAddImage()">Nouvelle photo</a>
+          <button type="submit" class="button icon-right ion-paper-airplane button-calm">Envoyer</button>
+        </div>
+      </form>
+    </div>
+  </ion-content>
+</ion-view>
+

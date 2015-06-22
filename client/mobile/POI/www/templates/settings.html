@@ -1,0 +1,19 @@
+<ion-view view-title="Paramètres">
+  <ion-content>
+    <form role="form" ng-submit="saveParameters()">
+      <div class="item item-divider">
+        Rayon de détéction des POI - {{options.radius}} mètres
+      </div>
+      <div class="list">
+        <div class="item range range-positive">
+          <i class="icon ion-radio-waves"></i>
+          <input ng-model="options.radius" type="range" name="options" min="0" max="100" value="{{options.radius}}">
+          <i class="icon ion-radio-waves"></i>
+        </div>
+      </div>
+      <center>
+        <button type="submit" style="width: 50%;"  class="button button-block icon-right ion-paper-airplane button-positive">Enregistrer</button>
+      </center>
+    </form>
+  </ion-content>
+</ion-view>

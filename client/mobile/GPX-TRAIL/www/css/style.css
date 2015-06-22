@@ -1,0 +1,21 @@
+.content {
+  padding-top: 20%;
+}
+
+#map {
+  height: 400px;
+}
+
+#fleche {
+  -webkit-transition: 500ms ease-in-out;
+  -moz-transition: 500ms ease-in-out;
+  -o-transition: 500ms ease-in-out;
+  transition: 500ms ease-in-out;
+}
+
+.leaflet-marker-icon {
+  -webkit-transition: 500ms ease-in-out;
+  -moz-transition: 500ms ease-in-out;
+  -o-transition: 500ms ease-in-out;
+  transition: 500ms ease-in-out;
+}

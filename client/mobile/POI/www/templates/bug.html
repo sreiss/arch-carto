@@ -1,0 +1,20 @@
+<ion-view view-title="Signaler un bug">
+  <ion-content>
+      <div data-ng-controller="bugCtrl">
+          <form role="form" ng-submit="addBug()">
+             <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">Description du bug</span>
+                    <textarea ng-model="bugdesc" rows="10" type="text" name="bugname" placeholder="ex : il n'y a pas de POI ici"></textarea>
+                </label>
+            </div>
+            <div>
+                <center>
+                    <img ng-src="img/ajax-loader.gif" ng-if="hide"></img>
+                    <button type="submit" style="width: 50%;" class="button button-block icon-right ion-paper-airplane button-assertive">Signaler</button>
+                </center>
+            </div>  
+          </form>  
+      </div>
+  </ion-content>
+</ion-view>

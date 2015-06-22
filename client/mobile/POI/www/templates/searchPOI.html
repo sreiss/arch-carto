@@ -1,0 +1,25 @@
+<ion-view view-title="Recherche de POIs">
+  <ion-content>
+    <div class="list">
+      <div ng-if="state == 'full'">
+        <p ng-repeat="item in poiProximity" class="item item-thumbnail-left" href="#">
+          <img src="http://acrobatt-vm11.psi.ad.unistra.fr:3022/{{item.properties.medias[0].url}}?dim=100x100"></img>
+          <h2>{{item.properties.name}}</h2>
+          <p>{{item.properties.description}}</p>
+        </p>
+      </div>
+
+      <div ng-if="state == 'hide'">
+        <img ng-src="img/ajax-loader.gif"></img>   
+      </div>    
+  
+      <div ng-if="state == 'empty'">
+        <div class="card">
+          <div class="item item-text-wrap">
+            Pas de POI à proximités
+          </div>
+        </div>
+      </div>
+    </div> 
+  </ion-content>
+</ion-view>

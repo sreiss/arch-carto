@@ -1,0 +1,28 @@
+<ion-view view-title="Application GPS : trail">
+  <ion-content ng-init="initMap()">
+
+    <div id="map">
+    </div>
+
+    <center>
+      <div class="">
+        <label class="checkbox" style="float: left; width: 30%;">
+          <input onclick="angular.element(this).scope().checkIsChecked(this.checked)" type="checkbox">Navigation Libre
+        </label>
+
+        <div id="fleche" degrees='angle' rotate style="height: 60px; width: 60px; margin: 30px; background-image: url('img/fleche-gps.jpg'); background-repeat: no-repeat; background-position: center;"></div>
+
+        <p>lati => {{latit}} ; longi => {{longit}}</p>
+        <p>angle => {{angle}}</p>
+      </div>
+
+      <ion-item href="#/gpstrail/init">
+       Choisir une autre trace GPX
+      </ion-item>
+    </center>
+
+    
+
+  </ion-content>
+</ion-view>
+

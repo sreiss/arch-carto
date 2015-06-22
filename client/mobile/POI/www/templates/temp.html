@@ -1,0 +1,28 @@
+<ion-view view-title="Point en attente d'envoi">
+  <ion-content>
+      <div data-ng-controller="tempCtrl">
+        <div class="list">
+
+          <div ng-if="pointArray != 'empty'">
+            <a ng-repeat="item in pointArray" class="item item-thumbnail-left" href="#">
+              <img ng-if="item.pointType=='bug'" ng-src="img/Sad_mac.png"></img>
+              <img ng-if="item.pointType!='bug'" ng-src="{{item.image}}"></img>
+              <h2>Type : {{item.pointType}}</h2>
+              <p>Description : {{item.description}}</p>
+            </a>
+            <div>
+                <center><button ng-disabled="activeTonReseau()" ng-click="addAllTemp()" style="width: 50%;" class="button button-block icon-right ion-paper-airplane button-positive">Tout envoyer</button></center>
+            </div>
+          </div>
+
+          <div ng-if="pointArray == 'empty'">
+            <div class="card">
+              <div class="item item-text-wrap">
+                Pas de points en attente
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div>
+  </ion-content>
+</ion-view>

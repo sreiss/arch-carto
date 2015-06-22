@@ -1,0 +1,24 @@
+<ion-view view-title="Application GPS : trail">
+  <ion-content>
+    <div class="bar bar-header bar-positive">
+      <h1 class="title">Séléctionner une trace GPX</h1>
+    </div>
+    <div>
+      <center>
+        <div class="list content">
+          <div class="card">
+            <div class="item item-text-wrap">
+              <form role="form">
+                <input type="file" id="file" name='file' onchange="angular.element(this).scope().fileChanged(this)" />
+                <ion-item href="#/gpstrail/guidage/:prout/:prout/:prout">
+                  Guidage
+                </ion-item>
+              </form>
+            </div>
+          </div>
+        </div>
+      </center>
+    </div>
+  </ion-content>
+</ion-view>
+
