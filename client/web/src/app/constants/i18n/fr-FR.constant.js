@@ -178,5 +178,9 @@ angular.module('archCarto')
     NO_LAYERS_TO_DELETE: "Aucune couche à supprimer.",
     DRAG_HANDLES_OR_MARKER_TO_EDIT_FEATURE: "Tirer points pour éditer les tracés.",
     CLICK_CANCEL_TO_UNDO_CHANGES: "Cliquer sur \"Annuler\" pour revenir en arrière.",
-    CLICK_ON_A_FEATURE_TO_REMOVE: "Cliquer sur un points ou un tronçon pour le supprimer."
+    CLICK_ON_A_FEATURE_TO_REMOVE: "Cliquer sur un points ou un tronçon pour le supprimer.",
+
+    YOU_DO_NOT_HAVE_THE_RIGHTS_TO_DO_THAT: "Vous n'avez pas le droit d'exécuter cette action.",
+    YOU_HAVE_TO_BE_LOGGED_IN_TO_ACCESS_THIS_AREA: "Vous devez être connecté pour accéder à cette zone.",
+    OK: "D'accord"
   });
