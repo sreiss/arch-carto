@@ -1,6 +1,6 @@
 'use strict'
 angular.module('archCarto')
-  .factory('archAccountService', function(archHttpService, $q, httpConstant, $cookieStore, $base64) {
+  .factory('archAccountService', function(archHttpService, $q, httpConstant, $cookieStore, $base64, $translate, $mdDialog) {
     var _roles = {
       AUTHENTICATED: ['AUTHENTICATED'],
       MEMBER: ['AUTHENTICATED', 'MEMBER'],
@@ -200,6 +200,21 @@ angular.module('archCarto')
         token.user.lname = profile.user.lname;
         token.user.fname = profile.user.fname;
         $cookieStore.put('token', token);
+      },
+
+      showRestrictionModal: function() {
+        return $translate([
+          'ERROR',
+          'YOU_HAVE_TO_BE_LOGGED_IN_TO_ACCESS_THIS_AREA',
+          'OK'
+        ]).then(function(translations) {
+          return $mdDialog.show(
+            $mdDialog.alert()
+              .title(translations.ERROR)
+              .content(translations.YOU_HAVE_TO_BE_LOGGED_IN_TO_ACCESS_THIS_AREA)
+              .ok(translations.OK)
+          );
+        });
       }
     };
   });
