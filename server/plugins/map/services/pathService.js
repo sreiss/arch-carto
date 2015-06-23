@@ -61,7 +61,7 @@ module.exports = function(Path) {
                             }
                         }));
                     } else {
-                        throw err;
+                        deferred.reject(err);
                     }
                  })
                 .then(function(path) {

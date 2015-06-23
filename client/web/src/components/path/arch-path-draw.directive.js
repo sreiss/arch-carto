@@ -11,9 +11,6 @@ angular.module('archCarto')
 
         if(scope.id) {
           $mdSidenav('right').open();
-        }
-
-        scope.$watch('hasDrawnPath', function(hasDrawnPath) {
 
           scope.medias = [];
           archPathCoatingService.getList()
@@ -21,104 +18,27 @@ angular.module('archCarto')
               scope.coatings = result.value;
             });
 
-          if (hasDrawnPath) {
-            $q.all([
-                archPath.getCurrentLayer(),
-                //archPath.getCurrentJunctionsLayer()
-              ])
-              .then(function (results) {
-                var currentLayer = results[0];
-                //var currentJunctionsLayer = results[1];
+          // If we are just editing the path
+          archPathService.get(scope.id)
+            .then(function (result) {
+              scope.path = result.value;
 
-                var pathCoordinates = currentLayer.getLatLngs();
-
-                $mdSidenav('right').open();
-
-                scope.path = {
-                  properties: {}
-                };
-
-                scope.save = function(path) {
-                  //var pathGeoJson = currentLayer.toGeoJSON();
-                  // var junctionFeatureCollection = currentJunctionsLayer.toGeoJSON();
-                  //var junctionGeoJsons = junctionFeatureCollection.features;
-
-                  //pathGeoJson.properties = path.properties;
-
-                  //archPathService.save(pathGeoJson)
-                  //  .then(function(result) {
-                  //    var junctionsFn = [];
-                  //    for (var i = 0; i < junctionGeoJsons.length; i += 1) {
-                  //      //junctionGeoJsons[i].properties.paths = junctionGeoJsons[i].properties.paths || [];
-                  //      //junctionGeoJsons[i].properties.paths.push(result.value._id);
-                  //      junctionsFn.push(function() {
-                  //        return archPathJunctionService.save(junctionGeoJsons[i]);
-                  //      }());
-                  //    }
-                  //    return $q.all(junctionsFn);
-                  //  })
-                  //  .then(function(result) {
-                  //
-                  //  });
-
-
-                  /*
-                  archPathService.save(path)
-                    .then(function(result) {
-
-                    });
-                    */
-                  /*
-                  var junctionLayers = currentJunctionsLayer.getLayers();
-                  junctionLayers.forEach(function(layer) {
-                    var pathGeoJson = archPathService.toGeoJson(path);
-                    for(var i = 0; i < scope.medias.length; i += 1) {
-                      pathGeoJson.properties.medias.push(scope.medias[i].data._id);
-                    }
-
-                    var junction = {
-                      coordinates: layer.getLatLng(),
-                      paths: [pathGeoJson]
-                    };
-
-                    var geoJson = archPathJunctionService.toGeoJson(junction);
-
-                    archPathJunctionService.save(geoJson)
-                      .then(function(result) {
-                        $mdSidenav('right').close();
-                        archPath.cleanCurrentLayer();
-                        archPath.cleanCurrentJunctionsLayer();
-                        archMap.getJunctionsLayer()
-                          .then(function(layer) {
-                            layer.addData(result.value)
-                          })
+              scope.save = function (path) {
+                for (var i = 0; i < scope.medias.length; i += 1) {
+                  path.properties.medias.push(scope.medias[i].data._id);
+                }
+                archPathService.save(path)
+                  .then(function (result) {
+                    archTranslateService(result.message)
+                      .then(function (translation) {
+                        scope.$emit('pathUpdated', result.value);
+                        $mdToast.show($mdToast.simple().content(translation));
                       });
                   });
-                  */
-                };
-              });
-          } else if (scope.id) {
-            // If we are just editing the path
-            archPathService.get(scope.id)
-              .then(function(result) {
-                scope.path = result.value;
-                scope.save = function(path) {
-                  for (var i = 0; i < scope.medias.length; i += 1) {
-                    path.properties.medias.push(scope.medias[i].data._id);
-                  }
-                  archPathService.save(path)
-                    .then(function(result) {
-                      archTranslateService(result.message)
-                        .then(function(translation) {
-                          scope.$emit('pathUpdated', result.value);
-                          $mdToast.show($mdToast.simple().content(translation));
-                        });
-                    });
-                };
-              });
-          }
+              };
+            });
+        }
 
-        });
       }
     };
   });

@@ -50,6 +50,7 @@ exports.attach = function(opts) {
     var auditEventService = app.arch.audit.auditEventService = {
         attachAuditEvents: function(schema, entityName) {
             schema.pre('save', function(next) {
+                var ArchError = GLOBAL.ArchError;
                 var model = this;
                 if (model._noAudit) {
                     delete model._noAudit;
@@ -57,11 +58,10 @@ exports.attach = function(opts) {
                 }
 
                 if (!model._user) {
-                    return next(new Error('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS'));
+                    return next(new ArchError('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS', 403));
                 }
                 var userId = model._user._id;
                 var roleName = model._user.role.name;
-                delete model._user;
 
                 auditEventService.getLastEvent(model.properties.auditEvents)
                     .then(function(lastEvent) {
@@ -72,7 +72,7 @@ exports.attach = function(opts) {
                                 || lastEvent.type === _events.awaitingUpdate
                                 || lastEvent.type === _events.awaitingDeletion
                                 && !_is(roleName, _hierarchy.CARTOGRAPHER)) {
-                                throw new Error('YOU_DO_NOT_HAVE_THE_RIGHTS_TO_DO_THAT', 403);
+                                next(new ArchError('YOU_DO_NOT_HAVE_THE_RIGHTS_TO_DO_THAT', 403));
                             }
 
                             if (lastEvent.type === _events.awaitingAddition) {
@@ -83,7 +83,7 @@ exports.attach = function(opts) {
                                 _pushEvent(auditEventService.awaitingUpdate(entityName, model, userId), model, next);
                             }
                         } else {
-                            throw new Error('UNABLE_TO_ATTACH_AUDIT_EVENT', 500);
+                            next(new ArchError('UNABLE_TO_ATTACH_AUDIT_EVENT', 403));
                         }
                     });
             });
@@ -91,7 +91,7 @@ exports.attach = function(opts) {
             schema.pre('remove', function(next) {
                 var model = this;
                 if (!model._user) {
-                    next(new Error('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS'));
+                    next(new ArchError('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS', 403));
                 }
                 var userId = model._user._id;
                 var roleName = model._user.role.name;
