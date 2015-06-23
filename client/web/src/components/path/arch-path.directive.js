@@ -89,6 +89,9 @@ angular.module('archCarto')
 
                 var guideLayers = layer.editable.getLayers();
                 guideLayers.add(layer.notEditable.getLayers());
+                guideLayers = guideLayers.filter(function(guideLayer) {
+                  return guideLayer instanceof L.Marker;
+                });
 
                 control.setDrawingOptions({
                   polyline: {

@@ -13,11 +13,31 @@ L.Draw.Feature.ArchMixin = {
   },
 
   _archOnEnabled: function(e) {
+    var self = this;
+
     if (!this.options.archReferenceLayer) {
       console.log('[L.Draw.Feature.ArchMixin]: Please provide a reference layer to enable intersections and junctions features.');
     } else {
       this._archJunction = new L.Handler.ArchJunction(this._map, this._mouseMarker);
       this._archJunction.enable();
+
+      if (this.options.archReferenceLayer) {
+        var paths = this.options.archReferenceLayer.editable
+          .getLayers()
+          .filter(function (layer) {
+            return layer instanceof L.Polyline;
+          });
+        var markers = this.options.archReferenceLayer.editable
+          .getLayers()
+          .filter(function (layer) {
+            return layer instanceof L.Marker;
+          });
+
+        markers.each(function (marker) {
+          marker.archHandler = new L.Handler.ArchHandle(marker, self._mouseMarker, self._map, paths);
+          marker.archHandler.enable();
+        });
+      }
     }
   },
 
