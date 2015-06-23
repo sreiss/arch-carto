@@ -107,6 +107,8 @@ angular.module('archCarto')
     PATH_DETAILS: "Détails du tronçon",
     ROAD: "Route",
     DIRT_ROAD: "Chemin de terre",
+    BEATEN_PATH: "Sentier battu",
+    SINGLE: "Single",
 
     COURSE_DETAILS: "Détails de l'itinéraire",
     COMMENTARY: "Commentaire",

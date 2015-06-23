@@ -406,6 +406,9 @@ angular.module('archCarto')
             }
           })
           .then(function() {
+            return archAccountService.getCurrentUser();
+          })
+          .then(function() {
             var pathControlClass = archMapControlService.createControlClass('GoToArchPath', 'arch-path', 'retweet');
             archMap.addControl('goToArchPath', pathControlClass, {
               clickFn: function() {
@@ -446,7 +449,7 @@ angular.module('archCarto')
             })
           })
           .catch(function(err) {
-            $log.error(err);
+            //$log.error(err);
           });
 
         // Ajout du centre

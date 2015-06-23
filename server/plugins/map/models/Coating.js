@@ -7,8 +7,9 @@ module.exports = function(Types) {
         onModelReady: function(Coating) {
             var coatingsToUpate = {
                 ROAD: null,
-                FOREST_PATH: null,
-                ROCK: null
+                DIRT_ROAD: null,
+                BEATEN_PATH: null,
+                SINGLE: null
             };
 
             var coatingFilter = function(coating) {
