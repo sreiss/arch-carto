@@ -16,11 +16,6 @@ L.Handler.ArchHandle = L.Handler.extend({
     this._options = options || {};
     this._options.overOpacity = this._options.overOpacity || 1;
     this._options.outOpacity = this._options.outOpacity || 0.5;
-
-    if (!this._map.archPendingChanges) {
-      this._map.archPendingChanges = new L.Map.ArchPendingChanges(this._map);
-      this._map.archPendingChanges.enable();
-    }
   },
 
   addHooks: function() {
@@ -38,9 +33,6 @@ L.Handler.ArchHandle = L.Handler.extend({
   _onSnap: function(e) {
     if (e.layer === this._junction) {
       this._junction.setOpacity(this._options.overOpacity);
-      //var geoJson = this._junction.feature;
-      //this._map.fire('arch:pushchange', this, )
-      /* TODO: Add path to junction when snapped */
     }
   },
 

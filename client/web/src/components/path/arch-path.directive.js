@@ -87,10 +87,15 @@ angular.module('archCarto')
                 var layer = results[1];
                 var control = results[2];
 
+                var junctionsLatLngs = [];
                 var guideLayers = layer.editable.getLayers();
                 guideLayers.add(layer.notEditable.getLayers());
                 guideLayers = guideLayers.filter(function(guideLayer) {
-                  return guideLayer instanceof L.Marker;
+                  if (guideLayer instanceof L.Marker) {
+                    junctionsLatLngs.push(guideLayer.getLatLng());
+                    return true;
+                  }
+                  return false;
                 });
 
                 control.setDrawingOptions({
@@ -139,10 +144,12 @@ angular.module('archCarto')
                             pathGeoJsons.push(pathPolyline.toGeoJSON());
                           });
 
-                          var junction = intersection.junction.toGeoJSON();
-                          junction.properties.paths = pathGeoJsons;
+                          var junctionGeoJson = intersection.junction.toGeoJSON();
+                          junctionGeoJson.properties.paths = junctionGeoJson.properties.paths || [];
+                          junctionGeoJson.properties.paths.add(pathGeoJsons);
+                          console.log(junctionGeoJson);
                           // Save the junction
-                          archPathJunctionService.save(junction);
+                          //archPathJunctionService.save(junctionGeoJson);
 
                           /*
                            archPathService.save(pathGeoJson)
