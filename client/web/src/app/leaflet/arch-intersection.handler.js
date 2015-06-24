@@ -88,7 +88,7 @@ L.Handler.ArchIntersection = L.Handler.extend({
     var closestLatLng = L.GeometryUtil.closest(this._map, this._junctionLatLngs, latLng, false);
 
     // The junction either already exists or will be created.
-    if (!!closestLatLng && closestLatLng.distance > 0.5 && closestLatLng.distance < 15) {
+    if (!!closestLatLng && closestLatLng.distance > 1 && closestLatLng.distance < 15) {
       var closest;
       for (var i = 0; i < this._junctions.length; i += 1) {
         var junctionLatLng = this._junctions[i].getLatLng();

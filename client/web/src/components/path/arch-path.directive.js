@@ -133,6 +133,7 @@ angular.module('archCarto')
                         intersections.forEach(function (intersection) {
                           // Promises are created for each path
                           var pathGeoJsons = [];
+                          debugger;
                           intersection.paths.each(function (path) {
                             var pathPolyline = L.polyline(path);
                             // For debug
@@ -147,9 +148,8 @@ angular.module('archCarto')
                           var junctionGeoJson = intersection.junction.toGeoJSON();
                           junctionGeoJson.properties.paths = junctionGeoJson.properties.paths || [];
                           junctionGeoJson.properties.paths.add(pathGeoJsons);
-                          console.log(junctionGeoJson);
                           // Save the junction
-                          //archPathJunctionService.save(junctionGeoJson);
+                          archPathJunctionService.save(junctionGeoJson);
 
                           /*
                            archPathService.save(pathGeoJson)

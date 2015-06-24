@@ -12,6 +12,25 @@ L.Draw.Feature.ArchMixin = {
     this.on('disabled', this._archOnDisabled, this);
   },
 
+  _getAllLayers: function() {
+    return this.options.archReferenceLayer.editable.getLayers()
+      .add(this.options.archReferenceLayer.notEditable.getLayers())
+  },
+
+  _extractJunctions: function() {
+    return this._getAllLayers()
+      .filter(function(item) {
+        return item instanceof L.Marker;
+      });
+  },
+
+  _extractPaths: function() {
+    return this._getAllLayers()
+      .filter(function(item) {
+        return item instanceof L.Polyline;
+      });
+  },
+
   _archOnEnabled: function(e) {
     var self = this;
 
@@ -22,16 +41,8 @@ L.Draw.Feature.ArchMixin = {
       this._archJunction.enable();
 
       if (this.options.archReferenceLayer) {
-        var paths = this.options.archReferenceLayer.editable
-          .getLayers()
-          .filter(function (layer) {
-            return layer instanceof L.Polyline;
-          });
-        var markers = this.options.archReferenceLayer.editable
-          .getLayers()
-          .filter(function (layer) {
-            return layer instanceof L.Marker;
-          });
+        var paths = self._extractPaths();
+        var markers = self._extractJunctions();
 
         markers.each(function (marker) {
           marker.archHandler = new L.Handler.ArchHandle(marker, self._mouseMarker, self._map, paths);
