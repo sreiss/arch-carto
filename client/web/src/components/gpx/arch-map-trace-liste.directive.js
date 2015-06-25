@@ -55,6 +55,7 @@ angular.module('archCarto')
           {
             archMap.removeControl('el');
             archMap.drawElevation(geoJson);
+            archMap.displayTrace(geoJson);
             //archLayerService.addLayers('elevation', 'path', geoJson);
           }
           else

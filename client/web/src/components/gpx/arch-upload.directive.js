@@ -28,67 +28,6 @@ angular.module('archCarto')
       scope: false,
       controller: function($scope)
       {
-        leafletData.getMap()
-          .then(function(map){
-            map.on('draw:edited', function (e) {
-              console.log(e.layers);
-              debugger;
-              //console.log(e.layers._layers[81].feature);
-              //debugger;
-              //$scope.geoJson.features[0] = e.layers._layers[81].feature;
-              //console.log($scope.geoJson);
-              //archMap.drawElevation(scope.geoJson);
-              //for(var i = 0; i< $scope.geoJson.features[0].geometry.coordinates.length; i++ )
-              //{
-              //  $scope.geoJson.features[0].geometry.coordinates[i][0] = e.layers._layers[81]._latlngs[i].lat;
-              //  $scope.geoJson.features[0].geometry.coordinates[i][1] = e.layers._layers[81]._latlngs[i].lng;
-              //
-              //  var lat = $scope.geoJson.features[0].geometry.coordinates[i][0];
-              //  var lng = $scope.geoJson.features[0].geometry.coordinates[i][1];
-              //  //var previousHeight = $scope.geoJson.features[0].geometry.coordinates[i][2];
-              //  debugger;
-              //
-              //
-              //  //var test =  archElevationService.getElevationGeoJ($scope.geoJson);
-              //  //console.log(test);
-              //  //archElevationService.getElevation(lat, lng)
-              //  //  .success(function(result){
-              //  //    var height = result.elevationProfile[0].height;
-              //  //    console.log($scope.geoJson.features[0].geometry.coordinates[i]);
-              //  //    console.log(i);
-              //  //    debugger;
-              //  //    $scope.geoJson.features[0].geometry.coordinates[i][2] = height;
-              //  //    //debugger;
-              //  //  });
-              //};
-              var taille = e.layers._layers[81]._latlngs.length;
-              console.log(taille);
-              archElevationService.getElevationGeoJ(e.layers._layers[81])
-                .then(function(result){
-                  console.log(result);
-                  debugger;
-                  for(var i = 0; i < taille; i++ )
-                  {
-                    debugger;
-                    var height = result.elevationProfile[0].height;
-                    //$scope.geoJson.features[0].geometry.coordinates[].push(e.layers._layers[81]._latlngs[i].lat,e.layers._layers[81]._latlngs[i].lng,height);
-                    //$scope.geoJson.features[0].geometry.coordinates[i][1] = e.layers._layers[81]._latlngs[i].lng;
-                    //$scope.geoJson.features[0].geometry.coordinates[i][2] = height;
-                    console.log(i);
-                  }
-                  console.log($scope.geoJson);
-                  //var height = result.elevationProfile[0].height;
-                  //console.log($scope.geoJson.features[0].geometry.coordinates[i]);
-                  //console.log(i);
-                  //debugger;
-                  //$scope.geoJson.features[0].geometry.coordinates[i][2] = height;
-                  //debugger;
-                });
-              //console.log(scope.geoJson.features[0]);
-
-              //debugger;
-            });
-          });
       },
       link: function(scope, element, attrs, controllers) {
         var fn = $parse(attrs.onReadFile);
@@ -106,6 +45,8 @@ angular.module('archCarto')
                 archGpxService.simplifyTrace(scope.geoJson).then(function(simplified)
                 {
                   scope.geoJson.features[0].geometry.coordinates = simplified;
+                  console.log(scope.geoJson);
+                  archMap.drawElevation(scope.geoJson);
                   //archInfoService.getDGeoJ(scope.geoJson).then(function(distance){
                   //  scope.geoJson.features[0].properties.dPlus = distance.deniPlus;
                   //  scope.geoJson.features[0].properties.dMinus = distance.deniMoins;
@@ -122,8 +63,8 @@ angular.module('archCarto')
                           featureGroup.addLayer(layer);
                         }
                       });
-                      console.log(scope.geoJson);
-                      archMap.drawElevation(scope.geoJson);
+                      //console.log(scope.geoJson);
+                      //archMap.drawElevation(scope.geoJson);
                       return archMap.addControl('draw', L.Control.Draw, {
                         draw: {
                           polygon: false,
@@ -143,10 +84,48 @@ angular.module('archCarto')
 
           reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);
         });
-        scope.upload = function(){
-          console.log(scope.geoJson);
-          debugger;
 
+        scope.eventBool = 0;
+        leafletData.getMap()
+          .then(function(map){
+            map.on('draw:edited', function (e) {
+              if(scope.eventBool == 1)
+              {
+                //console.log(scope.geoJson);
+                var currentLayer = Object.keys(e.layers._layers);
+                var taille = e.layers._layers[currentLayer]._latlngs.length;
+                scope.geoJson.features[0].geometry.coordinates = [];
+                //console.log(scope.geoJson);
+                //debugger;
+                archElevationService.getElevationGeoJ(e.layers._layers[currentLayer])
+                  .then(function(result){
+                    console.log(result);
+                    debugger;
+                    for(var i = 0; i < taille; i++ )
+                    {
+                      var height = result.elevationProfile[0].height;
+                      var tab = {0: e.layers._layers[currentLayer]._latlngs[i].lat,1: e.layers._layers[currentLayer]._latlngs[i].lng,2: height};
+                      scope.geoJson.features[0].geometry.coordinates.push(tab);
+                      //console.log(tab);
+                      //debugger;
+                    }
+                    if (archMap.removeControl('el')) {
+                      archMap.removeControl('el');
+                      console.log(scope.geoJson);
+                      archMap.drawElevation(scope.geoJson);
+                      debugger;
+                    }
+                    else {
+                      archMap.drawElevation(scope.geoJson);
+                    }
+                  });
+              }
+
+              scope.eventBool = 1;
+            });
+          });
+        scope.upload = function(){
+          archGpxUploadService.uploadFileToUrl(scope.geoJson);
         }
 
       }

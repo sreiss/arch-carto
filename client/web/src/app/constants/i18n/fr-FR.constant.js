@@ -98,7 +98,7 @@ angular.module('archCarto')
     ADD_MEDIA: "Ajouter une photo",
     DROP_FILES_HERE: "Déposez vos fichiers ici",
     ADD_SOME: "En ajouter",
-    ASSOCIATED_MEDIAS: "Photos associés",
+    ASSOCIATED_MEDIAS: "Photos associées",
     NO_MEDIAS_FOUND: "Aucune photo associée",
     PATH: "Tronçon",
     SANDY: "Sableux",

@@ -85,7 +85,6 @@ angular.module('archCarto')
             addToMap('marker');
             addToMap('path');
             addToMap('course');
-            //addToMap('trace');
 
 
             // Websocket handlers
@@ -116,14 +115,13 @@ angular.module('archCarto')
                 archMarkerPoiService.getList(),
                 archPathJunctionService.getList(),
                 archCourseService.getList()
-                //archGpxService.getTrace(),
               ])
               .then(function(results) {
                 var bugsResult = results[0];
                 var poisResult = results[1];
                 var junctionsResult = results[2];
                 var coursesResult = results[3];
-                //var traceResult = results[4];
+
 
                 archLayerService.addLayers('marker', 'bug', bugsResult.value);
                 archLayerService.addLayers('marker', 'poi', poisResult.value);
@@ -149,8 +147,7 @@ angular.module('archCarto')
                   }
                 });
                 archLayerService.addLayers('path', 'path', junctionsResult.value.paths);
-
-                //archLayerService.addLayers('course', 'course', coursesResult.value);
+                archLayerService.addLayers('course', 'course', coursesResult.value);
 
                 $scope.layersReady = true;
               });
@@ -373,6 +370,11 @@ angular.module('archCarto')
               });
           });
         };
+
+        this.displayTrace = function(geoJson)
+        {
+          archLayerService.addLayers('path', 'path', geoJson);
+        }
         // endregion
 
         // region display options
