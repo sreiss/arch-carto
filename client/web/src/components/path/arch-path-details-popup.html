@@ -7,6 +7,8 @@
     <div ng-if="!path">
       <md-progress-circular md-diameter="20" md-mode="indeterminate"></md-progress-circular>
     </div>
+    <div layout="row">
+      <div flex>
     <div ng-if="path">
       <md-list>
         <md-list-item class="md-3-line">
@@ -16,7 +18,15 @@
             <p><a ui-sref="map.path.draw({id: path._id})" ng-if="path._id">{{'EDIT' | translate}}</a></p>
           </div>
         </md-list-item>
+        <md-list-item class="md-2-line">
+          <div class="md-list-item-text">
+            <h3>{{'LENGTH' | translate}}</h3>
+            <p>{{length}} <small>m</small></p>
+          </div>
+        </md-list-item>
       </md-list>
+    </div>
+      </div>
     </div>
     <h3>{{'ASSOCIATED_MEDIAS' | translate}}</h3>
     <div style="min-height: 16px">
@@ -38,6 +48,7 @@
             <img style="max-height: 200px" ng-src="{{apiUrl + '/' + media.url }}" />
           </md-grid-tile>
         </md-grid-list>
+
       </div>
     </div>
   </md-content>
