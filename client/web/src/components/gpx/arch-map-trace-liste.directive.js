@@ -4,7 +4,7 @@ angular.module('archCarto')
     function ($compileProvider) {
       $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);
     }])
-  .directive('archMapTraceList', function(archGpxService, $mdToast, $translate,archGpxUploadService, archInfoService) {
+  .directive('archMapTraceList', function(archGpxService, $mdToast, $translate,archGpxUploadService, archInfoService, archLayerService) {
     return {
       restrict: 'E',
       require: '^archMap',
@@ -44,17 +44,18 @@ angular.module('archCarto')
         scope.displayTrace = function(geoJson){
           //debugger;
 
-          archInfoService.getDGeoJ(geoJson).then(function(distance){
-            console.log(distance);
-          });
-          archInfoService.getDistanceGeoJ(geoJson).then(function(distance){
-            console.log(distance);
-          });
+          //archInfoService.getDGeoJ(geoJson).then(function(distance){
+          //  console.log(distance);
+          //});
+          //archInfoService.getDistanceGeoJ(geoJson).then(function(distance){
+          //  console.log(distance);
+          //});
           //archInfoService.getD
           if(archMap.removeControl('el'))
           {
             archMap.removeControl('el');
             archMap.drawElevation(geoJson);
+            //archLayerService.addLayers('elevation', 'path', geoJson);
           }
           else
           {
