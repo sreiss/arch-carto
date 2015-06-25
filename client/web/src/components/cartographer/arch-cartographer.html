@@ -1,0 +1,15 @@
+<md-toolbar>
+
+</md-toolbar>
+<md-content>
+  <md-progress-circular md-mode="indeterminate" ng-if="auditEvents === false"></md-progress-circular>
+  <md-list ng-if="auditEvents">
+    <md-list-item class="md-3-line" ng-repeat="auditEvent in auditEvents">
+      <div class="md-list-item-text">
+        <h3><strong>{{'ENTITY' | translate}}</strong> {{auditEvent.entityName | translate}}</h3>
+        <h4><strong>{{'TYPE' | translate}}</strong> {{auditEvent.type | translate}}</h4>
+        <span><strong>{{'COORDINATES' | translate}}</strong> {{auditEvent.pendingChanges.geometry.coordinates[0] + ', ' + auditEvent.pendingChanges.geometry.coordinates[1]}}</span>
+      </div>
+    </md-list-item>
+  </md-list>
+</md-content>
