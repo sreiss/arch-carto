@@ -61,31 +61,35 @@ exports.attach = function(opts) {
                     return next(new ArchError('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS', 403));
                 }
                 var userId = model._user._id;
-                var roleName = model._user.role.name;
+                if (model._user.role) {
+                    var roleName = model._user.role.name;
 
-                auditEventService.getLastEvent(model.properties.auditEvents)
-                    .then(function(lastEvent) {
-                        if (model.isNew) {
-                            _pushEvent(auditEventService.awaitingAddition(entityName, model, userId), model, next);
-                        } else if (lastEvent !== null) {
-                            if (lastEvent.type === _events.awaitingAddition
-                                || lastEvent.type === _events.awaitingUpdate
-                                || lastEvent.type === _events.awaitingDeletion
-                                && !_is(roleName, _hierarchy.CARTOGRAPHER)) {
-                                next(new ArchError('YOU_DO_NOT_HAVE_THE_RIGHTS_TO_DO_THAT', 403));
-                            }
+                    auditEventService.getLastEvent(model.properties.auditEvents)
+                        .then(function (lastEvent) {
+                            if (model.isNew) {
+                                _pushEvent(auditEventService.awaitingAddition(entityName, model, userId), model, next);
+                            } else if (lastEvent !== null) {
+                                if (lastEvent.type === _events.awaitingAddition
+                                    || lastEvent.type === _events.awaitingUpdate
+                                    || lastEvent.type === _events.awaitingDeletion
+                                    && !_is(roleName, _hierarchy.CARTOGRAPHER)) {
+                                    next(new ArchError('YOU_DO_NOT_HAVE_THE_RIGHTS_TO_DO_THAT', 403));
+                                }
 
-                            if (lastEvent.type === _events.awaitingAddition) {
-                                _pushEvent(auditEventService.added(entityName, model, userId), model, next);
-                            } else if (lastEvent.type === _events.awaitingUpdate) {
-                                _pushEvent(auditEventService.updated(entityName, model, userId), model, next);
+                                if (lastEvent.type === _events.awaitingAddition) {
+                                    _pushEvent(auditEventService.added(entityName, model, userId), model, next);
+                                } else if (lastEvent.type === _events.awaitingUpdate) {
+                                    _pushEvent(auditEventService.updated(entityName, model, userId), model, next);
+                                } else {
+                                    _pushEvent(auditEventService.awaitingUpdate(entityName, model, userId), model, next);
+                                }
                             } else {
-                                _pushEvent(auditEventService.awaitingUpdate(entityName, model, userId), model, next);
+                                next(new ArchError('UNABLE_TO_ATTACH_AUDIT_EVENT', 403));
                             }
-                        } else {
-                            next(new ArchError('UNABLE_TO_ATTACH_AUDIT_EVENT', 403));
-                        }
-                    });
+                        });
+                } else {
+                    return next();
+                }
             });
 
             schema.pre('remove', function(next) {
@@ -93,9 +97,13 @@ exports.attach = function(opts) {
                 if (!model._user) {
                     next(new ArchError('YOU_MUST_BE_LOGGED_IN_TO_DO_THIS', 403));
                 }
-                var userId = model._user._id;
-                var roleName = model._user.role.name;
-                delete model._user;
+                if (model._user.role) {
+                    var userId = model._user._id;
+                    var roleName = model._user.role.name;
+                    delete model._user;
+                } else {
+                    return next();
+                }
 
                 _pushEvent(auditEventService.delete(entityName, model, false), model, next);
             });

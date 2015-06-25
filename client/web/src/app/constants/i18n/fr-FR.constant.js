@@ -44,7 +44,7 @@ angular.module('archCarto')
     REPORT: "Signaler",
     PLEASE_DESCRIBE_THE_BUG_YOU_ENCOUNTERED: "Veuillez décrire le problème que vous avez rencontré.",
     YOU_MUST_DESCRIBE_THE_BUG: "Vous devez décrire votre bug pour le soumettre",
-    BUG_REPORTED: "Bug reporté",
+    BUG_ADDED: "Bug signalé",
     POINTS_OF_INTEREST: "Points d'intérêt",
     POINT_OF_INTEREST_ADDED: "Point d'intérêt ajouté",
     UPLOAD_A_GPX_TRACE: "Uploader une trace GPX",
@@ -187,5 +187,13 @@ angular.module('archCarto')
     OK: "D'accord",
     JUNCTION_ADDED: "Jonction ajoutée",
     ERROR: "Erreur",
-    NEW_JUNCTION: "Nouvelle jonction"
+    NEW_JUNCTION: "Nouvelle jonction",
+
+    MONUMENT: "Monument",
+    WATER: "Point d'eau",
+    EXCEPTIONNAL: "Exceptionel",
+    RESTAURANT: "Restaurant",
+    SHELTER: "Abri",
+
+    POI_ADDED: "Point d'intérêt ajouté"
   });

@@ -24,13 +24,14 @@
       <label>{{'DESCRIPTION' | translate}}</label>
       <textarea ng-model="poi.description"></textarea>
     </md-input-container>
-    <div layout="row" layout-align="center center" class="fill-height">
+    <!--<div layout="row" layout-align="center center" class="fill-height">-->
       <span flex>
         <md-select ng-model="poi.type" flex>
-          <md-select-label>{{ poi.type ? poi.type.name : ('SELECT_A_TYPE' | translate) }}</md-select-label>
-          <md-option ng-value="poiType" ng-repeat="poiType in poiTypes">{{poiType.name}}</md-option>
+          <md-select-label>{{ poi.type ? (poi.type.name | translate) : ('SELECT_A_TYPE' | translate) }}</md-select-label>
+          <md-option ng-value="poiType" ng-repeat="poiType in poiTypes">{{poiType.name | translate}}</md-option>
         </md-select>
       </span>
+      <!--
       <span flex="15">
         {{'OR' | translate}}
       </span>
@@ -45,7 +46,7 @@
           {{'ADD' | translate}}
         </md-button>
       </span>
-    </div>
+    </div>-->
     <arch-media-form added="medias"></arch-media-form>
   </ng-form>
 </md-content>
