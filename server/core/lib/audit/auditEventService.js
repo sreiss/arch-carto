@@ -69,12 +69,14 @@ exports.attach = function(opts) {
                             if (model.isNew) {
                                 _pushEvent(auditEventService.awaitingAddition(entityName, model, userId), model, next);
                             } else if (lastEvent !== null) {
+                                /*
                                 if (lastEvent.type === _events.awaitingAddition
                                     || lastEvent.type === _events.awaitingUpdate
                                     || lastEvent.type === _events.awaitingDeletion
                                     && !_is(roleName, _hierarchy.CARTOGRAPHER)) {
                                     next(new ArchError('YOU_DO_NOT_HAVE_THE_RIGHTS_TO_DO_THAT', 403));
                                 }
+                                */
 
                                 if (lastEvent.type === _events.awaitingAddition) {
                                     _pushEvent(auditEventService.added(entityName, model, userId), model, next);

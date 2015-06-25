@@ -21,17 +21,15 @@ angular.module('archCarto')
                     'no-audit': true,
                     'no-medias': true
                   })
-                  .then(function(poi) {
-                    $scope.marker = poi;
+                  .then(function(result) {
                     unregisterWatch = $scope.$watch('medias', function(medias) {
                       if (medias && medias.length > 0) {
                         for (var i = 0; i < medias.length; i += 1) {
-                          $scope.marker.properties.medias.push(medias[i].data._id);
+                          var media = medias[i];
+                          result.value.properties.medias.push(media.data.value._id);
                         }
 
-                        archMarkerPoiService.save($scope.marker);
-
-                        /*
+                        archMarkerPoiService.save(result)
                           .then(function (savedPoi) {
                             $scope.$emit('poiMediaAttached', $scope.marker);
                             archTranslateService('MEDIAS_SAVED_FOR_POI')
@@ -42,7 +40,6 @@ angular.module('archCarto')
                                 });
                               });
                           });
-                          */
                       }
                     }, true);
                   });

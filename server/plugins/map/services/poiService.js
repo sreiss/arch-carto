@@ -113,6 +113,8 @@ module.exports = function(Poi, poiTypeService, auditEventService) {
                         coordinates: rawPoi.geometry.coordinates
                     }
                 });
+                // Disable audit as it's causing some issues with the mobile app.
+                poi._noAudit = true;
                 poi._user = rawPoi._user;
                 poi.save(function (err) {
                     if (err) {
