@@ -106,7 +106,7 @@ angular.module('archCarto')
     SELECT_A_COATING: "Selectionner un revêtement",
     PATH_DETAILS: "Détails du tronçon",
     ROAD: "Route",
-    DIRT_ROAD: "Chemin de terre",
+    FOREST_ROAD: "Chemin de terre",
     BEATEN_PATH: "Sentier battu",
     SINGLE: "Single",
 
