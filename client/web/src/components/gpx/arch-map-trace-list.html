@@ -9,10 +9,10 @@
   <md-content class="md-padding">
     <arch-content-dropdown ng-repeat="trace in traces | filter:filterOptions" title="trace._id" ng-click="linkDownload(trace)">
       <p>{{'NAME' | translate}}: {{trace._id}}</p>
-      <md-button class="md-primary" ng-click="displayTrace(trace)">Display</md-button>
-      <md-button class="md-primary" ng-click="editTrace(trace)">Edit</md-button>
+      <md-button class="md-primary" ng-click="displayTrace(trace)">{{'DISPLAY' | translate}}</md-button>
+      <!--<md-button class="md-primary" ng-click="editTrace(trace)">Edit</md-button>-->
       <!--<md-button class="md-primary" ng-click="getGpx(trace)">Edit</md-button>-->
-      <a download="content.gpx" ng-href="{{ url }}">download</a>
+      <a download="content.gpx" ng-href="{{ url }}">{{'DOWNLOAD' | translate}}</a>
     </arch-content-dropdown>
   </md-content>
   </span>

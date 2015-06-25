@@ -36,7 +36,7 @@ angular.module('archCarto')
         scope.linkDownload = function(geoJson){
           var blob = new Blob([ togpx(geoJson) ], { type : 'text/plain' });
           scope.url = (window.URL || window.webkitURL).createObjectURL( blob );
-        }
+        };
 
 
 

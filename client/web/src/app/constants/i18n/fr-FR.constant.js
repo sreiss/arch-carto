@@ -26,6 +26,8 @@ angular.module('archCarto')
     TYPE: "Type",
     ADD_A_NEW_TYPE: "Ajouter un nouveau type",
     ADD: "Ajouter",
+    DOWNLOAD: "Télécharger",
+    DISPLAY: "Afficher",
     CANCEL: "Annuler",
     SAVE: "Sauvegarder",
     CHOOSE: "Choisir",
