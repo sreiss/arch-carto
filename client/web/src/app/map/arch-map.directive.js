@@ -56,9 +56,9 @@ angular.module('archCarto')
               icon: 'arrows',
               leafletOptions: {
                 stroke: true,
-                color: '#fff',
+                color: 'blue',
                 opacity: 0.5,
-                fillColor: '#fff',
+                fillColor: 'blue',
                 fillOpacity: 0.2,
                 weight: 4
               }

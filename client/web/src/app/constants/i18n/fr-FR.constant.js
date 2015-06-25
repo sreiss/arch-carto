@@ -184,5 +184,7 @@ angular.module('archCarto')
 
     YOU_DO_NOT_HAVE_THE_RIGHTS_TO_DO_THAT: "Vous n'avez pas le droit d'exécuter cette action.",
     YOU_HAVE_TO_BE_LOGGED_IN_TO_ACCESS_THIS_AREA: "Vous devez être connecté pour accéder à cette zone.",
-    OK: "D'accord"
+    OK: "D'accord",
+    JUNCTION_ADDED: "Jonction ajoutée",
+    ERROR: "Erreur"
   });
