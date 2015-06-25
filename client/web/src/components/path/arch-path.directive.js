@@ -1,6 +1,6 @@
 'use strict';
 angular.module('archCarto')
-  .directive('archPath', function(leafletData, $log, $mdSidenav, $q, archPathService, archPathJunctionService, $compile, $state, archLayerService, archElevationService, $mdDialog, $translate, archAccountService) {
+  .directive('archPath', function(leafletData, $log, $mdSidenav, $q, archPathService, archPathJunctionService, $compile, $state, archLayerService, archElevationService, $mdDialog, $translate, archAccountService, archToastService, archTranslateService) {
     return {
       restrict: 'E',
       require: ['^archMap', '^archPath'],
@@ -55,7 +55,6 @@ angular.module('archCarto')
 
             var archMap = controllers[0];
             var archPath = controllers[1];
-
 
             archMap.getLayer('path')
               .then(function (layer) {
@@ -133,23 +132,29 @@ angular.module('archCarto')
                         intersections.forEach(function (intersection) {
                           // Promises are created for each path
                           var pathGeoJsons = [];
-                          debugger;
                           intersection.paths.each(function (path) {
-                            var pathPolyline = L.polyline(path);
+                            //var pathPolyline = L.polyline(path);
                             // For debug
                             //L.Util.setOptions(pathPolyline, {
                             //  color: 'green'
                             //});
                             //pathPolyline.addTo(map);
                             //
-                            pathGeoJsons.push(pathPolyline.toGeoJSON());
+                            pathGeoJsons.push(path.toGeoJSON());
                           });
 
                           var junctionGeoJson = intersection.junction.toGeoJSON();
                           junctionGeoJson.properties.paths = junctionGeoJson.properties.paths || [];
                           junctionGeoJson.properties.paths.add(pathGeoJsons);
+
                           // Save the junction
-                          archPathJunctionService.save(junctionGeoJson);
+                          archPathJunctionService.save(junctionGeoJson)
+                            .then(function(result) {
+                              archTranslateService(result.message)
+                                .then(function(translate) {
+                                  archToastService.showToastSuccess(translate);
+                                });
+                            });
 
                           /*
                            archPathService.save(pathGeoJson)

@@ -88,7 +88,7 @@ L.Handler.ArchIntersection = L.Handler.extend({
     var closestLatLng = L.GeometryUtil.closest(this._map, this._junctionLatLngs, latLng, false);
 
     // The junction either already exists or will be created.
-    if (!!closestLatLng && closestLatLng.distance > 1 && closestLatLng.distance < 15) {
+    if (!!closestLatLng && closestLatLng.distance < 15) {
       var closest;
       for (var i = 0; i < this._junctions.length; i += 1) {
         var junctionLatLng = this._junctions[i].getLatLng();
@@ -98,7 +98,9 @@ L.Handler.ArchIntersection = L.Handler.extend({
         }
       }
       junction = closest;
-    } else {
+    }
+
+    if (!junction) {
       junction = L.marker(L.latLng(latLng.lat, latLng.lng));
     }
 
@@ -149,25 +151,30 @@ L.Handler.ArchIntersection = L.Handler.extend({
     // Cleans the intersections from null values.
     intersections = intersections.compact(true);
 
+
     for (var i = 0; i < intersections.length; i += 1) {
       var junction = self._getCorrectJunction(intersections[i]);
 
-      var paths = [];
+      var pathLatLngs = [];
       // Adjust paths
       self._layer._latlngs.add(junction.getLatLng(), intersections[i]._currentPathIndex);
-      paths.push(self._layer._latlngs.slice(0, intersections[i]._currentPathIndex));
-      paths.push(self._layer._latlngs.slice(intersections[i]._currentPathIndex));
-      paths[0].add(junction.getLatLng());
+      pathLatLngs.push(self._layer._latlngs.slice(0, intersections[i]._currentPathIndex));
+      pathLatLngs.push(self._layer._latlngs.slice(intersections[i]._currentPathIndex));
+      pathLatLngs[0].add(junction.getLatLng());
 
       intersections[i]._path._latlngs.add(junction.getLatLng(), intersections[i]._pathIndex);
-      paths.push(intersections[i]._path._latlngs.slice(0, intersections[i]._pathIndex));
-      paths.push(intersections[i]._path._latlngs.slice(intersections[i]._pathIndex));
-      paths[2].add(junction.getLatLng());
+      pathLatLngs.push(intersections[i]._path._latlngs.slice(0, intersections[i]._pathIndex));
+      pathLatLngs.push(intersections[i]._path._latlngs.slice(intersections[i]._pathIndex));
+      pathLatLngs[2].add(junction.getLatLng());
+
+      var paths = [];
+      for (var j = 0; j < pathLatLngs.length; j += 1) {
+        paths.push(new L.Polyline(pathLatLngs[i]));
+      }
 
       // Integrity test
       // console.log(paths[0][paths[0].length - 1].lng === paths[1][0].lng);
       // console.log(paths[2][paths[2].length - 1].lng === paths[3][0].lng);
-
       intersections[i].junction = junction;
       intersections[i].paths = paths;
     }
@@ -186,7 +193,12 @@ L.Handler.ArchIntersection = L.Handler.extend({
 
     ends.forEach(function(end) {
       var junction = self._getCorrectJunction(end.getLatLng());
-      var junctionLatLng = junction.getLatLng();
+      var junctionLatLng;
+      if (junction && junction.getLatLng) {
+        junctionLatLng = junction.getLatLng();
+      } else {
+        junctionLatLng = end.getLatLng();
+      }
       self._intersections.push({
         lat: junctionLatLng.lat,
         lng: junctionLatLng.lng,
