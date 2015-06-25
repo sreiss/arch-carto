@@ -186,5 +186,6 @@ angular.module('archCarto')
     YOU_HAVE_TO_BE_LOGGED_IN_TO_ACCESS_THIS_AREA: "Vous devez être connecté pour accéder à cette zone.",
     OK: "D'accord",
     JUNCTION_ADDED: "Jonction ajoutée",
-    ERROR: "Erreur"
+    ERROR: "Erreur",
+    NEW_JUNCTION: "Nouvelle jonction"
   });
