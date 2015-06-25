@@ -426,14 +426,14 @@ angular.module('archCarto')
               }
             })
           })
-          .then(function() {
-            var pathControlClass = archMapControlService.createControlClass('GoToArchTrace', 'arch-trace', 'upload');
-            archMap.addControl('goToArchTrace', pathControlClass, {
-              clickFn: function() {
-                $state.go('map.gpx');
-              }
-            })
-          })
+          //.then(function() {
+          //  var pathControlClass = archMapControlService.createControlClass('GoToArchTrace', 'arch-trace', 'upload');
+          //  archMap.addControl('goToArchTrace', pathControlClass, {
+          //    clickFn: function() {
+          //      $state.go('map.gpx');
+          //    }
+          //  })
+          //})
           .then(function() {
             var courseControlClass = archMapControlService.createControlClass('GoToArchCourse', 'arch-course', 'space-shuttle');
             archMap.addControl('goToArchCourse', courseControlClass, {

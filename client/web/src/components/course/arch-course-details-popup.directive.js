@@ -10,6 +10,8 @@ angular.module('archCarto')
           archCourseService.get($scope.id)
             .then(function(result) {
               $scope.course = result.value;
+              var blob = new Blob([ togpx(result.value) ], { type : 'text/plain' });
+              $scope.url = (window.URL || window.webkitURL).createObjectURL( blob );
             })
             .catch(function(err) {
               $log.error(err);
