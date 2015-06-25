@@ -20,7 +20,7 @@ angular.module('archCarto')
       },
       initService: function(name, service) {
         if (_sockets[name]) {
-          var socketService = angular.extend(service, {
+          var socketService = {
             /*save: function (entity) {
               _sockets[name].emit('save', entity);
             },*/
@@ -34,7 +34,7 @@ angular.module('archCarto')
             onUpdate: function(callback) {
               _sockets[name].on('update', callback);
             }
-          });
+          };
 
           // If the socket you use has no custom logic.
           socketService.useDefaultHandlers = function(layerName, optionName) {
@@ -54,7 +54,7 @@ angular.module('archCarto')
             });
           };
 
-          return socketService;
+          return angular.extend(socketService, service);
         } else {
           throw new Error('Socket for "' + name + '" not found');
         }

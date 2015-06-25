@@ -93,7 +93,7 @@ angular.module('archCarto')
             archMarkerPoiService.useDefaultHandlers('marker', 'poi');
             archMarkerBugService.useDefaultHandlers('marker', 'bug');
             archCourseService.useDefaultHandlers('course', 'course');
-            archPathJunctionService.useDefaultHandlers('path', 'junction');
+            //archPathJunctionService.useDefaultHandlers('path', 'junction');
 
 
             map.on('popupopen', function(event) {

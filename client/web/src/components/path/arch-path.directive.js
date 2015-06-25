@@ -133,13 +133,6 @@ angular.module('archCarto')
                           // Promises are created for each path
                           var pathGeoJsons = [];
                           intersection.paths.each(function (path) {
-                            //var pathPolyline = L.polyline(path);
-                            // For debug
-                            //L.Util.setOptions(pathPolyline, {
-                            //  color: 'green'
-                            //});
-                            //pathPolyline.addTo(map);
-                            //
                             pathGeoJsons.push(path.toGeoJSON());
                           });
 
@@ -155,16 +148,6 @@ angular.module('archCarto')
                                   archToastService.showToastSuccess(translate);
                                 });
                             });
-
-                          /*
-                           archPathService.save(pathGeoJson)
-                           .then(function(result) {
-                           debugger;
-                           var junction  = intersection.junction;
-
-                           archPathJunctionService.save()
-                           });
-                           */
                         });
                       })
                       .catch(function (err) {
@@ -176,20 +159,10 @@ angular.module('archCarto')
                         scope._currentLayer = null;
                         $state.go('map.path.draw', {id: ''});
                       });
-                    // map.addLayer(_currentJunctionLayer);
                   }
                 };
 
-                var onDrawEdited = function (e) {
-                  var editedLayers = e.layers;
-                  editedLayers.eachLayer(function (layer) {
-                    var geoJson = layer.toGeoJSON();
-                  });
-                  //archPathService.savePaths()
-                };
-
                 map.on('draw:created', onDrawCreated);
-                map.on('draw:edited', onDrawEdited);
 
                 map.on('draw:clicked', function (e) {
 
